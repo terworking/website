@@ -10,7 +10,6 @@
     "@iconify-icons/tabler": "^1.2.2",
     "@iconify/vue": "^3.1.4",
     "@nuxtjs/color-mode": "^3.0.1",
-    "miniflare": "^2.4.0",
     "netlify-cli": "^9.16.6",
     "nuxt-windicss": "^2.2.8",
     "nuxt3": "^3.0.0-27497374.59593a0",
