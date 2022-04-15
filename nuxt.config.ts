@@ -7,9 +7,6 @@ export default defineNuxtConfig({
   head: {
     meta: [{ name: 'description', content: 'Website Terworking' }],
   },
-  // nitro: {
-  //   preset: 'aws-lambda',
-  // },
   typescript: {
     shim: false,
   },
