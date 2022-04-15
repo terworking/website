@@ -1,7 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  title: 'INDEX',
+  title: 'Home',
 });
 </script>
 
-<template><div class="">sddads</div></template>
+<template>
+  <div>Home</div>
+</template>

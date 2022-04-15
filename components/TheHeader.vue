@@ -56,7 +56,7 @@ const toggleColorMode = () => {
           target="_blank"
           class="p-3"
         >
-          <Icon :icon="IconGithub" class="icon-btn hover:text-cyan-300" />
+          <Icon :icon="IconGithub" class="icon-btn" />
         </a>
         <a
           aria-label="instagramLink"
