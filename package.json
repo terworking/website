@@ -12,7 +12,7 @@
     "@nuxtjs/color-mode": "^3.0.1",
     "netlify-cli": "^9.16.6",
     "nuxt-windicss": "^2.2.8",
-    "nuxt3": "^3.0.0-27497374.59593a0",
+    "nuxt3": "^3.0.0-27500344.7fb29b3",
     "prettier": "2.5.1"
   },
   "dependencies": {
