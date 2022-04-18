@@ -6,7 +6,7 @@ import IconInstagram from '@iconify-icons/tabler/brand-instagram';
 import IconYoutube from '@iconify-icons/tabler/brand-youtube';
 
 const aside = useAside();
-const navigation = useNavigation();
+const routes = useRoutes();
 const terworkingSocial = useTerworkingSocial();
 </script>
 
@@ -69,10 +69,10 @@ const terworkingSocial = useTerworkingSocial();
             <div
               class="grid divide-y divide-opacity-10 divide-slate-800/15 dark:divide-white/15 border-b border-opacity-10 border-slate-800/15 dark:border-white/15"
             >
-              <template v-for="nav of navigation">
-                <NuxtLink :to="nav.path">
+              <template v-for="{ path, name } of routes">
+                <NuxtLink class="capitalize" :to="path">
                   <div class="p-3 font-bold text-lg">
-                    {{ nav.name }}
+                    {{ name }}
                   </div>
                 </NuxtLink>
               </template>
