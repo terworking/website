@@ -8,7 +8,7 @@ import IconSun from '@iconify-icons/tabler/sun';
 import IconMoon from '@iconify-icons/tabler/moon-stars';
 
 const aside = useAside();
-const navigation = useNavigation();
+const routes = useRoutes();
 const terworkingSocial = useTerworkingSocial();
 
 const colorMode = useColorMode();
@@ -42,9 +42,9 @@ const toggleColorMode = () => {
         </NuxtLink>
       </div>
       <nav class="items-center h-full gap-4 hidden lg:flex">
-        <template v-for="nav of navigation">
-          <NuxtLink :to="nav.path">
-            {{ nav.name }}
+        <template v-for="{ name, path } of routes">
+          <NuxtLink class="capitalize" :to="path">
+            {{ name }}
           </NuxtLink>
         </template>
       </nav>
