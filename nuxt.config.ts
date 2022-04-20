@@ -3,7 +3,7 @@ import { defineNuxtConfig } from 'nuxt3';
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   modules: ['@nuxtjs/color-mode'],
-  buildModules: ['nuxt-windicss'],
+  buildModules: ['@vueuse/nuxt', 'nuxt-windicss'],
   head: {
     meta: [{ name: 'description', content: 'Website Terworking' }],
   },
