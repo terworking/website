@@ -72,7 +72,13 @@ const terworkingSocial = useTerworkingSocial();
               <template v-for="{ path, name } of routes">
                 <NuxtLink class="capitalize" :to="path">
                   <div class="p-3 font-bold text-lg">
-                    {{ name }}
+                    <span
+                      :class="{
+                        'pr-2 border-r-4 border-current': $route.path === path,
+                      }"
+                    >
+                      {{ name }}
+                    </span>
                   </div>
                 </NuxtLink>
               </template>
