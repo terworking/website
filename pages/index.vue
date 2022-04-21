@@ -60,50 +60,83 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <div
-      ref="target"
-      class="flex overflow-hidden relative m-2 md:m-4 bg-black rounded-lg select-none md:h-[calc(100vh-8rem)]"
-    >
-      <Transition name="fade" mode="out-in">
-        <img
-          class="object-cover w-full h-full"
-          :src="bannerImage"
-          :key="bannerImage"
-          alt="Banner"
-        />
-      </Transition>
-      <div
-        class="flex items-center dark:bg-slate-900/25 md:perspect-524px absolute top-0 left-0 h-full w-full"
-      >
-        <span
-          :style="titleStyle"
-          class="banner-text border py-2 px-4 md:py-4 mx-auto text-center text-xl md:text-4xl"
+  <div class="parallax">
+    <div class="parallax__group">
+      <div class="parallax__layer parallax__layer--back">
+        <div
+          ref="target"
+          class="flex overflow-hidden relative m-2 md:m-0 bg-black rounded-lg select-none h-full"
         >
-          WELCOME TO OUR WEBSITE
-        </span>
+          <Transition name="fade" mode="out-in">
+            <img
+              class="object-cover w-full h-full"
+              :src="bannerImage"
+              :key="bannerImage"
+              alt="Banner"
+            />
+          </Transition>
+          <div
+            class="flex items-center dark:bg-slate-900/25 md:perspect-524px absolute top-0 left-0 h-full w-full"
+          >
+            <span
+              :style="titleStyle"
+              class="banner-text border py-2 px-4 md:py-4 mx-auto text-center text-xl md:text-4xl"
+            >
+              WELCOME TO OUR WEBSITE
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-end absolute top-0 left-0 h-full w-full children:(text-sm md:text-md px-3 py-2 border-t)"
+          >
+            <button
+              @click="cycleBannerImage(true)"
+              class="banner-text border-r rounded-tr-lg"
+            >
+              Prev
+            </button>
+            <button
+              @click="cycleBannerImage(false)"
+              class="banner-text border-l rounded-tl-lg"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
-      <div
-        class="flex justify-between items-end absolute top-0 left-0 h-full w-full children:(text-sm md:text-md px-3 py-2 border-t)"
-      >
-        <button
-          @click="cycleBannerImage(true)"
-          class="banner-text border-r rounded-tr-lg"
-        >
-          Prev
-        </button>
-        <button
-          @click="cycleBannerImage(false)"
-          class="banner-text border-l rounded-tl-lg"
-        >
-          Next
-        </button>
+    </div>
+    <div class="parallax__group">
+      <div class="parallax__layer parallax__layer--base">
+        <div class="w-full h-full bg-white text-center">test</div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+@screen md {
+  .parallax {
+    @apply perspect-1px overflow-x-hidden overflow-y-auto;
+    height: calc(100vh-4.5rem);
+  }
+
+  .parallax__group {
+    @apply relative preserve-3d transition-transform duration-500;
+    height: 100vh;
+  }
+
+  .parallax__layer {
+    @apply absolute top-0 right-0 bottom-0 left-0;
+  }
+
+  .parallax__layer--base {
+    transform: translateZ(0);
+  }
+
+  .parallax__layer--back {
+    transform: translateZ(-1px) scale(2);
+  }
+}
+
 .banner-text {
   @apply text-amber-200  border-amber-100 font-extrabold text-white bg-black/25 backdrop-filter backdrop-brightness-50 backdrop-blur-sm;
 }
