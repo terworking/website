@@ -5,7 +5,7 @@ const breakpoints = useBreakpoints({ md: 768 });
 const tablet = breakpoints.greater('md');
 
 const titleStyle = computed(() => {
-  // Only enable parallax on tablet or higher
+  // Only enable title parallax on tablet or higher breakpoints
   if (tablet.value) {
     return {
       transition: '.3s ease-out all',
@@ -26,31 +26,22 @@ const bannerImage = useState(
   () => bannerImages[Math.floor(Math.random() * bannerImages.length)]
 );
 
-const _cycleBannerImage = (reverse: boolean) => {
-  const _bannerImages = [...bannerImages];
-  if (reverse) {
-    _bannerImages.reverse();
-  }
-
-  bannerImage.value =
-    _bannerImages[
-      (_bannerImages.indexOf(bannerImage.value) + 1) % _bannerImages.length
-    ];
-};
-
 let intervalHandler;
 onMounted(() => {
+  const cycleBannerImage = () => {
+    bannerImage.value =
+      bannerImages[
+        (bannerImages.indexOf(bannerImage.value) + 1) % bannerImages.length
+      ];
+  };
+
   // Automatically cycle banner image every 15 seconds
-  intervalHandler = setInterval(_cycleBannerImage, 15000);
+  intervalHandler = setInterval(cycleBannerImage, 15000);
 });
 
-const cycleBannerImage = (reverse: boolean) => {
-  // Disable automatic banner images cycle
-  // if user clicks the next or prev button
+onUnmounted(() => {
   clearInterval(intervalHandler);
-
-  _cycleBannerImage(reverse);
-};
+});
 
 definePageMeta({
   name: 'home',
@@ -61,11 +52,11 @@ definePageMeta({
 
 <template>
   <div class="parallax">
-    <div class="parallax__group">
+    <section class="parallax__group">
       <div class="parallax__layer parallax__layer--back">
         <div
           ref="target"
-          class="flex overflow-hidden relative m-2 md:m-0 bg-black rounded-lg select-none h-full"
+          class="flex overflow-hidden relative m-2 md:m-0 bg-white dark:bg-black rounded-lg select-none h-full"
         >
           <Transition name="fade" mode="out-in">
             <img
@@ -76,39 +67,27 @@ definePageMeta({
             />
           </Transition>
           <div
-            class="flex items-center dark:bg-slate-900/25 md:perspect-524px absolute top-0 left-0 h-full w-full"
+            class="flex items-center justify-center dark:bg-slate-900/25 md:perspect-524px absolute top-0 left-0 h-full w-full"
           >
             <span
               :style="titleStyle"
-              class="banner-text border py-2 px-4 md:py-4 mx-auto text-center text-xl md:text-4xl"
+              class="py-2 px-4 md:py-4 text-xl md:text-4xl text-white text-amber-200 border border-amber-100 font-extrabold bg-black/25 backdrop-filter backdrop-brightness-50 backdrop-blur-sm"
             >
               WELCOME TO OUR WEBSITE
             </span>
           </div>
-          <div
-            class="flex justify-between items-end absolute top-0 left-0 h-full w-full children:(text-sm md:text-md px-3 py-2 border-t)"
-          >
-            <button
-              @click="cycleBannerImage(true)"
-              class="banner-text border-r rounded-tr-lg"
-            >
-              Prev
-            </button>
-            <button
-              @click="cycleBannerImage(false)"
-              class="banner-text border-l rounded-tl-lg"
-            >
-              Next
-            </button>
-          </div>
         </div>
       </div>
-    </div>
-    <div class="parallax__group">
+    </section>
+    <section class="parallax__group">
       <div class="parallax__layer parallax__layer--base">
-        <div class="w-full h-full bg-white text-center">test</div>
+        <div
+          class="flex items-center justify-center w-full h-full bg-white dark:bg-black"
+        >
+          <span>THIS SECTION IS INTENTIONALLY LEFT BLANK</span>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -133,10 +112,6 @@ definePageMeta({
 
 .parallax__layer--back {
   transform: translateZ(-1px) scale(2);
-}
-
-.banner-text {
-  @apply text-amber-200  border-amber-100 font-extrabold text-white bg-black/25 backdrop-filter backdrop-brightness-50 backdrop-blur-sm;
 }
 
 .fade-enter-active {
