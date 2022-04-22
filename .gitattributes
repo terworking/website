@@ -1,1 +1,1 @@
-public/image/* filter=lfs diff=lfs merge=lfs -text
+public/image/ filter=lfs diff=lfs merge=lfs -text
