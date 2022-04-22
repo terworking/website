@@ -113,28 +113,26 @@ definePageMeta({
 </template>
 
 <style scoped>
-@screen md {
-  .parallax {
-    @apply perspect-1px overflow-x-hidden overflow-y-auto;
-    height: calc(100vh-4.5rem);
-  }
+.parallax {
+  @apply perspect-1px overflow-x-hidden overflow-y-auto;
+  height: calc(100vh - 4.5rem);
+}
 
-  .parallax__group {
-    @apply relative preserve-3d transition-transform duration-500;
-    height: 100vh;
-  }
+.parallax__group {
+  @apply relative preserve-3d transition-transform duration-500;
+  height: 100vh;
+}
 
-  .parallax__layer {
-    @apply absolute top-0 right-0 bottom-0 left-0;
-  }
+.parallax__layer {
+  @apply absolute top-0 right-0 bottom-0 left-0;
+}
 
-  .parallax__layer--base {
-    transform: translateZ(0);
-  }
+.parallax__layer--base {
+  transform: translateZ(0);
+}
 
-  .parallax__layer--back {
-    transform: translateZ(-1px) scale(2);
-  }
+.parallax__layer--back {
+  transform: translateZ(-1px) scale(2);
 }
 
 .banner-text {
