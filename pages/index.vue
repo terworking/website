@@ -17,9 +17,25 @@ const titleStyle = computed(() => {
 });
 
 const bannerImages = [
-  'https://drive.google.com/uc?id=1uC_1KjklqP68xP6C0AmMHvhKVmMFckYS&export=view',
-  'https://drive.google.com/uc?id=1uDgC5xbj_MyQa5lYyY97icUEJ7sBSBRL&export=view',
-];
+  '1uC_1KjklqP68xP6C0AmMHvhKVmMFckYS',
+  '1uDgC5xbj_MyQa5lYyY97icUEJ7sBSBRL',
+  '12cpZr8ioJZ45kpfJayWeD2Ext64-FQLJ',
+  '10wjFpwlDXEoQhEqcAKC4s2uLBWAYQdAr',
+  '13j9HOE5M0KRRlBk5VO20vtg3nzMOXhHc',
+  '149oPsFqyIU9nMxA-hBarpWjDCjF9bjcz',
+  '13te-Ts1tG1DHJM4egac6PyuuWDP1NT00',
+  '11OwmU9tGDLmk03i17uRHJFM2eQc9mZVf',
+  '1x2jpuQHM0o5ZHoXs1tPiuKNp5DfsYSro',
+  '1tCtep1qrhoxQKS0Ln8P_aJqRAz7Gl-zg',
+  '1sDnqufxhK1xks8Pzld4-2OyJP1_EICeg',
+  '1uDTnfzSiYBH2gWITYGZ4evhXRQRgiaI_',
+  '13_6NWGthTz-AkHeIRTDYyidJRdDYg9jQ',
+  '1Qoz-WAXaN7u9B9wnQWGr_SfMMn9IAcDv',
+  '1VmxiSpDHnhsdEGXYb9Qpt6i0qowrjwGv',
+  '1s0M4qTMn5ME4qGCSiX42Zttgsg6Q_cyM',
+  '17qC6hEnINUiJSV0mD1bYnGqHHQIVdksG',
+  '1rwH4UGqQv3yo_0KmaAZIavJFh-CfzAan',
+].map((id) => `/img/banner/${id}.webp`);
 
 const bannerImage = useState(
   'banner-image',
