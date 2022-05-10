@@ -12,7 +12,6 @@
     "@nuxtjs/color-mode": "^3.0.3",
     "@unocss/nuxt": "^0.33.2",
     "netlify-cli": "^10.3.0",
-    "nuxt-windicss": "^2.3.1",
     "nuxt": "3.0.0-rc.3",
     "prettier": "2.6.2"
   },
