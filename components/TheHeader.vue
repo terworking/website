@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
-import IconMenu from '@iconify-icons/tabler/align-justified';
-import IconGithub from '@iconify-icons/tabler/brand-github';
-import IconInstagram from '@iconify-icons/tabler/brand-instagram';
-import IconYoutube from '@iconify-icons/tabler/brand-youtube';
-import IconSun from '@iconify-icons/tabler/sun';
-import IconMoon from '@iconify-icons/tabler/moon-stars';
-
 const aside = useAside();
 const routes = useRoutes();
 const terworkingSocial = useTerworkingSocial();
@@ -32,10 +24,8 @@ const toggleColorMode = () => {
       <button
         aria-label="mobileMenu"
         @click="aside.isOpen = true"
-        class="flex items-center justify-center w-12 h-12 lg:hidden"
-      >
-        <Icon :icon="IconMenu" class="icon-btn"></Icon>
-      </button>
+        class="i-tabler-align-justified icon-btn h-8 w-8 m-3 lg:hidden"
+      ></button>
       <div class="flex flex-1 items-center justify-center lg:justify-start">
         <NuxtLink to="/">
           <AppLogo />
@@ -54,40 +44,30 @@ const toggleColorMode = () => {
           :href="terworkingSocial.github"
           rel="external nofollow noopener noreferrer"
           target="_blank"
-          class="p-3"
+          class="i-tabler-brand-github icon-btn m-3"
         >
-          <Icon :icon="IconGithub" class="icon-btn" />
         </a>
         <a
           aria-label="instagramLink"
           :href="terworkingSocial.instagram"
           rel="external nofollow noopener noreferrer"
           target="_blank"
-          class="hidden lg:block p-3"
+          class="hidden lg:block i-tabler-brand-instagram icon-btn m-3"
         >
-          <Icon :icon="IconInstagram" class="icon-btn" />
         </a>
         <a
           aria-label="youtubeLink"
           :href="terworkingSocial.youtube"
           rel="external nofollow noopener noreferrer"
           target="_blank"
-          class="hidden lg:block p-3"
+          class="hidden lg:block i-tabler-brand-youtube icon-btn m-3"
         >
-          <Icon :icon="IconYoutube" class="icon-btn" />
         </a>
         <button
           aria-label="toggleColorMode"
           @click="toggleColorMode"
-          class="p-3"
-        >
-          <Icon
-            v-if="colorMode.value === 'light'"
-            :icon="IconSun"
-            class="icon-btn"
-          />
-          <Icon v-else :icon="IconMoon" class="icon-btn" />
-        </button>
+          class="i-tabler-sun dark:i-tabler-moon icon-btn m-3"
+        ></button>
       </div>
     </div>
   </header>

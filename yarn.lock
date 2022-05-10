@@ -369,10 +369,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@iconify-icons/tabler@^1.2.14":
-  version "1.2.14"
-  resolved "https://registry.yarnpkg.com/@iconify-icons/tabler/-/tabler-1.2.14.tgz#444c7edafc632ddac427b62714f5207473798cbd"
-  integrity sha512-Hjb1EPSpGy+BywUgTXXnJxHvFR9JH2SU3Qi2MUIJn+GigShMzMAnXZoHtZ/lFdmueRL3/9S9gz+TFH92d5fLIA==
+"@iconify-json/tabler@^1.1.13":
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/@iconify-json/tabler/-/tabler-1.1.13.tgz#fe8aec2231da3179a0edd4dd882534036b15a0ec"
+  integrity sha512-YcZmZrpOOYPGc1Y0ZSeUUSCwLbQvibLC7WsxHapOyjZAfB1hHJJc8IddnvQYsGCn5+0FAq6GM3ssyt4Yco16UQ==
   dependencies:
     "@iconify/types" "^1.1.0"
 
@@ -392,11 +392,6 @@
     debug "^4.3.4"
     kolorist "^1.5.1"
     local-pkg "^0.4.1"
-
-"@iconify/vue@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@iconify/vue/-/vue-3.2.1.tgz#bd8a2f1213ba8775d4b7a7a8ba895e53ae2f4dfc"
-  integrity sha512-c4R6ZgFo1JrJ8aPMMgOPgfU7lBswihMGR+yWe/P4ZukC3kTkeT4+lkt9Pc/itVFMkwva/S/7u9YofmYv57fnNQ==
 
 "@ioredis/commands@^1.1.1":
   version "1.1.1"

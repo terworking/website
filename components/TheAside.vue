@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
-import IconArrowLeft from '@iconify-icons/tabler/arrow-left';
-import IconGithub from '@iconify-icons/tabler/brand-github';
-import IconInstagram from '@iconify-icons/tabler/brand-instagram';
-import IconYoutube from '@iconify-icons/tabler/brand-youtube';
-
 const aside = useAside();
 const routes = useRoutes();
 const terworkingSocial = useTerworkingSocial();
@@ -32,37 +26,32 @@ const terworkingSocial = useTerworkingSocial();
               <button
                 aria-label="backButton"
                 @click="aside.isOpen = false"
-                class="p-3"
-              >
-                <Icon :icon="IconArrowLeft" class="icon-btn w-8 h-8" />
-              </button>
+                class="i-tabler-arrow-left icon-btn w-8 h-8 m-3"
+              ></button>
               <div class="flex items-center justify-end">
                 <a
                   aria-label="githubLink"
                   :href="terworkingSocial.github"
                   rel="external nofollow noopener noreferrer"
                   target="_blank"
-                  class="p-3"
+                  class="i-tabler-brand-github icon-btn m-3"
                 >
-                  <Icon :icon="IconGithub" class="icon-btn" />
                 </a>
                 <a
                   aria-label="instagramLink"
                   :href="terworkingSocial.instagram"
                   rel="external nofollow noopener noreferrer"
                   target="_blank"
-                  class="p-3"
+                  class="i-tabler-brand-instagram icon-btn m-3"
                 >
-                  <Icon :icon="IconInstagram" class="icon-btn" />
                 </a>
                 <a
                   aria-label="youtubeLink"
                   :href="terworkingSocial.youtube"
                   rel="external nofollow noopener noreferrer"
                   target="_blank"
-                  class="p-3"
+                  class="i-tabler-brand-youtube icon-btn m-3"
                 >
-                  <Icon :icon="IconYoutube" class="icon-btn" />
                 </a>
               </div>
             </div>
