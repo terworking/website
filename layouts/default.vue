@@ -3,23 +3,23 @@ const route = useRoute();
 
 useHead({
   meta: [{ name: 'description', content: 'Website Terworking' }],
+  link: [{ rel: 'ico', href: '/favicon.ico' }],
   title: computed(() => `Terworking - ${route.meta.title}`),
 });
 </script>
 
 <template>
-  <Html>
-    <Head>
-      <Link rel="icon" href="favicon.ico" />
-    </Head>
-    <Body antialiased bg-body text-body>
-      <div relative w-full>
-        <TheHeader />
-        <TheAside />
-        <main>
-          <slot />
-        </main>
-      </div>
-    </Body>
-  </Html>
+  <div>
+    <TheHeader />
+    <TheAside />
+    <main>
+      <slot />
+    </main>
+  </div>
 </template>
+
+<style>
+body {
+  --at-apply: antialiased bg-body text-body;
+}
+</style>
