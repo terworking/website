@@ -1,74 +1,55 @@
 <script setup lang="ts">
 const aside = useAside();
 const routes = useRoutes();
-const terworkingSocial = useTerworkingSocial();
+const socials = useTerworkingSocial();
 </script>
 
 <template>
-  <aside class="fixed z-50 lg:z-0 lg:static">
-    <div class="h-full overflow-auto pointer-events-none lg:overflow-visible">
+  <aside class="fixed lg:static z-50 lg:z-0">
+    <div class="h-full overflow-auto lg:overflow-visible pointer-events-none">
       <Transition name="fade">
         <div
-          v-if="aside.isOpen"
-          @click="aside.isOpen = false"
-          class="fixed top-0 left-0 z-0 w-full h-full pointer-events-auto backdrop-filter backdrop-blur-sm lg:hidden"
+          v-if="aside.visible"
+          @click="aside.visible = false"
+          class="lg:hidden fixed left-0 top-0 z-0 h-full w-full pointer-events-auto backdrop-filter backdrop-blur-sm"
         ></div>
       </Transition>
       <Transition name="slide-fade">
         <div
-          v-if="aside.isOpen"
-          class="lg:hidden fixed top-0 left-0 h-full w-72 overflow-auto pointer-events-auto border-r border-slate-800/20 dark:border-white/20"
+          v-if="aside.visible"
+          class="lg:hidden fixed left-0 top-0 h-full w-72 bg-body border-r border-primary overflow-auto pointer-events-auto"
         >
-          <div class="overflow-auto w-auto h-full bg-white dark:bg-slate-900">
+          <div class="w-auto h-full overflow-auto">
             <div
-              class="h-18 flex items-center justify-between w-full bg-neutral-50 dark:bg-gray-900 sm:px-2 border-b border-dashed border-slate-800/20 dark:border-white/20"
+              class="flex items-center justify-between h-$header-h w-full border-b border-primary sm:px-2"
             >
               <button
                 aria-label="backButton"
-                @click="aside.isOpen = false"
-                class="i-tabler-arrow-left icon-btn w-8 h-8 m-3"
+                @click="aside.visible = false"
+                class="i-tabler-arrow-left text-accent w-8 h-8"
               ></button>
               <div class="flex items-center justify-end">
-                <a
-                  aria-label="githubLink"
-                  :href="terworkingSocial.github"
-                  rel="external nofollow noopener noreferrer"
-                  target="_blank"
-                  class="i-tabler-brand-github icon-btn m-3"
-                >
-                </a>
-                <a
-                  aria-label="instagramLink"
-                  :href="terworkingSocial.instagram"
-                  rel="external nofollow noopener noreferrer"
-                  target="_blank"
-                  class="i-tabler-brand-instagram icon-btn m-3"
-                >
-                </a>
-                <a
-                  aria-label="youtubeLink"
-                  :href="terworkingSocial.youtube"
-                  rel="external nofollow noopener noreferrer"
-                  target="_blank"
-                  class="i-tabler-brand-youtube icon-btn m-3"
-                >
-                </a>
+                <template v-for="{ icon, kind, url } of socials">
+                  <NuxtLink
+                    class="text-accent"
+                    :aria-label="`${kind.toLowerCase()}Link`"
+                    :class="`i-${icon}`"
+                    :to="url"
+                    target="_blank"
+                  />
+                </template>
               </div>
             </div>
             <div
-              class="grid divide-y divide-opacity-10 divide-slate-800/15 dark:divide-white/15 border-b border-opacity-10 border-slate-800/15 dark:border-white/15"
+              class="flex flex-col border-b border-primary divide-y divide-black/10 dark:divide-white/10"
             >
-              <template v-for="{ path, name } of routes">
-                <NuxtLink class="capitalize" :to="path">
-                  <div class="p-3 font-bold text-lg">
-                    <span
-                      :class="{
-                        'pr-2 border-r-4 border-current': $route.path === path,
-                      }"
-                    >
-                      {{ name }}
-                    </span>
-                  </div>
+              <template v-for="{ name, path } of routes" :key="path">
+                <NuxtLink
+                  class="list-disc capitalize font-bold text-lg p-3"
+                  active-class="text-accent underline underline-dotted"
+                  :to="path"
+                >
+                  {{ name }}
                 </NuxtLink>
               </template>
             </div>

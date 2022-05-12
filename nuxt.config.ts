@@ -2,20 +2,22 @@ import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/color-mode', '@unocss/nuxt'],
+  css: ['@/assets/css/main.css'],
+  modules: [
+    '@nuxtjs/color-mode',
+    '@unocss/nuxt',
+    '@vueuse/nuxt',
+    'nuxt-lodash',
+  ],
   experimental: {
     reactivityTransform: true,
-    viteNode: true,
-  },
-  head: {
-    meta: [{ name: 'description', content: 'Website Terworking' }],
-  },
-  typescript: {
-    shim: false,
   },
   colorMode: {
     fallback: 'dark',
     classSuffix: '',
+  },
+  lodash: {
+    exclude: ['now'], // I need useNow from vueuse
   },
   unocss: {
     preflight: true,

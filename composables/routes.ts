@@ -3,8 +3,8 @@ export const useRoutes = () => {
 
   return [...router.getRoutes()]
     .sort((a, b) => a.meta.weight || 0 - b.meta.weight || 0)
-    .map((route) => {
-      const name = route.meta.name || route.name;
-      return { name, path: route.path };
-    });
+    .map((route) => ({
+      name: route.meta.name || route.name,
+      path: route.path,
+    }));
 };

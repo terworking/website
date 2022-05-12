@@ -2,5 +2,5 @@ export default defineNuxtRouteMiddleware(() => {
   const aside = useAside();
 
   // close the aside everytime route changes
-  aside.value.isOpen = false;
+  aside.value.visible = false;
 });

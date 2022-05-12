@@ -1,10 +1,22 @@
-export const useTerworkingSocial = () => {
-  return {
-    github: 'https://github.com/terworking',
-    instagram: 'https://instagram.com/terworking',
-    youtube: 'https://www.youtube.com/channel/UCdEROl_OTXNyZkYx5rn3AGQ',
-  };
-};
+import { Social, Member } from '~~/typings/terworking';
+
+export const useTerworkingSocial = (): Social[] => [
+  {
+    kind: 'GitHub',
+    url: 'https://github.com/terworking',
+    icon: 'tabler-brand-github',
+  },
+  {
+    kind: 'Instagram',
+    url: 'https://instagram.com/terworking',
+    icon: 'tabler-brand-instagram',
+  },
+  {
+    kind: 'Youtube',
+    url: 'https://www.youtube.com/channel/UCdEROl_OTXNyZkYx5rn3AGQ',
+    icon: 'tabler-brand-youtube',
+  },
+];
 
 export const useTerworkingMember = (): Member[] => {
   return [

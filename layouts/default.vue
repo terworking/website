@@ -2,18 +2,17 @@
 const route = useRoute();
 
 useHead({
+  meta: [{ name: 'description', content: 'Website Terworking' }],
   title: computed(() => `Terworking - ${route.meta.title}`),
 });
 </script>
 
 <template>
-  <Html lang="id-ID">
+  <Html>
     <Head>
       <Link rel="icon" href="favicon.ico" />
     </Head>
-    <Body
-      class="antialiased bg-white dark:bg-slate-900 text-slate-800 dark:text-white"
-    >
+    <Body class="antialiased bg-body text-body">
       <div class="relative w-full">
         <TheHeader />
         <TheAside />
