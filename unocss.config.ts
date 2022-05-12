@@ -1,7 +1,13 @@
-import { defineConfig, presetIcons, presetMini } from 'unocss';
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetMini,
+} from 'unocss';
 
 export default defineConfig({
   presets: [
+    presetAttributify(),
     presetIcons({
       extraProperties: {
         margin: '0.75rem',

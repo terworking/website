@@ -5,33 +5,59 @@ const socials = useTerworkingSocial();
 </script>
 
 <template>
-  <aside class="fixed lg:static z-50 lg:z-0">
-    <div class="h-full overflow-auto lg:overflow-visible pointer-events-none">
+  <aside fixed z="50 lg:0" lg:static>
+    <div h-full overflow="auto lg:visible" pointer-events-none>
       <Transition name="fade">
         <div
           v-if="aside.visible"
           @click="aside.visible = false"
-          class="lg:hidden fixed left-0 top-0 z-0 h-full w-full pointer-events-auto backdrop-filter backdrop-blur-sm"
+          lg:hidden
+          fixed
+          left-0
+          top-0
+          z-0
+          h-full
+          w-full
+          pointer-events-auto
+          backdrop="filter blur-sm"
         ></div>
       </Transition>
       <Transition name="slide-fade">
         <div
           v-if="aside.visible"
-          class="lg:hidden fixed left-0 top-0 h-full w-72 bg-body border-r border-primary overflow-auto pointer-events-auto"
+          lg:hidden
+          fixed
+          left-0
+          top-0
+          h-full
+          w-72
+          bg-body
+          border="r primary"
+          overflow-auto
+          pointer-events-auto
         >
-          <div class="w-auto h-full overflow-auto">
+          <div w-auto h-full overflow-auto>
             <div
-              class="flex items-center justify-between h-$header-h w-full border-b border-primary sm:px-2"
+              class="h-$header-h"
+              flex
+              items-center
+              justify-between
+              w-full
+              border="b primary"
+              sm:px-2
             >
               <button
                 aria-label="backButton"
                 @click="aside.visible = false"
-                class="i-tabler-arrow-left text-accent w-8 h-8"
+                i-tabler-arrow-left
+                text-accent
+                w-8
+                h-8
               ></button>
-              <div class="flex items-center justify-end">
+              <div flex items-center justify-end>
                 <template v-for="{ icon, kind, url } of socials">
                   <NuxtLink
-                    class="text-accent"
+                    text-accent
                     :aria-label="`${kind.toLowerCase()}Link`"
                     :class="`i-${icon}`"
                     :to="url"
@@ -41,11 +67,17 @@ const socials = useTerworkingSocial();
               </div>
             </div>
             <div
-              class="flex flex-col border-b border-primary divide-y divide-black/10 dark:divide-white/10"
+              flex="~ col"
+              border="b primary"
+              divide="y black/10 dark:white/10"
             >
               <template v-for="{ name, path } of routes" :key="path">
                 <NuxtLink
-                  class="list-disc capitalize font-bold text-lg p-3"
+                  list-disc
+                  capitalize
+                  font-bold
+                  text-lg
+                  p-3
                   active-class="text-accent underline underline-dotted"
                   :to="path"
                 >

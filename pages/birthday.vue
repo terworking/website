@@ -110,13 +110,15 @@ const results = $computed(() => {
 </script>
 
 <template>
-  <div class="md:max-w-xl md:mx-auto md:px-10">
-    <div class="my-5 p-5 gap-6 grid">
-      <h1 class="font-semibold text-5xl text-center mx-auto">
-        Birthday countdown
-      </h1>
+  <div md="max-w-xl mx-auto px-10">
+    <div my-5 p-5 gap-6 grid>
+      <h1 font-semibold text-5xl text-center mx-auto>Birthday countdown</h1>
       <select
-        class="p-3 border-transparent rounded-lg w-full bg-secondary"
+        p-3
+        border-transparent
+        rounded-lg
+        w-full
+        bg-secondary
         v-model="selectedMember"
       >
         <option disabled selected>Please select one</option>
@@ -127,26 +129,35 @@ const results = $computed(() => {
         </option>
       </select>
       <div
-        class="flex items-center justify-center h-20 w-3/4 md:w-4/5 text-center mx-auto gap-2"
+        flex
+        items-center
+        justify-center
+        h-20
+        w="3/4 md:4/5"
+        text-center
+        mx-auto
+        gap-2
       >
         <TransitionGroup name="slide-fade-group">
           <template v-for="{ color, key, value } of results" :key="key">
             <div
               v-if="value !== 0"
-              class="flex flex-col p-3 rounded-2xl"
+              flex="~ col"
+              p-3
+              rounded-2xl
               :class="`bg-${color}-200 divide-${color}-800 dark:bg-${color}-800 dark:divide-${color}-200`"
             >
-              <span class="text-2xl md:text-3xl">
+              <span text="2xl md:3xl">
                 {{ value }}
               </span>
-              <span class="font-light text-lg md:text-xl">{{ key }}</span>
+              <span font-light text="lg md:xl">{{ key }}</span>
             </div>
           </template>
         </TransitionGroup>
       </div>
-      <div class="flex flex-col text-center">
-        <p class="text-2xl md:text-3xl">{{ selectedMember.name }}</p>
-        <p class="text-lg md:text-xl">
+      <div flex="~ col" text-center>
+        <p text="2xl md:3xl">{{ selectedMember.name }}</p>
+        <p text="lg md:xl">
           {{ message }}
         </p>
       </div>

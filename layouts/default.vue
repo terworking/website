@@ -12,8 +12,8 @@ useHead({
     <Head>
       <Link rel="icon" href="favicon.ico" />
     </Head>
-    <Body class="antialiased bg-body text-body">
-      <div class="relative w-full">
+    <Body antialiased bg-body text-body>
+      <div relative w-full>
         <TheHeader />
         <TheAside />
         <main>
