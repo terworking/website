@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const aside = useAside();
 const routes = useRoutes();
-const socials = useTerworkingSocial();
+const { social } = useTerworking();
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const socials = useTerworkingSocial();
                 h-8
               ></button>
               <div flex items-center justify-end>
-                <template v-for="{ icon, kind, url } of socials">
+                <template v-for="{ icon, kind, url } of social">
                   <NuxtLink
                     text-accent
                     :aria-label="`${kind.toLowerCase()}Link`"

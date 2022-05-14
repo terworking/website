@@ -6,7 +6,7 @@ definePageMeta({
   title: 'Birthday countdown',
 });
 
-const members = useTerworkingMember();
+const { member: members } = useTerworking();
 
 const selectedMember = $(
   useState(

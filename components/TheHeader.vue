@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const aside = useAside();
 const routes = useRoutes();
-const socials = useTerworkingSocial();
+const { social } = useTerworking();
 
 const colorMode = useColorMode();
 
@@ -54,7 +54,7 @@ const toggleColorMode = () => {
         </template>
       </nav>
       <div flex="~ lg:1" items-center justify-end gap-1>
-        <template v-for="{ icon, kind, url } of socials">
+        <template v-for="{ icon, kind, url } of social">
           <NuxtLink
             text-accent
             :aria-label="`${kind.toLowerCase()}Link`"
