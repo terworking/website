@@ -1,3 +1,6 @@
+// @ts-expect-error It should work
+import formkitUnoCSS from '@formkit/themes/unocss';
+
 import {
   defineConfig,
   presetAttributify,
@@ -10,6 +13,7 @@ import {
 
 export default defineConfig({
   presets: [
+    formkitUnoCSS(),
     presetAttributify(),
     presetIcons({
       extraProperties: {
