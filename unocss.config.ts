@@ -32,11 +32,16 @@ export default defineConfig({
       []
     ),
   ],
-  shortcuts: {
-    'bg-body': 'bg-white dark:bg-dark-800',
-    'bg-secondary': 'bg-light-500 dark:bg-dark-500',
-    'border-primary': 'border-black/20 dark:border-white/20',
-    'text-body': 'text-black dark:text-white',
-    'text-accent': 'text-$accent dark:text-$accent-dark',
-  },
+  shortcuts: [
+    {
+      'bg-body': 'bg-white dark:bg-dark-800',
+      'text-body': 'text-black dark:text-white',
+      'bg-secondary': 'bg-light-500 dark:bg-dark-500',
+      'border-primary': 'border-black/20 dark:border-white/20',
+    },
+    [
+      /^(bg|border|text)-accent$/,
+      ([, v]) => `${v}-$accent dark:${v}-$accent-dark`,
+    ],
+  ],
 });
