@@ -3,7 +3,9 @@ import {
   presetAttributify,
   presetIcons,
   presetMini,
+  transformerCompileClass,
   transformerDirectives,
+  transformerVariantGroup,
 } from 'unocss';
 
 export default defineConfig({
@@ -18,7 +20,11 @@ export default defineConfig({
     }),
     presetMini(),
   ],
-  transformers: [transformerDirectives()],
+  transformers: [
+    transformerCompileClass({ classPrefix: 'u-' }),
+    transformerDirectives(),
+    transformerVariantGroup(),
+  ],
   safelist: [
     ...['github', 'instagram', 'youtube'].map((it) => `i-tabler-brand-${it}`), // Social icons
     ...['lime', 'fuchsia', 'rose', 'indigo'].reduce(
