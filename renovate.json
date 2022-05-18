@@ -1,5 +1,3 @@
 {
-  "extends": [
-    "github>terworking/renovate-config"
-  ]
+  "extends": ["github>terworking/renovate-config"]
 }
