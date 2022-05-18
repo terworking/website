@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const aside = useAside()
-const routes = useRoutes()
-const { social } = useTerworking()
+const aside = useAside();
+const routes = useRoutes();
+const { social } = useTerworking();
 </script>
 
 <template>
@@ -10,6 +10,7 @@ const { social } = useTerworking()
       <Transition name="fade">
         <div
           v-if="aside.visible"
+          @click="aside.visible = false"
           lg:hidden
           fixed
           left-0
@@ -19,8 +20,7 @@ const { social } = useTerworking()
           w-full
           pointer-events-auto
           backdrop="filter blur-sm"
-          @click="aside.visible = false"
-        />
+        ></div>
       </Transition>
       <Transition name="slide-fade">
         <div
@@ -48,14 +48,14 @@ const { social } = useTerworking()
             >
               <button
                 aria-label="backButton"
+                @click="aside.visible = false"
                 i-tabler-arrow-left
                 text-accent
                 w-8
                 h-8
-                @click="aside.visible = false"
-              />
+              ></button>
               <div flex items-center justify-end>
-                <template v-for="{ icon, kind, url } of social" :key="kind">
+                <template v-for="{ icon, kind, url } of social">
                   <NuxtLink
                     text-accent
                     :aria-label="`${kind.toLowerCase()}Link`"

@@ -6,7 +6,7 @@ import {
   transformerCompileClass,
   transformerDirectives,
   transformerVariantGroup,
-} from 'unocss'
+} from 'unocss';
 
 export default defineConfig({
   presets: [
@@ -37,4 +37,4 @@ export default defineConfig({
       ([, v]) => `${v}-$accent dark:${v}-$accent-dark`,
     ],
   ],
-})
+});

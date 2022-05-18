@@ -1,6 +1,6 @@
 // @unocss-include
 
-import type { Member, Social } from '~~/typings/terworking'
+import { Social, Member } from '~~/typings/terworking';
 
 export const useTerworking = () => ({
   member: <Member[]>[
@@ -190,4 +190,4 @@ export const useTerworking = () => ({
       icon: 'i-tabler-brand-youtube',
     },
   ],
-})
+});

@@ -1,4 +1,4 @@
-import { defineNuxtConfig } from 'nuxt'
+import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
@@ -22,4 +22,4 @@ export default defineNuxtConfig({
   unocss: {
     preflight: true,
   },
-})
+});

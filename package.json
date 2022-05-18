@@ -4,19 +4,17 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "preview": "nuxi preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "preview": "nuxi preview"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.23.1",
     "@iconify-json/tabler": "^1.1.13",
     "@nuxtjs/color-mode": "^3.0.3",
     "@unocss/nuxt": "^0.33.2",
     "@vueuse/nuxt": "^8.4.2",
-    "eslint": "^8.15.0",
     "netlify-cli": "^10.3.0",
     "nuxt": "3.0.0-rc.3",
-    "nuxt-lodash": "^2.2.0"
+    "nuxt-lodash": "^2.2.0",
+    "prettier": "2.6.2",
+    "unplugin-icons": "^0.14.3"
   }
 }

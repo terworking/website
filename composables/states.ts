@@ -1,1 +1,1 @@
-export const useAside = () => useState('aside', () => ({ visible: false }))
+export const useAside = () => useState('aside', () => ({ visible: false }));

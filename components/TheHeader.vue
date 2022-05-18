@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const aside = useAside()
-const routes = useRoutes()
-const { social } = useTerworking()
+const aside = useAside();
+const routes = useRoutes();
+const { social } = useTerworking();
 
-const colorMode = useColorMode()
+const colorMode = useColorMode();
 
 const toggleColorMode = () => {
-  if (colorMode.value === 'dark')
-    colorMode.preference = 'light'
-  else colorMode.preference = 'dark'
-}
+  if (colorMode.value === 'dark') {
+    colorMode.preference = 'light';
+  } else {
+    colorMode.preference = 'dark';
+  }
+};
 </script>
 
 <template>
@@ -24,13 +26,13 @@ const toggleColorMode = () => {
     <div flex items-center h-full max-w-7xl mx-auto px="sm:3 lg:6">
       <button
         aria-label="mobileMenu"
+        @click="aside.visible = true"
         lg:hidden
         i-tabler-align-justified
         text-accent
         h-8
         w-8
-        @click="aside.visible = true"
-      />
+      ></button>
       <div flex="~ 1" items-center justify="center lg:start">
         <NuxtLink to="/">
           <div flex items-center h-8 space-x-2>
@@ -52,7 +54,7 @@ const toggleColorMode = () => {
         </template>
       </nav>
       <div flex="~ lg:1" items-center justify-end gap-1>
-        <template v-for="{ icon, kind, url } of social" :key="kind">
+        <template v-for="{ icon, kind, url } of social">
           <NuxtLink
             text-accent
             :aria-label="`${kind.toLowerCase()}Link`"
@@ -63,11 +65,11 @@ const toggleColorMode = () => {
         </template>
         <button
           aria-label="toggleColorMode"
+          @click="toggleColorMode"
           i-tabler-sun
           dark:i-tabler-moon
           text-accent
-          @click="toggleColorMode"
-        />
+        ></button>
       </div>
     </div>
   </header>

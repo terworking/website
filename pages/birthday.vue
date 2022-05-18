@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import type { BirthdayResult } from '~~/typings/birthday'
-import type { Member } from '~~/typings/terworking'
+import type { BirthdayResult } from '~~/typings/birthday';
+import type { Member } from '~~/typings/terworking';
 
 definePageMeta({
   title: 'Birthday countdown',
-})
+});
 
-const { member: members } = useTerworking()
+const { member: members } = useTerworking();
 
 const selectedMember = $(
   useState(
     'selected',
-    () => members[Math.floor(Math.random() * members.length)],
-  ),
-)
+    () => members[Math.floor(Math.random() * members.length)]
+  )
+);
 
-const now = $(useNow({ interval: 1000 }))
+const now = $(useNow({ interval: 1000 }));
 
 const birthdayRanges = computed(() =>
   members
-    .map(member => ({
+    .map((member) => ({
       ms:
-        now.valueOf()
-        - new Date(now.getFullYear(), member.month - 1, member.day).valueOf(),
+        now.valueOf() -
+        new Date(now.getFullYear(), member.month - 1, member.day).valueOf(),
       ...member,
     }))
-    .sort((a, b) => a.ms - b.ms),
-)
+    .sort((a, b) => a.ms - b.ms)
+);
 
-let throttledBirthdayRanges = $ref(birthdayRanges.value)
+let throttledBirthdayRanges = $ref(birthdayRanges.value);
 
 watch(
   birthdayRanges,
@@ -36,44 +36,44 @@ watch(
     () => (throttledBirthdayRanges = birthdayRanges.value),
     60000,
     true,
-    true,
-  ),
-)
+    true
+  )
+);
 
 const closest = $computed<Member>(
-  () => throttledBirthdayRanges.filter(({ ms }) => ms < 0).reverse()[0],
-)
+  () => throttledBirthdayRanges.filter(({ ms }) => ms < 0).reverse()[0]
+);
 const farthest = $computed<Member>(
-  () => throttledBirthdayRanges.filter(({ ms }) => ms > 0)[0],
-)
+  () => throttledBirthdayRanges.filter(({ ms }) => ms > 0)[0]
+);
 
 const birthdayIsThisYear = $computed(() => {
-  const month = now.getMonth() + 1
-  const day = now.getDate()
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
 
   return (
-    selectedMember.month > month
-    || (selectedMember.month === month && selectedMember.day > day)
-  )
-})
+    selectedMember.month > month ||
+    (selectedMember.month === month && selectedMember.day > day)
+  );
+});
 
 const birthdayYear = $computed(() =>
-  birthdayIsThisYear ? now.getFullYear() : now.getFullYear() + 1,
-)
+  birthdayIsThisYear ? now.getFullYear() : now.getFullYear() + 1
+);
 
-const birthdayAge = $computed(() => birthdayYear - selectedMember.year)
+const birthdayAge = $computed(() => birthdayYear - selectedMember.year);
 
 const secondsUntilBirthday = $computed(() => {
   const birthdayDate = new Date(
     birthdayYear,
     selectedMember.month - 1,
-    selectedMember.day,
-  )
+    selectedMember.day
+  );
 
-  return Math.floor((birthdayDate.valueOf() - now.valueOf()) / 1000)
-})
+  return Math.floor((birthdayDate.valueOf() - now.valueOf()) / 1000);
+});
 
-const message = $computed(() => `berusia ${birthdayAge} tahun`)
+const message = $computed(() => `berusia ${birthdayAge} tahun`);
 
 const _classes = [
   [
@@ -100,67 +100,60 @@ const _classes = [
     'dark:bg-indigo-800',
     'dark:divide-indigo-200',
   ],
-]
-let classes = $ref(_classes)
+];
+let classes = $ref(_classes);
 
 watch(
   $$(selectedMember),
   useDebounceFn(() => (classes = useShuffle(_classes)), 250),
   {
     immediate: true,
-  },
-)
+  }
+);
 
-const secondsInMinute = 60
-const secondsInHour = secondsInMinute * 60
-const secondsInDay = secondsInHour * 24
+const secondsInMinute = 60;
+const secondsInHour = secondsInMinute * 60;
+const secondsInDay = secondsInHour * 24;
 
 const results = $computed(() => {
-  if (secondsUntilBirthday === 0)
-    return []
+  if (secondsUntilBirthday === 0) {
+    return [];
+  }
 
-  const daysLeft = Math.floor(secondsUntilBirthday / secondsInDay)
+  const daysLeft = Math.floor(secondsUntilBirthday / secondsInDay);
   const hoursLeft = Math.floor(
-    (secondsUntilBirthday % secondsInDay) / secondsInHour,
-  )
+    (secondsUntilBirthday % secondsInDay) / secondsInHour
+  );
   const minutesLeft = Math.floor(
-    (secondsUntilBirthday % secondsInHour) / secondsInMinute,
-  )
-  const secondsLeft = Math.floor(secondsUntilBirthday % secondsInMinute)
+    (secondsUntilBirthday % secondsInHour) / secondsInMinute
+  );
+  const secondsLeft = Math.floor(secondsUntilBirthday % secondsInMinute);
 
   return [
     { colorClass: classes[0], key: 'days', value: daysLeft },
     { colorClass: classes[1], key: 'hours', value: hoursLeft },
     { colorClass: classes[2], key: 'mins', value: minutesLeft },
     { colorClass: classes[3], key: 'secs', value: secondsLeft },
-  ] as BirthdayResult[]
-})
+  ] as BirthdayResult[];
+});
 </script>
 
 <template>
   <div md="max-w-xl mx-auto px-10">
     <div my-5 p-5 gap-6 grid>
-      <h1 font-semibold text-5xl text-center mx-auto>
-        Birthday countdown
-      </h1>
+      <h1 font-semibold text-5xl text-center mx-auto>Birthday countdown</h1>
       <select
-        v-model="selectedMember"
         p-3
         border-transparent
         rounded-lg
         w-full
         bg-secondary
+        v-model="selectedMember"
       >
-        <option disabled selected>
-          Please select one
-        </option>
-        <option :value="closest">
-          Closest ({{ closest.name }})
-        </option>
-        <option :value="farthest">
-          Farthest ({{ farthest.name }})
-        </option>
-        <option v-for="member of members" :key="member.name" :value="member">
+        <option disabled selected>Please select one</option>
+        <option :value="closest">Closest ({{ closest.name }})</option>
+        <option :value="farthest">Farthest ({{ farthest.name }})</option>
+        <option v-for="member of members" :value="member">
           {{ member.name }}
         </option>
       </select>
@@ -194,9 +187,7 @@ const results = $computed(() => {
         </TransitionGroup>
       </div>
       <div flex="~ col" text-center>
-        <p text="2xl md:3xl">
-          {{ selectedMember.name }}
-        </p>
+        <p text="2xl md:3xl">{{ selectedMember.name }}</p>
         <p text="lg md:xl">
           {{ message }}
         </p>
