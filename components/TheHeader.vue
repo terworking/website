@@ -54,7 +54,7 @@ const toggleColorMode = () => {
         </template>
       </nav>
       <div flex="~ lg:1" items-center justify-end gap-1>
-        <template v-for="{ icon, kind, url } of social">
+        <template v-for="{ icon, kind, url } of social" :key="url">
           <NuxtLink
             text-accent
             :aria-label="`${kind.toLowerCase()}Link`"

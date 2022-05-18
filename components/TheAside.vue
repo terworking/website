@@ -55,7 +55,7 @@ const { social } = useTerworking();
                 h-8
               ></button>
               <div flex items-center justify-end>
-                <template v-for="{ icon, kind, url } of social">
+                <template v-for="{ icon, kind, url } of social" :key="url">
                   <NuxtLink
                     text-accent
                     :aria-label="`${kind.toLowerCase()}Link`"
