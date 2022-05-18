@@ -47,13 +47,6 @@ const farthest = $computed<Member>(
   () => throttledBirthdayRanges.filter(({ ms }) => ms > 0)[0]
 );
 
-const _colorSequence = ['lime', 'fuchsia', 'rose', 'indigo'];
-let colorSequence = $ref(_colorSequence);
-
-watch(selectedMember, () => (colorSequence = useShuffle(_colorSequence)), {
-  immediate: true,
-});
-
 const birthdayIsThisYear = $computed(() => {
   const month = now.getMonth() + 1;
   const day = now.getDate();
@@ -82,6 +75,42 @@ const secondsUntilBirthday = $computed(() => {
 
 const message = $computed(() => `berusia ${birthdayAge} tahun`);
 
+const _classes = [
+  [
+    'bg-lime-200',
+    'divide-lime-800',
+    'dark:bg-lime-800',
+    'dark:divide-lime-200',
+  ],
+  [
+    'bg-fuchsia-200',
+    'divide-fuchsia-800',
+    'dark:bg-fuchsia-800',
+    'dark:divide-fuchsia-200',
+  ],
+  [
+    'bg-rose-200',
+    'divide-rose-800',
+    'dark:bg-rose-800',
+    'dark:divide-rose-200',
+  ],
+  [
+    'bg-indigo-200',
+    'divide-indigo-800',
+    'dark:bg-indigo-800',
+    'dark:divide-indigo-200',
+  ],
+];
+let classes = $ref(_classes);
+
+watch(
+  $$(selectedMember),
+  useDebounceFn(() => (classes = useShuffle(_classes)), 250),
+  {
+    immediate: true,
+  }
+);
+
 const secondsInMinute = 60;
 const secondsInHour = secondsInMinute * 60;
 const secondsInDay = secondsInHour * 24;
@@ -101,10 +130,10 @@ const results = $computed(() => {
   const secondsLeft = Math.floor(secondsUntilBirthday % secondsInMinute);
 
   return [
-    { color: colorSequence[0], key: 'days', value: daysLeft },
-    { color: colorSequence[1], key: 'hours', value: hoursLeft },
-    { color: colorSequence[2], key: 'mins', value: minutesLeft },
-    { color: colorSequence[3], key: 'secs', value: secondsLeft },
+    { colorClass: classes[0], key: 'days', value: daysLeft },
+    { colorClass: classes[1], key: 'hours', value: hoursLeft },
+    { colorClass: classes[2], key: 'mins', value: minutesLeft },
+    { colorClass: classes[3], key: 'secs', value: secondsLeft },
   ] as BirthdayResult[];
 });
 </script>
@@ -139,13 +168,15 @@ const results = $computed(() => {
         gap-2
       >
         <TransitionGroup name="slide-fade-group">
-          <template v-for="{ color, key, value } of results" :key="key">
+          <template v-for="{ colorClass, key, value } of results" :key="key">
             <div
               v-if="value !== 0"
               flex="~ col"
               p-3
               rounded-2xl
-              :class="`bg-${color}-200 divide-${color}-800 dark:bg-${color}-800 dark:divide-${color}-200`"
+              divide-y
+              transition-all-250
+              :class="colorClass"
             >
               <span text="2xl md:3xl">
                 {{ value }}
@@ -169,7 +200,9 @@ const results = $computed(() => {
 .slide-fade-group-move,
 .slide-fade-group-enter-active,
 .slide-fade-group-leave-active {
-  transition: all 0.5s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  transition-duration: 0.5s;
 }
 
 .slide-fade-group-enter-from,

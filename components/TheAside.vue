@@ -59,7 +59,7 @@ const { social } = useTerworking();
                   <NuxtLink
                     text-accent
                     :aria-label="`${kind.toLowerCase()}Link`"
-                    :class="`i-${icon}`"
+                    :class="icon"
                     :to="url"
                     target="_blank"
                   />

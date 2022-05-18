@@ -1,5 +1,5 @@
 export interface BirthdayResult {
-  color: 'lime' | 'fuchsia' | 'rose' | 'indigo';
+  colorClass: string[];
   key: string;
   value: number;
 }

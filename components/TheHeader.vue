@@ -58,7 +58,7 @@ const toggleColorMode = () => {
           <NuxtLink
             text-accent
             :aria-label="`${kind.toLowerCase()}Link`"
-            :class="`i-${icon}` + (kind !== 'GitHub' ? ' hidden lg:block' : '')"
+            :class="icon + (kind !== 'GitHub' ? ' hidden lg:block' : '')"
             :to="url"
             target="_blank"
           />

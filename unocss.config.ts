@@ -25,19 +25,6 @@ export default defineConfig({
     transformerDirectives(),
     transformerVariantGroup(),
   ],
-  safelist: [
-    ...['github', 'instagram', 'youtube'].map((it) => `i-tabler-brand-${it}`), // Social icons
-    ...['lime', 'fuchsia', 'rose', 'indigo'].reduce(
-      // Birthday's cards color
-      (prev, next) =>
-        prev.concat(
-          `bg-${next}-200 divide-${next}-800 dark:bg-${next}-800 dark:divide-${next}-200`.split(
-            ' '
-          )
-        ),
-      []
-    ),
-  ],
   shortcuts: [
     {
       'bg-body': 'bg-white dark:bg-dark-800',
