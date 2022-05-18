@@ -1,5 +1,5 @@
 export interface BirthdayResult {
-  colorClass: string[];
-  key: string;
-  value: number;
+  colorClass: string[]
+  key: string
+  value: number
 }

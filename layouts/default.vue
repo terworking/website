@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const route = useRoute();
+const route = useRoute()
 
 useHead({
   meta: [{ name: 'description', content: 'Website Terworking' }],
   link: [{ rel: 'ico', href: '/favicon.ico' }],
   title: computed(() => `Terworking - ${route.meta.title}`),
-});
+})
 </script>
 
 <template>
