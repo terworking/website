@@ -6,11 +6,7 @@ const { social } = useTerworking();
 const colorMode = useColorMode();
 
 const toggleColorMode = () => {
-  if (colorMode.value === 'dark') {
-    colorMode.preference = 'light';
-  } else {
-    colorMode.preference = 'dark';
-  }
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 };
 </script>
 
@@ -26,12 +22,12 @@ const toggleColorMode = () => {
     <div flex items-center h-full max-w-7xl mx-auto px="sm:3 lg:6">
       <button
         aria-label="mobileMenu"
-        @click="aside.visible = true"
         lg:hidden
         i-tabler-align-justified
         text-accent
         h-8
         w-8
+        @click="aside.visible = true"
       ></button>
       <div flex="~ 1" items-center justify="center lg:start">
         <NuxtLink to="/">
@@ -65,10 +61,10 @@ const toggleColorMode = () => {
         </template>
         <button
           aria-label="toggleColorMode"
-          @click="toggleColorMode"
           i-tabler-sun
           dark:i-tabler-moon
           text-accent
+          @click="toggleColorMode"
         ></button>
       </div>
     </div>

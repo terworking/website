@@ -2,9 +2,13 @@
 const route = useRoute();
 
 useHead({
-  meta: [{ name: 'description', content: 'Website Terworking' }],
-  link: [{ rel: 'ico', href: '/favicon.ico' }],
-  title: computed(() => `Terworking - ${route.meta.title}`),
+  link: [{ href: '/favicon.ico', rel: 'ico' }],
+  meta: [{ content: 'Website Terworking', name: 'description' }],
+  title: computed(
+    () =>
+      'Terworking' +
+      (route.meta.title !== undefined ? ` - ${route.meta.title}` : '')
+  ),
 });
 </script>
 

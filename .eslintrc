@@ -1,0 +1,65 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:sonarjs/recommended",
+    "plugin:vue/vue3-recommended",
+    "plugin:unicorn/all",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/strict",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/strict-boolean-expressions": "error",
+    "eqeqeq": "error",
+    "import/no-unresolved": "off",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "warnOnUnassignedImports": true
+      }
+    ],
+    "unicorn/no-keyword-prefix": "off",
+    "unicorn/filename-case": ["error", { "case": "snakeCase" }]
+  },
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "extraFileExtensions": [".vue"],
+    "project": ["./tsconfig.json"],
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      // Mostly client-side code
+      "files": ["*.vue", "*.ts"],
+      "excludedFiles": ["server/*"],
+      "rules": {
+        "no-undef": "off",
+        "unicorn/prefer-node-protocol": "off",
+        "vue/eqeqeq": "error",
+        "vue/no-restricted-v-bind": "error",
+        "vue/no-useless-v-bind": "error",
+        "vue/sort-keys": "error",
+        "vue/v-for-delimiter-style": ["error", "of"],
+        "vue/v-on-function-call": "error"
+      }
+    },
+    {
+      "files": ["layouts/*.vue", "pages/*.vue"],
+      "rules": { "vue/multi-word-component-names": "off" }
+    },
+    {
+      "files": ["components/*.vue"],
+      "rules": { "unicorn/filename-case": ["error", { "case": "pascalCase" }] }
+    }
+  ]
+}

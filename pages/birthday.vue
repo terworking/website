@@ -36,17 +36,20 @@ watch(
   birthdayRanges,
   useThrottleFn(
     () => (throttledBirthdayRanges.value = birthdayRanges.value),
-    60000,
+    60_000,
     true,
     true
   )
 );
 
 const closest = computed<Member>(
-  () => throttledBirthdayRanges.value.filter(({ ms }) => ms < 0).reverse()[0]
+  () =>
+    [...throttledBirthdayRanges.value]
+      .reverse()
+      .find(({ ms }) => ms < 0) as Member
 );
 const farthest = computed<Member>(
-  () => throttledBirthdayRanges.value.filter(({ ms }) => ms > 0)[0]
+  () => throttledBirthdayRanges.value.find(({ ms }) => ms > 0) as Member
 );
 
 const birthdayIsThisYear = computed(() => {
@@ -79,7 +82,7 @@ const secondsUntilBirthday = computed(() => {
   return Math.floor((birthdayDate.valueOf() - now.value.valueOf()) / 1000);
 });
 
-const message = computed(() => `berusia ${birthdayAge} tahun`);
+const message = computed(() => `berusia ${birthdayAge.value} tahun`);
 
 const _classes = [
   [
@@ -136,10 +139,10 @@ const results = computed(() => {
   const secondsLeft = Math.floor(secondsUntilBirthday.value % secondsInMinute);
 
   return [
-    { colorClass: classes[0], key: 'days', value: daysLeft },
-    { colorClass: classes[1], key: 'hours', value: hoursLeft },
-    { colorClass: classes[2], key: 'mins', value: minutesLeft },
-    { colorClass: classes[3], key: 'secs', value: secondsLeft },
+    { colorClass: classes.value[0], key: 'days', value: daysLeft },
+    { colorClass: classes.value[1], key: 'hours', value: hoursLeft },
+    { colorClass: classes.value[2], key: 'mins', value: minutesLeft },
+    { colorClass: classes.value[3], key: 'secs', value: secondsLeft },
   ] as BirthdayResult[];
 });
 </script>
@@ -149,17 +152,17 @@ const results = computed(() => {
     <div my-5 p-5 gap-6 grid>
       <h1 font-semibold text-5xl text-center mx-auto>Birthday countdown</h1>
       <select
+        v-model="selectedMember"
         p-3
         border-transparent
         rounded-lg
         w-full
         bg-secondary
-        v-model="selectedMember"
       >
         <option disabled selected>Please select one</option>
         <option :value="closest">Closest ({{ closest.name }})</option>
         <option :value="farthest">Farthest ({{ farthest.name }})</option>
-        <option v-for="member of members" :value="member">
+        <option v-for="member of members" :key="member.name" :value="member">
           {{ member.name }}
         </option>
       </select>
