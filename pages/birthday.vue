@@ -8,72 +8,78 @@ definePageMeta({
 
 const { member: members } = useTerworking();
 
-const selectedMember = $(
-  useState(
-    'selected',
-    () => members[Math.floor(Math.random() * members.length)]
-  )
+const selectedMember = useState(
+  'selected',
+  () => members[Math.floor(Math.random() * members.length)]
 );
 
-const now = $(useNow({ interval: 1000 }));
+const now = useNow({ interval: 1000 });
 
 const birthdayRanges = computed(() =>
   members
     .map((member) => ({
       ms:
-        now.valueOf() -
-        new Date(now.getFullYear(), member.month - 1, member.day).valueOf(),
+        now.value.valueOf() -
+        new Date(
+          now.value.getFullYear(),
+          member.month - 1,
+          member.day
+        ).valueOf(),
       ...member,
     }))
     .sort((a, b) => a.ms - b.ms)
 );
 
-let throttledBirthdayRanges = $ref(birthdayRanges.value);
+const throttledBirthdayRanges = ref(birthdayRanges.value);
 
 watch(
   birthdayRanges,
   useThrottleFn(
-    () => (throttledBirthdayRanges = birthdayRanges.value),
+    () => (throttledBirthdayRanges.value = birthdayRanges.value),
     60000,
     true,
     true
   )
 );
 
-const closest = $computed<Member>(
-  () => throttledBirthdayRanges.filter(({ ms }) => ms < 0).reverse()[0]
+const closest = computed<Member>(
+  () => throttledBirthdayRanges.value.filter(({ ms }) => ms < 0).reverse()[0]
 );
-const farthest = $computed<Member>(
-  () => throttledBirthdayRanges.filter(({ ms }) => ms > 0)[0]
+const farthest = computed<Member>(
+  () => throttledBirthdayRanges.value.filter(({ ms }) => ms > 0)[0]
 );
 
-const birthdayIsThisYear = $computed(() => {
-  const month = now.getMonth() + 1;
-  const day = now.getDate();
+const birthdayIsThisYear = computed(() => {
+  const month = now.value.getMonth() + 1;
+  const day = now.value.getDate();
 
   return (
-    selectedMember.month > month ||
-    (selectedMember.month === month && selectedMember.day > day)
+    selectedMember.value.month > month ||
+    (selectedMember.value.month === month && selectedMember.value.day > day)
   );
 });
 
-const birthdayYear = $computed(() =>
-  birthdayIsThisYear ? now.getFullYear() : now.getFullYear() + 1
+const birthdayYear = computed(() =>
+  birthdayIsThisYear.value
+    ? now.value.getFullYear()
+    : now.value.getFullYear() + 1
 );
 
-const birthdayAge = $computed(() => birthdayYear - selectedMember.year);
+const birthdayAge = computed(
+  () => birthdayYear.value - selectedMember.value.year
+);
 
-const secondsUntilBirthday = $computed(() => {
+const secondsUntilBirthday = computed(() => {
   const birthdayDate = new Date(
-    birthdayYear,
-    selectedMember.month - 1,
-    selectedMember.day
+    birthdayYear.value,
+    selectedMember.value.month - 1,
+    selectedMember.value.day
   );
 
-  return Math.floor((birthdayDate.valueOf() - now.valueOf()) / 1000);
+  return Math.floor((birthdayDate.valueOf() - now.value.valueOf()) / 1000);
 });
 
-const message = $computed(() => `berusia ${birthdayAge} tahun`);
+const message = computed(() => `berusia ${birthdayAge} tahun`);
 
 const _classes = [
   [
@@ -101,11 +107,11 @@ const _classes = [
     'dark:divide-indigo-200',
   ],
 ];
-let classes = $ref(_classes);
+const classes = ref(_classes);
 
 watch(
-  $$(selectedMember),
-  useDebounceFn(() => (classes = useShuffle(_classes)), 250),
+  selectedMember,
+  useDebounceFn(() => (classes.value = useShuffle(_classes)), 250),
   {
     immediate: true,
   }
@@ -115,19 +121,19 @@ const secondsInMinute = 60;
 const secondsInHour = secondsInMinute * 60;
 const secondsInDay = secondsInHour * 24;
 
-const results = $computed(() => {
-  if (secondsUntilBirthday === 0) {
+const results = computed(() => {
+  if (secondsUntilBirthday.value === 0) {
     return [];
   }
 
-  const daysLeft = Math.floor(secondsUntilBirthday / secondsInDay);
+  const daysLeft = Math.floor(secondsUntilBirthday.value / secondsInDay);
   const hoursLeft = Math.floor(
-    (secondsUntilBirthday % secondsInDay) / secondsInHour
+    (secondsUntilBirthday.value % secondsInDay) / secondsInHour
   );
   const minutesLeft = Math.floor(
-    (secondsUntilBirthday % secondsInHour) / secondsInMinute
+    (secondsUntilBirthday.value % secondsInHour) / secondsInMinute
   );
-  const secondsLeft = Math.floor(secondsUntilBirthday % secondsInMinute);
+  const secondsLeft = Math.floor(secondsUntilBirthday.value % secondsInMinute);
 
   return [
     { colorClass: classes[0], key: 'days', value: daysLeft },

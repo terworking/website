@@ -9,9 +9,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-lodash',
   ],
-  experimental: {
-    reactivityTransform: true,
-  },
   colorMode: {
     fallback: 'dark',
     classSuffix: '',
