@@ -1927,7 +1927,7 @@
     gzip-size "^6.0.0"
     sirv "^2.0.2"
 
-"@unocss/nuxt@^0.33.2":
+"@unocss/nuxt@^0.33.5":
   version "0.33.5"
   resolved "https://registry.yarnpkg.com/@unocss/nuxt/-/nuxt-0.33.5.tgz#8f44fc8795039ce4fac6fb37f517fc4e3232a18c"
   integrity sha512-LRDRBWuXv2r2Lp0JDaT525gpD39QODcw0vgMF8TALF0vtYXln9sBaXP6wx9/VA8g4m6zQSyZnwet8Kx3jS199g==
@@ -2224,7 +2224,7 @@
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.5.0.tgz#1aaa3787922cfda0f38243aaa7779366a669b4db"
   integrity sha512-WxsD+Cd+bn+HcjpY6Dl9FJ8ywTRTT9pTwk3bCQpzEhXVYAyNczKDSahk50fCfIJKeWHhyI4B2+/ZEOxQAkUr0g==
 
-"@vueuse/nuxt@^8.4.2":
+"@vueuse/nuxt@^8.5.0":
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/@vueuse/nuxt/-/nuxt-8.5.0.tgz#392617df38d56f87b705f5feef4af27544371f6c"
   integrity sha512-riGrDwlTQbjSDxyw46oc1catXpZwzzRrEk+PTy8NQZG6uevgJ8wNuAhPVx/5oG0jYG/t2orIFfc9xGEA6uytSg==
@@ -7663,7 +7663,7 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.1.tgz#26c8a3cee6cc05fbcf1e333cd2fc3e003326c0b5"
   integrity sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==
 
-netlify-cli@^10.3.0:
+netlify-cli@^10.3.1:
   version "10.3.1"
   resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-10.3.1.tgz#b00959d0a09b503193a15375c060d7f9ed9f6c49"
   integrity sha512-vGWn/MJkR6hqfyZbsKpwlcfGWuTE2a8JkdsU+Ayz+TE7kjWRGCGPPzUYJCbZLxBeIcIyAAGSNz5s31YRfYEU9Q==
