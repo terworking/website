@@ -3,7 +3,13 @@ const route = useRoute();
 
 useHead({
   link: [{ href: '/favicon.ico', rel: 'ico' }],
-  meta: [{ content: 'Website Terworking', name: 'description' }],
+  meta: [
+    { content: 'Website Terworking', name: 'description' },
+    {
+      content: 'rgb(245, 158, 11)',
+      name: 'theme-color',
+    },
+  ],
   title: computed(
     () =>
       'Terworking' +
