@@ -7,7 +7,7 @@ const { social } = useTerworking();
 <template>
   <aside fixed z="50 lg:0" lg:static>
     <div h-full overflow="auto lg:visible" pointer-events-none>
-      <Transition name="fade">
+      <Transition name="aside-mask">
         <div
           v-if="aside.visible"
           lg:hidden
@@ -19,7 +19,7 @@ const { social } = useTerworking();
           @click="aside.visible = false"
         ></div>
       </Transition>
-      <Transition name="slide-fade">
+      <Transition name="aside">
         <div
           v-if="aside.visible"
           lg:hidden
@@ -88,23 +88,23 @@ const { social } = useTerworking();
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
+.aside-mask-enter-active,
+.aside-mask-leave-active {
   transition: opacity 0.5s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.aside-mask-enter-from,
+.aside-mask-leave-to {
   opacity: 0;
 }
 
-.slide-fade-enter-active,
-.slide-fade-leave-active {
+.aside-enter-active,
+.aside-leave-active {
   transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
 }
 
-.slide-fade-enter-from,
-.slide-fade-leave-to {
+.aside-enter-from,
+.aside-leave-to {
   transform: translateX(-100%);
   opacity: 0;
 }

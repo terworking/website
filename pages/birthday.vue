@@ -176,7 +176,7 @@ const results = computed(() => {
         mx-auto
         gap-2
       >
-        <TransitionGroup name="slide-fade-group">
+        <TransitionGroup name="birthday-cards">
           <template v-for="{ colorClass, key, value } of results" :key="key">
             <div
               v-if="value !== 0"
@@ -206,21 +206,21 @@ const results = computed(() => {
 </template>
 
 <style scoped>
-.slide-fade-group-move,
-.slide-fade-group-enter-active,
-.slide-fade-group-leave-active {
+.birthday-cards-move,
+.birthday-cards-enter-active,
+.birthday-cards-leave-active {
   transition-property: transform, opacity;
   transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   transition-duration: 0.5s;
 }
 
-.slide-fade-group-enter-from,
-.slide-fade-group-leave-to {
+.birthday-cards-enter-from,
+.birthday-cards-leave-to {
   transform: translateY(100%) scale(0.1);
   opacity: 0;
 }
 
-.slide-fade-group-leave-active {
+.birthday-cards-leave-active {
   position: absolute;
 }
 </style>
