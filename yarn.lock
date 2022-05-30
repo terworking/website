@@ -1610,10 +1610,10 @@
     lodash.template "^4.5.0"
     pathe "^0.2.0"
 
-"@nuxtjs/supabase@^0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/supabase/-/supabase-0.1.14.tgz#310322985f855c5d295f2b26f92b8a7e5b542541"
-  integrity sha512-vsL4XIHbwgBLZEnh41CebYVkckzvbh3QV2v6O9TV+OOIEGP/2b+MCx/UpP7ZinB2t7Pomv6apem6MZHLOZd96Q==
+"@nuxtjs/supabase@^0.1.15":
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/supabase/-/supabase-0.1.15.tgz#a15c059097ececaff252ca8966b8483890f432d1"
+  integrity sha512-yBYyCX+0BSmMzCCjNrfZNCGLVp93GwdJUOrcJPOkua4P85Qbd5sNmJEl5eUmjnajpAt6jaVJkDHHOlBjsDa36Q==
   dependencies:
     "@nuxt/kit" "^3.0.0-rc.3"
     "@supabase/supabase-js" "^1.35.3"
@@ -6584,7 +6584,7 @@ human-signals@^3.0.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-3.0.1.tgz#c740920859dafa50e5a3222da9d3bf4bb0e5eef5"
   integrity sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==
 
-husky@^8.0.0:
+husky@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.1.tgz#511cb3e57de3e3190514ae49ed50f6bc3f50b3e9"
   integrity sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==
