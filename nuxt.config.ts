@@ -4,7 +4,7 @@ import { defineNuxtConfig } from 'nuxt';
 export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
-    fallback: 'dark',
+    fallback: 'system',
   },
   css: ['@/assets/css/main.css'],
   lodash: {
