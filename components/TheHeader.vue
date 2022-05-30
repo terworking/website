@@ -15,13 +15,13 @@ const toggleColorMode = () => {
     class="h-$header-h"
     sticky
     top-0
-    z-50
+    z-100
     backdrop-blur-md
     border="b primary"
   >
-    <div flex items-center h-full max-w-7xl mx-auto px="sm:3 lg:6">
+    <div flex items-center h-full max-w-7xl mx-auto px="3 lg:6">
       <button
-        aria-label="mobileMenu"
+        aria-label="openAside"
         lg:hidden
         i-tabler-align-justified
         text-accent
