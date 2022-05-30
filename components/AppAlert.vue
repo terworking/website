@@ -70,7 +70,6 @@ const secondaryButtonClass = computed(() => {
 
 <template>
   <ClientOnly>
-    <Body :class="show ? 'overflow-hidden' : ''" />
     <Teleport to="body">
       <Transition name="alert">
         <div
@@ -85,6 +84,7 @@ const secondaryButtonClass = computed(() => {
           bg="black dark:transparent opacity-80"
           backdrop-blur-sm
         >
+          <Body overflow-hidden />
           <div
             id="alert-container"
             ref="alertContainer"

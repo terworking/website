@@ -16,6 +16,7 @@ const { social } = useTerworking();
           backdrop-blur-sm
           @click="aside.visible = false"
         >
+          <Body overflow-hidden />
           <div
             id="aside"
             fixed
