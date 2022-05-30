@@ -12,11 +12,8 @@ const { social } = useTerworking();
           v-if="aside.visible"
           lg:hidden
           fixed
-          left-0
-          top-0
+          inset-0
           z-0
-          h-full
-          w-full
           pointer-events-auto
           backdrop="filter blur-sm"
           @click="aside.visible = false"
@@ -27,9 +24,7 @@ const { social } = useTerworking();
           v-if="aside.visible"
           lg:hidden
           fixed
-          left-0
-          top-0
-          h-full
+          inset-0
           w-72
           bg-body
           border="r primary"
