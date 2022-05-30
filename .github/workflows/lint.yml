@@ -27,10 +27,11 @@ jobs:
             ${{ runner.os }}-yarn-
             
       - name: Install Dependencies
+        run: yarn
+      
+      - name: Generate Nuxt types
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: |
-          yarn
-          yarn nuxi prepare # generate nuxt types
+        run: yarn nuxi prepare
       
       - name: Run ESLint
         run: yarn lint
