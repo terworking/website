@@ -369,27 +369,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 "@eslint/eslintrc@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.3.0.tgz#29f92c30bb3e771e4a2048c95fa6855392dfac4f"
   integrity sha512-UWW0TMTmk2d7hLcWD1/e2g5HDM/HQ3csaLSqXCfqwh4uNDuNqlaKWXmEsL4Cs41Z0KnILNvwbHAah3C2yt06kw==
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9d52b3c (feat: Create pages/form)
-=======
->>>>>>> 4882f02 (refactor: Use eslint)
-"@eslint/eslintrc@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.2.3.tgz#fcaa2bcef39e13d6e9e7f6271f4cc7cae1174886"
-  integrity sha512-uGo44hIwoLGNyduRpjdEpovcbMdd+Nv7amtmJxnKmI8xj6yd5LncmSwDa5NgX/41lIFJtkjD6YdVfgEzPfJ5UA==
->>>>>>> 7f572f1 (feat: Create pages/form)
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
@@ -2094,8 +2077,6 @@
   resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.26.0.tgz#7195f756e367f789c0e83035297c45b417b57f57"
   integrity sha512-wei+ffqHanYDOQgg/fS6Hcar6wAWv0CUPQ3TZzOWd2BLfgP539rb49bwua8WRAs7R6kOSLn82rfEu2ro6Llt8Q==
   dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
     "@typescript-eslint/types" "5.26.0"
     eslint-visitor-keys "^3.3.0"
 
@@ -2107,20 +2088,6 @@
     "@unocss/config" "0.34.1"
     "@unocss/core" "0.34.1"
     "@unocss/preset-uno" "0.34.1"
-=======
-=======
-"@unocss/cli@0.33.5":
-  version "0.33.5"
-  resolved "https://registry.yarnpkg.com/@unocss/cli/-/cli-0.33.5.tgz#bb67d40b90421c4413f435265c798592f3850d9d"
-  integrity sha512-zijL36Km7mrb4auJv6rbsQwBlvP68omLko9Whv4lFx9dJ0H7FqIABxKODGIOGSnKhkOf63qRWihdftdmVQeyCA==
-  dependencies:
->>>>>>> cbb3990 (chore: Update yarn.lock)
-=======
->>>>>>> 4882f02 (refactor: Use eslint)
-    "@unocss/config" "0.33.5"
-    "@unocss/core" "0.33.5"
-    "@unocss/preset-uno" "0.33.5"
->>>>>>> 7f572f1 (feat: Create pages/form)
     cac "^6.7.12"
     chokidar "^3.5.3"
     colorette "^2.0.16"
@@ -4617,7 +4584,7 @@ es5-ext@^0.10.35, es5-ext@^0.10.50:
 es6-iterator@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/es6-iterator/-/es6-iterator-2.0.3.tgz#a7de889141a05a94b0854403b2d0a0fbfa98f3b7"
-  integrity sha1-p96IkUGgWpSwhUQDstCg+/qY87c=
+  integrity sha512-zw4SRzoUkd+cl+ZoE15A9o1oQd920Bb0iOJMQkQhl3jNc03YqVjAhG7scf9C5KWRU/R13Orf588uCC6525o02g==
   dependencies:
     d "1"
     es5-ext "^0.10.35"
