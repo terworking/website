@@ -24,6 +24,7 @@ export default defineNuxtConfig({
       formIsOpen: '',
     },
   },
+  typescript: { shim: false, strict: true, typeCheck: true },
   unocss: {
     preflight: true,
   },
