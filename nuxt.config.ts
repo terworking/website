@@ -34,6 +34,10 @@ export default defineNuxtConfig({
     'nuxt-lodash',
   ],
   runtimeConfig: {
+    gdriveCdn: {
+      url: '',
+      token: '',
+    },
     public: {
       graphcommentId: '',
     },

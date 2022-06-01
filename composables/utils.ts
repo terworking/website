@@ -48,3 +48,14 @@ export const randomInt = (a = 1, b = 0) => {
   const upper = Math.floor(Math.max(a, b));
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
+
+// https://images.weserv.nl/docs/quick-reference.html
+export const useImageProxy = (
+  parameters: { url: string } & Record<string, string>
+) => {
+  const url = new URL('https://images.weserv.nl/');
+  for (const [key, value] of Object.entries(parameters)) {
+    url.searchParams.append(key, value);
+  }
+  return url.toString();
+};
