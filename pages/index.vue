@@ -25,10 +25,10 @@ const titleStyle = computed(() => {
   }
 });
 
-const { data: _banners } = await useFetch('/api/banner');
+const { data: _banners } = await useFetch('/api/gallery');
 
 const banners = computed(() => {
-  const [landscape, portrait] = _banners.value;
+  const { landscape, portrait } = _banners.value;
 
   return isMobile.value ? portrait : landscape;
 });
