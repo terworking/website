@@ -6,12 +6,24 @@ export default defineNuxtConfig({
     classSuffix: '',
     fallback: 'system',
   },
+  content: {
+    highlight: { theme: 'css-variables' },
+    sources: [
+      {
+        base: 'content',
+        driver: 'fs',
+        name: 'blog',
+        prefix: '/blog',
+      },
+    ],
+  },
   css: ['@/assets/css/main.css'],
   lodash: {
     exclude: ['now'], // I need useNow from vueuse
   },
   modules: [
     '@formkit/nuxt',
+    '@nuxt/content',
     '@nuxtjs/color-mode',
     '@nuxtjs/supabase',
     '@unocss/nuxt',

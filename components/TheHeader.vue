@@ -1,21 +1,38 @@
 <script setup lang="ts">
+import { defaultWindow } from '@vueuse/core';
+
 const aside = useAside();
+const header = useHeader();
 const routes = useRoutes();
 const { social } = useTerworking();
 
 const colorMode = useColorMode();
-
 const toggleColorMode = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 };
+
+const { directions, y: scrollY } = useScroll(defaultWindow);
+
+watch(scrollY, () => {
+  const headerHeight = useRemToPx(4.5);
+  if (directions.top || scrollY.value < headerHeight) {
+    header.value.visible = true;
+  } else if (directions.bottom) {
+    header.value.visible = false;
+  }
+});
 </script>
 
 <template>
   <header
     class="h-$header-h"
+    :class="{ '-translate-y-4.5rem': !header.visible }"
     sticky
     top-0
     z-100
+    bg="body opacity-50"
+    transition-transform="300 md:500"
+    ease
     backdrop-blur-md
     border="b primary"
   >

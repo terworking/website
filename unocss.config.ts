@@ -6,6 +6,7 @@ import {
   presetAttributify,
   presetIcons,
   presetUno,
+  presetTypography,
   transformerCompileClass,
   transformerDirectives,
   transformerVariantGroup,
@@ -25,6 +26,28 @@ export default defineConfig({
     }),
     presetScrollbar(),
     presetUno(),
+    presetTypography({
+      cssExtend: {
+        'h2 a,h3 a,h4 a': {
+          'text-decoration': 'none',
+        },
+        'h2 a:hover,h3 a:hover, h4 a:hover': {
+          'text-decoration': 'revert',
+        },
+        'ol,ul': {
+          'margin-bottom': '0.25em',
+          'margin-top': '0.25em',
+        },
+        'pre': {
+          'border-color': 'var(--shiki-color-border)',
+          'border-style': 'solid',
+          'border-width': '1px',
+        },
+        'pre,code': {
+          background: 'var(--shiki-color-background)',
+        },
+      },
+    }),
   ],
   shortcuts: [
     {
