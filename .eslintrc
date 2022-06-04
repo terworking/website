@@ -42,18 +42,25 @@
   },
   "overrides": [
     {
-      // client-side code and .vue files
-      "files": ["*.vue", "*.ts"],
-      "excludedFiles": ["server/**/*"],
+      "files": ["*.vue"],
       "rules": {
         "no-undef": "off",
-        "unicorn/prefer-node-protocol": "off",
         "vue/eqeqeq": "error",
         "vue/no-restricted-v-bind": "error",
         "vue/no-useless-v-bind": "error",
         "vue/sort-keys": "error",
         "vue/v-for-delimiter-style": ["error", "of"],
-        "vue/v-on-function-call": "error"
+        "vue/v-on-function-call": "error",
+        "vue/script-setup-uses-vars": "error"
+      }
+    },
+    {
+      // client-side code
+      "files": ["*.ts"],
+      "excludedFiles": ["server/**/*"],
+      "rules": {
+        "no-undef": "off",
+        "unicorn/prefer-node-protocol": "off"
       }
     },
     {
