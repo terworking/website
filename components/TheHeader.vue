@@ -12,8 +12,9 @@ const toggleColorMode = () => {
 };
 
 const { directions, y: scrollY } = useScroll(defaultWindow);
+const debouncedScrollY = refDebounced(scrollY, 100, { maxWait: 500 });
 
-watch(scrollY, () => {
+watch(debouncedScrollY, () => {
   const headerHeight = useRemToPx(4.5);
   if (directions.top || scrollY.value < headerHeight) {
     header.value.visible = true;
