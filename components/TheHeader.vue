@@ -12,16 +12,19 @@ const toggleColorMode = () => {
 };
 
 const { directions, y: scrollY } = useScroll(defaultWindow);
-const debouncedScrollY = refDebounced(scrollY, 100, { maxWait: 500 });
 
-watch(debouncedScrollY, () => {
-  const headerHeight = useRemToPx(4.5);
-  if (directions.top || scrollY.value < headerHeight) {
-    header.value.visible = true;
-  } else if (directions.bottom) {
-    header.value.visible = false;
-  }
-});
+watchDebounced(
+  scrollY,
+  () => {
+    const headerHeight = useRemToPx(4.5);
+    if (directions.top || scrollY.value < headerHeight) {
+      header.value.visible = true;
+    } else if (directions.bottom) {
+      header.value.visible = false;
+    }
+  },
+  { debounce: 100, maxWait: 500 }
+);
 </script>
 
 <template>
