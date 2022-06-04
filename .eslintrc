@@ -42,9 +42,9 @@
   },
   "overrides": [
     {
-      // Mostly client-side code
+      // client-side code and .vue files
       "files": ["*.vue", "*.ts"],
-      "excludedFiles": ["server/*"],
+      "excludedFiles": ["server/**/*"],
       "rules": {
         "no-undef": "off",
         "unicorn/prefer-node-protocol": "off",
@@ -57,11 +57,11 @@
       }
     },
     {
-      "files": ["layouts/*.vue", "pages/*.vue"],
+      "files": ["layouts/**/*.vue", "pages/**/*.vue"],
       "rules": { "vue/multi-word-component-names": "off" }
     },
     {
-      "files": ["components/*.vue"],
+      "files": ["components/**/*.vue"],
       "rules": { "unicorn/filename-case": ["error", { "case": "pascalCase" }] }
     }
   ]
