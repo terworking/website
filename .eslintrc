@@ -46,7 +46,6 @@
     {
       "files": ["*.vue"],
       "rules": {
-        "no-undef": "off",
         "vue/eqeqeq": "error",
         "vue/no-restricted-v-bind": "error",
         "vue/no-useless-v-bind": "error",
@@ -58,7 +57,7 @@
     },
     {
       // client-side code
-      "files": ["*.ts"],
+      "files": ["*"],
       "excludedFiles": ["server/**/*"],
       "rules": {
         "no-undef": "off",
