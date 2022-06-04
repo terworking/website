@@ -5,7 +5,7 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
-  presetMini,
+  presetUno,
   transformerCompileClass,
   transformerDirectives,
   transformerVariantGroup,
@@ -22,7 +22,7 @@ export default defineConfig({
         width: '1.5rem',
       },
     }),
-    presetMini(),
+    presetUno(),
   ],
   shortcuts: [
     {
