@@ -2,22 +2,27 @@
 import type { Article } from '~~/typings/content';
 
 definePageMeta({ hidden: true });
+
+const { path } = useRoute();
+const { data: content } = await useAsyncData(`content-${path}`, async () => {
+  let query = queryContent<Article>(path);
+  if (path !== '/blog') query = query.where({ _path: path });
+
+  return query.find();
+});
 </script>
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
     <BlogNavigation
-      v-if="$route.path === '/blog'"
+      v-if="content.length > 1"
       v-slot="articles: Article[]"
       space-y-8
     >
       <div
         v-for="{ _path, image, title, description } of articles"
         :key="_path"
-        rounded-lg
-        bg="white dark:dark-500"
-        border="~ light-500 dark:transparent"
-        shadow-lg
+        card
       >
         <NuxtLink v-if="image" :to="_path">
           <img
@@ -37,14 +42,23 @@ definePageMeta({ hidden: true });
         </div>
       </div>
     </BlogNavigation>
-    <ContentDoc v-else prose="~ gray dark:invert">
-      <template #empty>
-        <h1>DOCUMENT NOT READY</h1>
-      </template>
-      <template #not-found>
-        <h1>DOCUMENT NOT FOUND</h1>
-      </template>
-    </ContentDoc>
+    <div v-else card>
+      <img
+        v-if="content[0].image"
+        :src="content[0].image"
+        :alt="content[0].title"
+        object-cover
+        h-16rem
+        w-full
+        shadow-lg
+        rounded-t-lg
+      />
+      <ContentRenderer
+        :value="content[0]"
+        p="x-6 b-6"
+        prose="~ gray dark:invert"
+      />
+    </div>
   </div>
 </template>
 

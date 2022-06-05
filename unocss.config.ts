@@ -55,6 +55,8 @@ export default defineConfig({
       'bg-secondary': 'bg-light-500 dark:bg-dark-500',
       'border-primary': 'border-black/20 dark:border-white/20',
       'text-body': 'text-black dark:text-white',
+      'card':
+        'rounded-lg bg-white dark:bg-dark-500 border border-light-900 dark:border-dark-100 shadow-lg',
     },
     [
       /^(bg|border|text)-accent$/,
