@@ -14,15 +14,12 @@ const { data: content } = await useAsyncData(`content-${path}`, async () => {
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <BlogNavigation
-      v-if="content.length > 1"
-      v-slot="articles: Article[]"
-      space-y-8
-    >
+    <BlogNavigation v-if="content.length > 1" v-slot="articles: Article[]" card>
       <div
         v-for="{ _path, image, title, description } of articles"
         :key="_path"
         card
+        m-4
       >
         <NuxtLink v-if="image" :to="_path">
           <img
