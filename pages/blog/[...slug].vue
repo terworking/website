@@ -4,7 +4,7 @@ import type { Article } from '~~/typings/content';
 definePageMeta({ hidden: true });
 
 const { path } = useRoute();
-const { data: content } = await useAsyncData(`content-${path}`, async () => {
+const { data } = await useAsyncData(`content-${path}`, async () => {
   let query = queryContent<Article>(path);
   if (path !== '/blog') query = query.where({ _path: path });
 
@@ -14,9 +14,9 @@ const { data: content } = await useAsyncData(`content-${path}`, async () => {
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <BlogNavigation v-if="content.length > 1" v-slot="articles: Article[]" card>
+    <nav v-if="data.length > 1" card bg-body>
       <div
-        v-for="{ _path, image, title, description } of articles"
+        v-for="{ _path, image, title, description } of data"
         :key="_path"
         card
         m-4
@@ -38,12 +38,12 @@ const { data: content } = await useAsyncData(`content-${path}`, async () => {
           </p>
         </div>
       </div>
-    </BlogNavigation>
+    </nav>
     <div v-else card>
       <img
-        v-if="content[0].image"
-        :src="content[0].image"
-        :alt="content[0].title"
+        v-if="data[0].image"
+        :src="data[0].image"
+        :alt="data[0].title"
         object-cover
         h-16rem
         w-full
@@ -51,7 +51,7 @@ const { data: content } = await useAsyncData(`content-${path}`, async () => {
         rounded-t-lg
       />
       <ContentRenderer
-        :value="content[0]"
+        :value="data[0]"
         p="x-6 b-6"
         prose="~ gray dark:invert"
       />
