@@ -32,7 +32,8 @@
     "netlify-cli": "^10.4.0",
     "nuxt": "3.0.0-rc.3",
     "nuxt-lodash": "^2.2.0",
-    "prettier": "2.6.2"
+    "prettier": "2.6.2",
+    "unocss-preset-scrollbar": "^0.2.1"
   },
   "dependencies": {
     "@formkit/themes": "^1.0.0-beta.8",
