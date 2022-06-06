@@ -9,8 +9,8 @@ const { data } = await useAsyncData(`content-${route.path}`, () =>
 );
 
 const content = computed(() => {
-  if (data.value.length === 1 && data.value[0]._path === route.path)
-    return data.value[0];
+  const candidate = data.value.find(({ _path }) => _path === route.path);
+  if (candidate !== undefined) return candidate;
 });
 </script>
 
