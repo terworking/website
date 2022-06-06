@@ -37,11 +37,21 @@ const navigation = computed(() => {
         )
     );
 });
+
+const pathIsComplete = computed(() => {
+  const lastPath = path.split('/').at(-1);
+  return navigation.value.some(
+    ({ _path }) => _path.split('/').at(-2) === lastPath
+  );
+});
 </script>
 
 <template>
   <nav card bg-body>
-    <AppBreadcrumbs v-if="$route.path !== '/blog'" p="x-4 t-2" />
+    <AppBreadcrumbs
+      v-if="$route.path !== '/blog' && pathIsComplete"
+      p="x-4 t-2"
+    />
     <BlogNavigationItem
       v-for="(item, index) of navigation"
       :key="index"
