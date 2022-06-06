@@ -41,9 +41,9 @@ const navigation = computed(() => {
 });
 
 const pathIsComplete = computed(() => {
-  const lastPath = properties.path.split('/').at(-1);
+  const lastPath = [...properties.path.split('/')].reverse()[0];
   return navigation.value.some(
-    ({ _path }) => _path.split('/').at(-2) === lastPath
+    ({ _path }) => [..._path.split('/')].reverse()[1] === lastPath
   );
 });
 </script>
