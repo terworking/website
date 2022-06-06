@@ -6,7 +6,7 @@ const properties = defineProps({
 });
 
 const query = queryContent(properties.path);
-const { data } = await useAsyncData<Navigation[] | undefined>(
+const { data } = await useAsyncData<Navigation[]>(
   `navigation-${properties.path}`,
   () => fetchContentNavigation(query)
 );
@@ -22,28 +22,27 @@ const navigation = computed(() => {
   const transformAll = (children: Navigation[] = []): FlatNavigation[] =>
     children.flatMap((c) => transform1(c));
 
-  if (data.value !== undefined)
-    return transformAll(data.value)
-      .filter(
-        ({ _path }) =>
-          _path.startsWith(properties.path) && _path !== properties.path
-      )
-      .filter(
-        // don't list subdirectory items if the subdirectory is there
-        ({ _path, description }, _, array) =>
-          // description is undefined on subdirectory
-          // this will make sure the subdirectory is listed
-          description === undefined ||
-          !array.some(
-            ({ description, _path: step }) =>
-              description === undefined && _path.startsWith(step)
-          )
-      );
+  return transformAll(data.value)
+    .filter(
+      ({ _path }) =>
+        _path.startsWith(properties.path) && _path !== properties.path
+    )
+    .filter(
+      // don't list subdirectory items if the subdirectory is there
+      ({ _path, description }, _, array) =>
+        // description is undefined on subdirectory
+        // this will make sure the subdirectory is listed
+        description === undefined ||
+        !array.some(
+          ({ description, _path: step }) =>
+            description === undefined && _path.startsWith(step)
+        )
+    );
 });
 
 const pathIsComplete = computed(() => {
   const lastPath = properties.path.split('/').at(-1);
-  return navigation.value?.some(
+  return navigation.value.some(
     ({ _path }) => _path.split('/').at(-2) === lastPath
   );
 });
