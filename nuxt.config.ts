@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   },
   content: {
     highlight: { theme: 'css-variables' },
+    navigation: {
+      fields: ['description', 'image'],
+    },
     sources: [
       {
         base: 'content',

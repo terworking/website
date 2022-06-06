@@ -1,6 +1,14 @@
-import type { ParsedContent } from '@nuxt/content/dist/runtime/types';
+import type { ParsedContent, NavItem } from '@nuxt/content/dist/runtime/types';
 
-export interface Article extends ParsedContent {
-  description: string;
+interface Extension {
+  description?: string;
   image?: string;
+}
+
+export type Article = ParsedContent & Extension;
+
+export type FlatNavigation = NavItem & Extension;
+
+export interface Navigation extends FlatNavigation {
+  children: Navigation[] | undefined;
 }
