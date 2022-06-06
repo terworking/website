@@ -6,8 +6,10 @@ const properties = defineProps<{ path?: string }>();
 const path = properties.path ?? route.path.toString();
 
 const query = queryContent(path);
-const { data } = await useAsyncData<Navigation[]>(`navigation-${path}`, () =>
-  fetchContentNavigation(query)
+const { data } = await useAsyncData<Navigation[]>(
+  `navigation-${path}`,
+  () => fetchContentNavigation(query),
+  { default: () => [] }
 );
 
 const navigation = computed(() => {
