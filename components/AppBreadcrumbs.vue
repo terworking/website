@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const route = useRoute();
-const properties = defineProps<{ path?: string }>();
-const path = properties.path ?? route.path.toString();
+const properties = defineProps({
+  path: { default: () => useRoute().path, type: String },
+});
 
-const items = path.split('/');
+const items = properties.path.split('/');
 const itemsHref = items.map((_item, index) =>
   items.slice(0, index + 1).join('/')
 );

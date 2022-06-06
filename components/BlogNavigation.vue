@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import type { FlatNavigation, Navigation } from '~~/typings/content';
 
-const route = useRoute();
-const properties = defineProps<{ path?: string }>();
-const path = properties.path ?? route.path.toString();
+const properties = defineProps({
+  path: { default: () => useRoute().path, type: String },
+});
 
-const query = queryContent(path);
-const { data } = await useAsyncData<Navigation[]>(
-  `navigation-${path}`,
-  () => fetchContentNavigation(query),
-  { default: () => [] }
+const query = queryContent(properties.path);
+const { data } = await useAsyncData<Navigation[] | undefined>(
+  `navigation-${properties.path}`,
+  () => fetchContentNavigation(query)
 );
 
 const navigation = computed(() => {
@@ -23,24 +22,28 @@ const navigation = computed(() => {
   const transformAll = (children: Navigation[] = []): FlatNavigation[] =>
     children.flatMap((c) => transform1(c));
 
-  return transformAll(data.value)
-    .filter(({ _path }) => _path.startsWith(path) && _path !== path)
-    .filter(
-      // don't list subdirectory items if the subdirectory is there
-      ({ _path, description }, _, array) =>
-        // description is undefined on subdirectory
-        // this will make sure the subdirectory is listed
-        description === undefined ||
-        !array.some(
-          ({ description, _path: step }) =>
-            description === undefined && _path.startsWith(step)
-        )
-    );
+  if (data.value !== undefined)
+    return transformAll(data.value)
+      .filter(
+        ({ _path }) =>
+          _path.startsWith(properties.path) && _path !== properties.path
+      )
+      .filter(
+        // don't list subdirectory items if the subdirectory is there
+        ({ _path, description }, _, array) =>
+          // description is undefined on subdirectory
+          // this will make sure the subdirectory is listed
+          description === undefined ||
+          !array.some(
+            ({ description, _path: step }) =>
+              description === undefined && _path.startsWith(step)
+          )
+      );
 });
 
 const pathIsComplete = computed(() => {
-  const lastPath = path.split('/').at(-1);
-  return navigation.value.some(
+  const lastPath = properties.path.split('/').at(-1);
+  return navigation.value?.some(
     ({ _path }) => _path.split('/').at(-2) === lastPath
   );
 });
@@ -52,10 +55,12 @@ const pathIsComplete = computed(() => {
       v-if="$route.path !== '/blog' && pathIsComplete"
       p="x-4 t-2"
     />
-    <BlogNavigationItem
-      v-for="(item, index) of navigation"
-      :key="index"
-      :value="item"
-    />
+    <template v-if="navigation">
+      <BlogNavigationItem
+        v-for="(item, index) of navigation"
+        :key="index"
+        :value="item"
+      />
+    </template>
   </nav>
 </template>
