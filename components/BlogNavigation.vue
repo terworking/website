@@ -3,7 +3,7 @@ import type { FlatNavigation, Navigation } from '~~/typings/content';
 
 const route = useRoute();
 const properties = defineProps<{ path?: string }>();
-const path = properties.path ?? [...route.path].toString();
+const path = properties.path ?? route.path.toString();
 
 const query = queryContent(path);
 const { data } = await useAsyncData<Navigation[]>(
