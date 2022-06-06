@@ -39,6 +39,7 @@ const navigation = computed(() => {
 
 <template>
   <nav card bg-body>
+    <AppBreadcrumbs v-if="$route.path !== '/blog'" p="x-4 t-2" />
     <BlogNavigationItem
       v-for="(item, index) of navigation"
       :key="index"
