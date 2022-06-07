@@ -7,6 +7,6 @@ export const useRoutes = () => {
     .sort((a, b) => (a.meta.weight ?? 0) - (b.meta.weight ?? 0))
     .map((route) => ({
       name: route.meta.name ?? route.name,
-      path: route.path.replace(':slug(.*)*', ''),
+      path: route.path.replace('/:slug(.*)*', ''),
     }));
 };
