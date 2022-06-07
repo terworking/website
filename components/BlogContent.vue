@@ -18,7 +18,7 @@ const properties = defineProps<{ value: Article }>();
       :src="value.image"
       :alt="value.title"
       object-cover
-      h-16rem
+      h-64
       w-full
       shadow-lg
       border="b light-900 dark:dark-100"

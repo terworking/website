@@ -11,7 +11,7 @@ const properties = defineProps<{ value: FlatNavigation }>();
         :src="value.image"
         :alt="value.title"
         object-cover
-        h-12rem
+        h-48
         w-full
         rounded-t-lg
       />
