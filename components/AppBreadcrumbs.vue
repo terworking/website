@@ -22,13 +22,24 @@ const itemsHref = computed(() =>
 </script>
 
 <template>
-  <ul v-if="items.length > requiredLength" inline-flex select-none>
+  <ul v-if="items.length > requiredLength" inline-flex>
     <template v-for="(item, index) of items" :key="index">
-      <li font-semibold hover:underline>
-        <span v-if="path === itemsHref[index]" underline cursor-not-allowed>
+      <li>
+        <span
+          v-if="path === itemsHref[index]"
+          font-medium
+          cursor-not-allowed
+          opacity-40
+          select-none
+        >
           {{ item }}
         </span>
-        <NuxtLink v-else :to="itemsHref[index]">
+        <NuxtLink
+          v-else
+          :class="{ 'font-semibold': index === 0 }"
+          hover:underline
+          :to="itemsHref[index]"
+        >
           {{ item }}
         </NuxtLink>
       </li>
