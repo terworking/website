@@ -54,20 +54,22 @@ const pathIsComplete = computed(() => {
 </script>
 
 <template>
-  <nav card bg-body>
-    <AppBreadcrumbs p="x-4 t-2" :show-lash-path="pathIsComplete" />
-    <template v-if="navigation.length > 0">
-      <BlogNavigationItem
-        v-for="(item, index) of navigation"
-        :key="index"
-        :value="item"
-      />
-    </template>
-    <template v-else>
-      <div flex="~ col" justify-center items-center h-96 w-full>
-        <div font-semibold opacity-75 text="3xl md:4xl">404 NOT FOUND</div>
-        <AppButton m="t-4 md:b-12" @click="$router.back">Go Back</AppButton>
-      </div>
-    </template>
-  </nav>
+  <div>
+    <AppBreadcrumbs p="x-4 y-2" :show-lash-path="pathIsComplete" />
+    <nav card bg-body>
+      <template v-if="navigation.length > 0">
+        <BlogNavigationItem
+          v-for="(item, index) of navigation"
+          :key="index"
+          :value="item"
+        />
+      </template>
+      <template v-else>
+        <div flex="~ col" justify-center items-center h-96 w-full>
+          <div font-semibold opacity-75 text="3xl md:4xl">404 NOT FOUND</div>
+          <AppButton m="t-4 md:b-12" @click="$router.back">Go Back</AppButton>
+        </div>
+      </template>
+    </nav>
+  </div>
 </template>
