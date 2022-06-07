@@ -37,7 +37,16 @@ const navigation = computed(() => {
           ({ description, _path: step }) =>
             description === undefined && _path.startsWith(step)
         )
-    );
+    )
+    .sort((a, b) => {
+      if (a.description === undefined && b.description !== undefined) {
+        return -1;
+      } else if (b.description === undefined) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 });
 
 const pathIsComplete = computed(() => {
