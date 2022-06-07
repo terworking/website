@@ -5,10 +5,9 @@ const properties = defineProps({
   path: { default: () => useRoute().path, type: String },
 });
 
-const query = queryContent(properties.path);
-const { data } = await useAsyncData<Navigation[]>(
-  `navigation-${properties.path}`,
-  () => fetchContentNavigation(query)
+const { path } = toRefs(properties);
+const { data } = await useAsyncData<Navigation[]>(`navigation`, () =>
+  fetchContentNavigation()
 );
 
 const navigation = computed(() => {
@@ -23,10 +22,7 @@ const navigation = computed(() => {
     children.flatMap((c) => transform1(c));
 
   return transformAll(data.value)
-    .filter(
-      ({ _path }) =>
-        _path.startsWith(properties.path) && _path !== properties.path
-    )
+    .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
     .filter(
       // don't list subdirectory items if the subdirectory is there
       ({ _path, description }, _, array) =>
