@@ -67,7 +67,11 @@ const { social } = useTerworking();
                     font-bold
                     text-lg
                     p-3
-                    active-class="text-accent underline underline-dotted"
+                    :class="{
+                      'text-accent underline underline-dotted':
+                        $route.path === path ||
+                        ($route.path.startsWith(path) && path !== '/'),
+                    }"
                     :to="path"
                   >
                     {{ name }}

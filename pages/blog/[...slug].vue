@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Article } from '~~/typings/content';
 
-definePageMeta({ hidden: true });
+definePageMeta({ name: 'Blog' });
 
 const { path } = useRoute();
 const { data } = await useAsyncData(`content-${path}`, () =>
