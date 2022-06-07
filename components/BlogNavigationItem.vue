@@ -17,7 +17,13 @@ const properties = defineProps<{ value: FlatNavigation }>();
       />
     </NuxtLink>
     <div p-6>
-      <NuxtLink :to="value._path" text-2xl font-semibold>
+      <NuxtLink
+        :to="value._path"
+        text-xl
+        md:text-2xl
+        font-semibold
+        hover:underline
+      >
         {{ value.title }}
       </NuxtLink>
       <p class="line-clamp">
