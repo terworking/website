@@ -17,6 +17,6 @@ const content = computed(() => {
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
     <BlogContent v-if="content" :value="content" />
-    <BlogNavigation v-else :path="$route.path" />
+    <BlogNavigation v-else />
   </div>
 </template>
