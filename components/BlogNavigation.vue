@@ -50,10 +50,7 @@ const pathIsComplete = computed(() => {
 
 <template>
   <nav card bg-body>
-    <AppBreadcrumbs
-      v-if="$route.path !== '/blog' && pathIsComplete"
-      p="x-4 t-2"
-    />
+    <AppBreadcrumbs p="x-4 t-2" :show-lash-path="pathIsComplete" />
     <template v-if="navigation">
       <BlogNavigationItem
         v-for="(item, index) of navigation"
