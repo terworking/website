@@ -23,7 +23,7 @@ watchDebounced(
       header.value.visible = false;
     }
   },
-  { debounce: 100, maxWait: 500 }
+  { debounce: 100, maxWait: 200 }
 );
 </script>
 
