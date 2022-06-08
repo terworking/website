@@ -25,7 +25,7 @@ const content = computedAsync(
     );
     if (candidate !== undefined) {
       contentPending.value = true;
-      return queryContent<Article>(path).findOne();
+      return queryContent<Article>(path).where({ _path: path }).findOne();
     }
   },
   undefined,
