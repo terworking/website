@@ -31,13 +31,12 @@ const content = computedAsync(
   undefined,
   contentPending
 );
-
-const pending = computed(() => navigationPending.value || contentPending.value);
 </script>
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <PlaceholderBlogContent v-if="pending" />
+    <PlaceholderBlogNavigation v-if="navigationPending" />
+    <PlaceholderBlogContent v-else-if="contentPending" />
     <BlogContent v-else-if="content" :value="content" />
     <BlogNavigation v-else />
   </div>

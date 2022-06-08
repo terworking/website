@@ -5,16 +5,12 @@ const properties = defineProps({
   path: { default: () => useRoute().path, type: String },
 });
 
-const { data, pending } = await useLazyAsyncData<Navigation[]>(
-  'blog-navigation',
-  () => fetchContentNavigation()
+const { data } = await useAsyncData<Navigation[]>('blog-navigation', () =>
+  fetchContentNavigation()
 );
 
 const { path } = toRefs(properties);
 const navigation = computed(() => {
-  if (pending.value)
-    return Array.from({ length: randomInt(2, 3) }) as undefined[];
-
   return flattenContentNavigation(data.value)
     .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
     .filter(
@@ -41,8 +37,8 @@ const navigation = computed(() => {
 
 const pathIsComplete = computed(() => {
   const lastPath = [...properties.path.split('/')].reverse()[0];
-  return navigation.value.some((it) =>
-    it === undefined ? true : [...it._path.split('/')].reverse()[1] === lastPath
+  return navigation.value.some(
+    (it) => [...it._path.split('/')].reverse()[1] === lastPath
   );
 });
 </script>
@@ -52,10 +48,11 @@ const pathIsComplete = computed(() => {
     <AppBreadcrumbs p="x-4 y-2" :show-lash-path="pathIsComplete" />
     <nav card bg-body>
       <template v-if="navigation.length > 0">
-        <template v-for="(item, index) of navigation" :key="index">
-          <BlogNavigationItem v-if="item" :value="item" />
-          <PlaceholderBlogNavigationItem v-else />
-        </template>
+        <BlogNavigationItem
+          v-for="(item, index) of navigation"
+          :key="index"
+          :value="item"
+        />
       </template>
       <template v-else>
         <div flex="~ col" justify-center items-center h-96 w-full>
