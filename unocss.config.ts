@@ -57,6 +57,8 @@ export default defineConfig({
       'text-body': 'text-black dark:text-white',
       'card':
         'rounded-lg bg-white dark:bg-dark-500 border border-light-900 dark:border-dark-100 shadow-lg',
+      'content-placeholder':
+        'inline-block mx-1 min-h-1em bg-light-900 dark:bg-dark-100 cursor-wait animate-pulse',
     },
     [
       /^(bg|border|text)-accent$/,

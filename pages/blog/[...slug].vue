@@ -4,7 +4,7 @@ import type { Article } from '~~/typings/content';
 definePageMeta({ name: 'Blog' });
 
 const { path } = useRoute();
-const { data } = await useAsyncData(`content-${path}`, () =>
+const { data, pending } = await useLazyAsyncData(`blog-${path}`, () =>
   queryContent<Article>(path).find()
 );
 
@@ -16,7 +16,8 @@ const content = computed(() => {
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <BlogContent v-if="content" :value="content" />
+    <PlaceholderBlogContent v-if="pending" />
+    <BlogContent v-else-if="content" :value="content" />
     <BlogNavigation v-else />
   </div>
 </template>
