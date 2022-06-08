@@ -1,3 +1,5 @@
+import { FlatNavigation, Navigation } from '~~/typings/content';
+
 // https://stackoverflow.com/a/42769683
 export const useRemToPx = (rem: number) =>
   rem * Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -11,6 +13,20 @@ export const distribute = (length: number, value: number): number[] => {
     ...distribute(half, distribution),
     ...distribute(length - half, value - distribution),
   ];
+};
+
+export const flattenContentNavigation = (data: Navigation[]) => {
+  // https://stackoverflow.com/a/54245371
+  const transform1 = ({ children = [], ...rest }: Navigation) => [
+    { ...rest },
+    ...transformAll(children),
+  ];
+
+  // https://stackoverflow.com/a/54245371
+  const transformAll = (children: Navigation[] = []): FlatNavigation[] =>
+    children.flatMap((c) => transform1(c));
+
+  return transformAll(data);
 };
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random

@@ -15,17 +15,7 @@ const navigation = computed(() => {
   if (pending.value)
     return Array.from({ length: randomInt(2, 3) }) as undefined[];
 
-  // https://stackoverflow.com/a/54245371
-  const transform1 = ({ children = [], ...rest }: Navigation) => [
-    { ...rest },
-    ...transformAll(children),
-  ];
-
-  // https://stackoverflow.com/a/54245371
-  const transformAll = (children: Navigation[] = []): FlatNavigation[] =>
-    children.flatMap((c) => transform1(c));
-
-  return transformAll(data.value)
+  return flattenContentNavigation(data.value)
     .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
     .filter(
       // don't list subdirectory items if the subdirectory is there

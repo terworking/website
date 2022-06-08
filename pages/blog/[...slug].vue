@@ -1,17 +1,38 @@
 <script setup lang="ts">
-import type { Article } from '~~/typings/content';
+import type { Article, Navigation } from '~~/typings/content';
 
 definePageMeta({ name: 'Blog' });
 
+const { data, pending: navigationPending } = await useLazyAsyncData<
+  Navigation[]
+>('blog-navigation', () => fetchContentNavigation());
+
+const contentPending = ref(true);
+
 const { path } = useRoute();
-const { data, pending } = await useLazyAsyncData(`blog-${path}`, () =>
-  queryContent<Article>(path).find()
+const content = computedAsync(
+  async () => {
+    if (navigationPending.value) return;
+
+    const flatNavigation = flattenContentNavigation(data.value);
+    const candidate = flatNavigation.find(
+      ({ _path }, _, array) =>
+        _path === path &&
+        !array.some(
+          ({ _path, description }) =>
+            _path === path && description === undefined
+        )
+    );
+    if (candidate !== undefined) {
+      contentPending.value = true;
+      return queryContent<Article>(path).findOne();
+    }
+  },
+  undefined,
+  contentPending
 );
 
-const content = computed(() => {
-  const candidate = data.value.find(({ _path }) => _path === path);
-  if (candidate !== undefined) return candidate;
-});
+const pending = computed(() => navigationPending.value || contentPending.value);
 </script>
 
 <template>
