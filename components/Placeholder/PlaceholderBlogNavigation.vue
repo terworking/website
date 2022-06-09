@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const count = randomInt(2, 3);
+defineProps({
+  count: { default: randomInt(2, 3), type: Number },
+});
 </script>
 
 <template>
-  <div>
+  <div aria-hidden="true">
     <AppBreadcrumbs p="x-4 y-2" />
     <nav card bg-body>
       <PlaceholderBlogNavigationItem

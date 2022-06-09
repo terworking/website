@@ -3,5 +3,5 @@ defineProps<{ value: number }>();
 </script>
 
 <template>
-  <span text-4xl content-placeholder :style="{ width: value + '%' }" />
+  <span text-4xl text-placeholder :style="{ width: value + '%' }" />
 </template>

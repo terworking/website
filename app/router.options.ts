@@ -6,13 +6,13 @@ export default {
       const heading = document.querySelector(to.hash);
 
       if (heading instanceof HTMLHeadingElement) {
-        const headerHeight = useRemToPx(4.5);
+        const headerSize = useHeaderSize();
 
         window.scrollTo({
           behavior: 'smooth',
           top:
             heading.offsetTop - // only subtract on scroll up
-            (heading.offsetTop < window.scrollY ? headerHeight : 0),
+            (heading.offsetTop < window.scrollY ? headerSize.height.px : 0),
         });
 
         return;

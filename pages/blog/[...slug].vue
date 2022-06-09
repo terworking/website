@@ -8,15 +8,13 @@ const { data: navigation, pending: navigationPending } = await useLazyAsyncData(
   () => fetchContentNavigation() as Promise<Navigation[]>
 );
 
-const contentPending = ref(true);
-
 const { path } = useRoute();
+const contentPending = ref(true);
 const content = computedAsync(
   async () => {
     if (navigationPending.value) return;
 
-    const flatNavigation = flattenContentNavigation(navigation.value);
-    const candidate = flatNavigation.find(
+    const candidate = flattenContentNavigation(navigation.value).find(
       ({ _path }, _, array) =>
         _path === path &&
         !array.some(
@@ -24,10 +22,9 @@ const content = computedAsync(
             _path === path && description === undefined
         )
     );
-    if (candidate !== undefined) {
-      contentPending.value = true;
+
+    if (candidate !== undefined)
       return queryContent<Article>(path).where({ _path: path }).findOne();
-    }
   },
   undefined,
   contentPending

@@ -3,6 +3,7 @@ import { defaultWindow } from '@vueuse/core';
 
 const aside = useAside();
 const header = useHeader();
+const headerSize = useHeaderSize();
 const routes = useRoutes();
 const { social } = useTerworking();
 
@@ -16,8 +17,7 @@ const { directions, y: scrollY } = useScroll(defaultWindow);
 watchDebounced(
   scrollY,
   () => {
-    const headerHeight = useRemToPx(4.5);
-    if (directions.top || scrollY.value < headerHeight) {
+    if (directions.top || scrollY.value < headerSize.height.px) {
       header.value.visible = true;
     } else if (directions.bottom) {
       header.value.visible = false;
@@ -25,12 +25,18 @@ watchDebounced(
   },
   { debounce: 100, maxWait: 200 }
 );
+
+const headerStyle = computed(() => ({
+  height: `${headerSize.height.rem}rem`,
+  transform: !header.value.visible
+    ? `translateY(-${headerSize.height.rem}rem)`
+    : undefined,
+}));
 </script>
 
 <template>
   <header
-    class="h-$header-h"
-    :class="{ '-translate-y-4.5rem': !header.visible }"
+    :style="headerStyle"
     sticky
     top-0
     z-100

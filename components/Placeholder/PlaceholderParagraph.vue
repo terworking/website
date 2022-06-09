@@ -5,7 +5,7 @@ defineProps<{ value: number[] }>();
 <template>
   <p>
     <template v-for="(i, index) of value" :key="index">
-      <span v-if="i > 15" content-placeholder :style="{ width: i + '%' }" />
+      <span v-if="i > 15" text-placeholder :style="{ width: i + '%' }" />
     </template>
   </p>
 </template>

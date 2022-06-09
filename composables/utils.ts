@@ -4,8 +4,16 @@ export const useTitleTemplate = (title?: string) =>
   title !== undefined ? `${title} - Terworking` : 'Terworking';
 
 // https://stackoverflow.com/a/42769683
-export const useRemToPx = (rem: number) =>
-  rem * Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+export const useRemToPx = (rem: number) => {
+  try {
+    return (
+      rem *
+      Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+    );
+  } catch {
+    return 0;
+  }
+};
 
 // https://stackoverflow.com/a/27149357
 export const distribute = (length: number, value: number): number[] => {

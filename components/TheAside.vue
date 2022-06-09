@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const aside = useAside();
+const headerSize = useHeaderSize();
 const routes = useRoutes();
 const { social } = useTerworking();
 </script>
@@ -28,7 +29,7 @@ const { social } = useTerworking();
           >
             <div w-auto h-full overflow-auto>
               <div
-                class="h-$header-h"
+                :style="{ height: `${headerSize.height.rem}rem` }"
                 flex
                 items-center
                 justify-between
