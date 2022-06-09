@@ -1,12 +1,6 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const title = computed(() =>
-  route.meta.title === undefined
-    ? 'Terworking'
-    : `${route.meta.title} - Terworking`
-);
-
 useHead({
   link: [{ href: '/favicon.ico', rel: 'ico' }],
   meta: [
@@ -16,7 +10,7 @@ useHead({
       name: 'theme-color',
     },
   ],
-  title,
+  title: computed(() => useTitleTemplate(route.meta.title)),
 });
 </script>
 

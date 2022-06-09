@@ -1,5 +1,8 @@
 import { FlatNavigation, Navigation } from '~~/typings/content';
 
+export const useTitleTemplate = (title?: string) =>
+  title !== undefined ? `${title} - Terworking` : 'Terworking';
+
 // https://stackoverflow.com/a/42769683
 export const useRemToPx = (rem: number) =>
   rem * Number.parseFloat(getComputedStyle(document.documentElement).fontSize);

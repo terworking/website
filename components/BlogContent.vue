@@ -2,6 +2,11 @@
 import type { Article } from '~~/typings/content';
 
 const properties = defineProps<{ value: Article }>();
+const { value } = toRefs(properties);
+
+const title = computed(() => useTitleTemplate(value.value.title));
+
+useHead({ title });
 </script>
 
 <template>

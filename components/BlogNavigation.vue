@@ -41,6 +41,10 @@ const pathIsComplete = computed(() => {
     (it) => [...it._path.split('/')].reverse()[1] === lastPath
   );
 });
+
+const title = computed(() => useTitleTemplate(`${path.value} Navigation`));
+
+useHead({ title });
 </script>
 
 <template>
