@@ -3,9 +3,10 @@ import type { Article, Navigation } from '~~/typings/content';
 
 definePageMeta({ name: 'Blog' });
 
-const { data, pending: navigationPending } = await useLazyAsyncData<
-  Navigation[]
->('blog-navigation', () => fetchContentNavigation());
+const { data: navigation, pending: navigationPending } = await useLazyAsyncData(
+  'blog-navigation',
+  () => fetchContentNavigation() as Promise<Navigation[]>
+);
 
 const contentPending = ref(true);
 
@@ -14,7 +15,7 @@ const content = computedAsync(
   async () => {
     if (navigationPending.value) return;
 
-    const flatNavigation = flattenContentNavigation(data.value);
+    const flatNavigation = flattenContentNavigation(navigation.value);
     const candidate = flatNavigation.find(
       ({ _path }, _, array) =>
         _path === path &&
@@ -38,6 +39,6 @@ const content = computedAsync(
     <PlaceholderBlogNavigation v-if="navigationPending" />
     <PlaceholderBlogContent v-else-if="contentPending" />
     <BlogContent v-else-if="content" :value="content" />
-    <BlogNavigation v-else />
+    <BlogNavigation v-else :value="navigation" />
   </div>
 </template>

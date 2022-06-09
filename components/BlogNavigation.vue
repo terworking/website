@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import type { FlatNavigation, Navigation } from '~~/typings/content';
+import type { Navigation } from '~~/typings/content';
 
 const properties = defineProps({
   path: { default: () => useRoute().path, type: String },
+  value: { required: true, type: Object as () => Navigation[] },
 });
-
-const { data } = await useAsyncData<Navigation[]>('blog-navigation', () =>
-  fetchContentNavigation()
-);
 
 const { path } = toRefs(properties);
 const navigation = computed(() => {
-  return flattenContentNavigation(data.value)
+  return flattenContentNavigation(properties.value)
     .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
     .filter(
       // don't list subdirectory items if the subdirectory is there
