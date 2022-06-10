@@ -23,8 +23,11 @@ const content = computedAsync(
         )
     );
 
-    if (candidate !== undefined)
-      return queryContent<Article>(path).where({ _path: path }).findOne();
+    if (candidate !== undefined) {
+      return useState(`blog-content-${path}`, () =>
+        queryContent<Article>(path).where({ _path: path }).findOne()
+      ).value;
+    }
   },
   undefined,
   contentPending
