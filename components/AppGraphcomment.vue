@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defaultWindow } from '@vueuse/core';
 
+const properties = defineProps<{ disabled?: boolean }>();
+
 const loaded = ref(false);
 const show = ref(false);
 
@@ -41,6 +43,11 @@ onMounted(() => {
 const { stop } = useIntersectionObserver(
   graphcomment,
   ([{ isIntersecting }]) => {
+    if (properties.disabled === true) {
+      stop();
+      return;
+    }
+
     if (isIntersecting && scrollY.value >= (defaultWindow?.innerHeight ?? 0)) {
       if (!loaded.value) {
         const graphcommentScript = document.createElement('script');
@@ -67,9 +74,12 @@ const { stop } = useIntersectionObserver(
 
 <template>
   <div card p="x-2 y-6">
-    <div v-if="show" id="graphcomment" ref="graphcomment"></div>
-    <AppButton v-else block m-auto @click="show = true">
-      Load Comments
-    </AppButton>
+    <template v-if="!disabled">
+      <div v-if="show" id="graphcomment" ref="graphcomment"></div>
+      <AppButton v-else block m-auto @click="show = true">
+        Load Comments
+      </AppButton>
+    </template>
+    <AppButton v-else block m-auto disabled> Comments is disabled </AppButton>
   </div>
 </template>

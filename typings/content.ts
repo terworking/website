@@ -1,6 +1,7 @@
 import type { ParsedContent, NavItem } from '@nuxt/content/dist/runtime/types';
 
 interface Extension {
+  comment?: boolean;
   description?: string;
   image?: string;
 }
