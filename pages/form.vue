@@ -154,7 +154,7 @@ const validateInstagram = ({ value }: FormKitNode) => {
       <AppButton
         :disabled="disabled"
         :class="{ 'remove-before': closed }"
-        flex-1
+        flex="1 inline"
         before="content-none mr-0 h-5 w-0 border-2 border-transparent rounded-full transition-margin-500"
         disabled:before="mr-3 w-5 border-current border-r-transparent animate-spin"
         @click="submitForm('form')"

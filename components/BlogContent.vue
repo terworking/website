@@ -26,5 +26,6 @@ useHead({ title });
       />
       <ContentRenderer :value="value" p="x-6 b-6" prose="~ gray dark:invert" />
     </div>
+    <AppGraphcomment my-4 />
   </div>
 </template>

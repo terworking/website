@@ -1,6 +1,5 @@
 <template>
   <button
-    inline-flex
     items-center
     justify-center
     p="x-4 y-3"

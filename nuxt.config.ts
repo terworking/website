@@ -37,6 +37,7 @@ export default defineNuxtConfig({
     public: {
       formIsOnSlowMode: '',
       formIsOpen: '',
+      graphcommentId: '',
     },
   },
   typescript: { shim: false, strict: true, typeCheck: true },
