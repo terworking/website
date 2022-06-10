@@ -5,13 +5,15 @@ defineProps({
 </script>
 
 <template>
-  <div aria-hidden="true">
-    <AppBreadcrumbs p="x-4 y-2" />
-    <nav card bg-body>
-      <PlaceholderBlogNavigationItem
-        v-for="(_, index) of Array.from({ length: count })"
-        :key="index"
-      />
-    </nav>
-  </div>
+  <ClientOnly>
+    <div aria-hidden="true">
+      <AppBreadcrumbs p="x-4 y-2" />
+      <nav card bg-body>
+        <PlaceholderBlogNavigationItem
+          v-for="(_, index) of Array.from({ length: count })"
+          :key="index"
+        />
+      </nav>
+    </div>
+  </ClientOnly>
 </template>

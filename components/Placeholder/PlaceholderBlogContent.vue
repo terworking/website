@@ -6,14 +6,16 @@ const heading = randomInt(50, 95),
 </script>
 
 <template>
-  <div aria-hidden="true">
-    <AppBreadcrumbs p="x-4 y-2" />
-    <div card>
-      <PlaceholderImage h-64 />
-      <div p="x-4 y-6">
-        <PlaceholderHeading :value="heading" />
-        <PlaceholderParagraph :value="paragraphs" />
+  <ClientOnly>
+    <div aria-hidden="true">
+      <AppBreadcrumbs p="x-4 y-2" />
+      <div card>
+        <PlaceholderImage h-64 />
+        <div p="x-4 y-6">
+          <PlaceholderHeading :value="heading" />
+          <PlaceholderParagraph :value="paragraphs" />
+        </div>
       </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
