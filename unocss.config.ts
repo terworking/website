@@ -52,12 +52,13 @@ export default defineConfig({
   shortcuts: [
     {
       'bg-body': 'bg-white dark:bg-dark-800',
+      'bg-card': 'bg-white dark:bg-dark-500',
       'bg-secondary': 'bg-light-500 dark:bg-dark-500',
       'bg-placeholder': 'bg-light-900 dark:bg-dark-100',
+      'border-card': 'border-light-900 dark:border-dark-100',
       'border-primary': 'border-black/20 dark:border-white/20',
       'text-body': 'text-black dark:text-white',
-      'card':
-        'rounded-lg bg-white dark:bg-dark-500 border border-light-900 dark:border-dark-100 shadow-lg',
+      'card': 'bg-card border border-rounded-lg border-card',
       'content-placeholder': 'bg-placeholder cursor-wait',
       'text-placeholder':
         'inline-block mx-1 min-h-1em content-placeholder animate-pulse',

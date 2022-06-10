@@ -35,7 +35,11 @@ const content = computedAsync(
   <div m-auto max-w-2xl p="4 md:y-8">
     <PlaceholderBlogNavigation v-if="navigationPending" />
     <PlaceholderBlogContent v-else-if="contentPending" />
-    <BlogContent v-else-if="content" :value="content" />
+    <BlogContent
+      v-else-if="content"
+      :value="content"
+      :navigation="navigation"
+    />
     <BlogNavigation v-else :value="navigation" />
   </div>
 </template>
