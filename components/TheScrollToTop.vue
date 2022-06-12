@@ -5,9 +5,9 @@ const header = useHeader();
 const headerSize = useHeaderSize();
 
 const { y: scrollY } = useScroll(defaultWindow);
-const { height } = useWindowSize();
+const { height: windowHeight } = useWindowSize();
 const show = computed(
-  () => header.value.visible && scrollY.value > height.value * 2
+  () => header.value.visible && scrollY.value > windowHeight.value * 2
 );
 
 const scrollToTop = () => window.scrollTo({ behavior: 'smooth', top: 0 });

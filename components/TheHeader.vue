@@ -13,11 +13,12 @@ const toggleColorMode = () => {
 };
 
 const { y: scrollY } = useScroll(defaultWindow);
+const { height: windowHeight } = useWindowSize();
 
 watchDebounced(
   scrollY,
   (value, oldValue) => {
-    if (value < oldValue || value < headerSize.height.px) {
+    if (value < oldValue || value < windowHeight.value) {
       header.value.visible = true;
     } else if (value > oldValue) {
       header.value.visible = false;
@@ -115,6 +116,5 @@ watchDebounced(
 .header-enter-from,
 .header-leave-to {
   transform: translateY(-100%);
-  width: 100%;
 }
 </style>
