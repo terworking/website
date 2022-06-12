@@ -50,6 +50,7 @@ useHead({ title });
         border="b t light-900 dark:dark-100"
         rounded-t-lg
       />
+      <BlogContentToc :value="value.body.toc" />
       <ContentRenderer :value="value" p="x-6 b-6" prose="~ gray dark:invert" />
     </div>
     <BlogContentNavigation :previous="previous" :next="next" />
