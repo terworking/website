@@ -33,7 +33,10 @@ useHead({
 <style>
 body {
   --at-apply: antialiased bg-body text-body;
-  --at-apply: scrollbar scrollbar-rounded scrollbar-track-color-light-500 scrollbar-thumb-color-light-900 dark:scrollbar-track-color-dark-50
-    dark:scrollbar-thumb-color-dark-200;
+}
+
+* {
+  --at-apply: scrollbar scrollbar-rounded scrollbar-track-color-light-500 scrollbar-thumb-color-light-900 dark:scrollbar-track-color-dark-50 dark:scrollbar-thumb-color-dark-200;
+  overflow: unset;
 }
 </style>
