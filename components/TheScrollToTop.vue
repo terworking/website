@@ -14,7 +14,7 @@ const scrollToTop = () => window.scrollTo({ behavior: 'smooth', top: 0 });
 
 <template>
   <Transition name="scroll-to-top">
-    <div v-if="show" fixed flex items-center justify-center my-4 w-full>
+    <div v-if="show" flex items-center justify-center my-4 w-full>
       <div
         inline-flex
         space-x-2
