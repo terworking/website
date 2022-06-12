@@ -7,11 +7,6 @@ const headerSize = useHeaderSize();
 const routes = useRoutes();
 const { social } = useTerworking();
 
-const colorMode = useColorMode();
-const toggleColorMode = () => {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
-};
-
 const { y: scrollY } = useScroll(defaultWindow);
 const { height: windowHeight } = useWindowSize();
 
@@ -90,13 +85,7 @@ watchDebounced(
                 target="_blank"
               />
             </template>
-            <button
-              aria-label="toggleColorMode"
-              i-tabler-sun
-              dark:i-tabler-moon
-              text-accent
-              @click="toggleColorMode"
-            ></button>
+            <TheColorModeToggler />
           </div>
         </div>
       </header>
