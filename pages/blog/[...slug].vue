@@ -14,6 +14,9 @@ const content = computedAsync(
   async () => {
     if (navigationPending.value) return;
 
+    const maybeContent = useState<Article | undefined>(`blog-content-${path}`);
+    if (maybeContent.value !== undefined) return maybeContent.value;
+
     const candidate = flattenContentNavigation(navigation.value).find(
       ({ _path }, _, array) =>
         _path === path &&
@@ -24,9 +27,11 @@ const content = computedAsync(
     );
 
     if (candidate !== undefined) {
-      return useState(`blog-content-${path}`, () =>
-        queryContent<Article>(path).where({ _path: path }).findOne()
-      ).value;
+      maybeContent.value = await queryContent<Article>(path)
+        .where({ _path: path })
+        .findOne();
+
+      return maybeContent.value;
     }
   },
   undefined,
@@ -36,13 +41,9 @@ const content = computedAsync(
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <PlaceholderBlogNavigation v-if="navigationPending" />
+    <BlogContent v-if="content" :value="content" :navigation="navigation" />
+    <PlaceholderBlogNavigation v-else-if="navigationPending" />
     <PlaceholderBlogContent v-else-if="contentPending" />
-    <BlogContent
-      v-else-if="content"
-      :value="content"
-      :navigation="navigation"
-    />
     <BlogNavigation v-else :value="navigation" />
   </div>
 </template>
