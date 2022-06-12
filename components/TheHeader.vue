@@ -35,6 +35,7 @@ watchDebounced(
     sticky
     top-0
     z-100
+    pointer-events="none children:auto"
   >
     <Transition name="header">
       <header
