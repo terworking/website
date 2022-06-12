@@ -12,14 +12,14 @@ const toggleColorMode = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 };
 
-const { directions, y: scrollY } = useScroll(defaultWindow);
+const { y: scrollY } = useScroll(defaultWindow);
 
 watchDebounced(
   scrollY,
-  () => {
-    if (directions.top || scrollY.value < headerSize.height.px) {
+  (value, oldValue) => {
+    if (value < oldValue || value < headerSize.height.px) {
       header.value.visible = true;
-    } else if (directions.bottom) {
+    } else if (value > oldValue) {
       header.value.visible = false;
     }
   },

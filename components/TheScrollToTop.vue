@@ -2,6 +2,7 @@
 import { defaultWindow } from '@vueuse/core';
 
 const header = useHeader();
+const headerSize = useHeaderSize();
 
 const { y: scrollY } = useScroll(defaultWindow);
 const { height } = useWindowSize();
@@ -14,7 +15,16 @@ const scrollToTop = () => window.scrollTo({ behavior: 'smooth', top: 0 });
 
 <template>
   <Transition name="scroll-to-top">
-    <div v-if="show" flex items-center justify-center my-4 w-full>
+    <div
+      v-if="show"
+      :style="{
+        height: `${headerSize.height.rem}rem`,
+      }"
+      flex
+      items-center
+      justify-center
+      w-full
+    >
       <div
         inline-flex
         space-x-2
