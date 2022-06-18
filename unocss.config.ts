@@ -29,10 +29,18 @@ export default defineConfig({
     presetTypography({
       cssExtend: {
         'h2 a,h3 a,h4 a': {
+          'display': 'inline-block',
           'text-decoration': 'none',
+          'background-image':
+            'linear-gradient(var(--un-prose-links),  var(--un-prose-links))',
+          'background-position': '0 calc(100%)',
+          'background-size': '0% 1px',
+          'background-repeat': 'no-repeat',
+          'transition': 'background-size 0.3s',
+          'margin': '5px 0',
         },
         'h2 a:hover,h3 a:hover, h4 a:hover': {
-          'text-decoration': 'revert',
+          'background-size': '100% 3px',
         },
         'ol,ul': {
           'margin-bottom': '0.25em',
