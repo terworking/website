@@ -43,7 +43,7 @@ const itemsHref = computed(() =>
           {{ item }}
         </NuxtLink>
       </li>
-      <li v-if="index < items.length - 1" opacity-50 px-2>/</li>
+      <li v-if="index < items.length - 1" opacity-50 px-2>></li>
     </template>
   </ul>
 </template>
