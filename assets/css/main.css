@@ -1,5 +1,34 @@
 :root {
   --accent: rgb(217, 119, 6); /* amber-600 */
   --accent-dark: rgb(245, 158, 11); /* amber-500 */
-  --header-h: 4.5rem;
+
+  /* https://github.com/shikijs/shiki/blob/bc915263a0b461f131f9c164c31da2d27d024a96/packages/shiki/themes/github-light.json */
+  --shiki-color-text: #24292f;
+  --shiki-color-border: #d0d7de;
+  --shiki-color-background: #ffffff;
+  --shiki-token-constant: #0550ae;
+  --shiki-token-string: #0a3069;
+  --shiki-token-comment: #6e7781;
+  --shiki-token-keyword: #cf222e;
+  --shiki-token-parameter: #24292f;
+  --shiki-token-function: #8250df;
+  --shiki-token-string-expression: #0a3069;
+  --shiki-token-punctuation: #6e7781;
+  --shiki-token-link: #0a3069;
+}
+
+.dark {
+  /* https://github.com/shikijs/shiki/blob/bc915263a0b461f131f9c164c31da2d27d024a96/packages/shiki/themes/github-dark-dimmed.json */
+  --shiki-color-text: #adbac7;
+  --shiki-color-border: #444c56;
+  --shiki-color-background: #22272e;
+  --shiki-token-constant: #6cb6ff;
+  --shiki-token-string: #96d0ff;
+  --shiki-token-comment: #768390;
+  --shiki-token-keyword: #f47067;
+  --shiki-token-parameter: #adbac7;
+  --shiki-token-function: #dcbdfb;
+  --shiki-token-string-expression: #96d0ff;
+  --shiki-token-punctuation: #768390;
+  --shiki-token-link: #96d0ff;
 }

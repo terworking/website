@@ -68,11 +68,11 @@ const alertProperties = computed(() => {
       };
 });
 
-const submit = async (body: never) => {
+const submit = async (body: unknown) => {
   loading.value = true;
 
   const response = await $fetch('/api/form', {
-    body,
+    body: body as never,
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
   });
@@ -151,25 +151,25 @@ const validateInstagram = ({ value }: FormKitNode) => {
       ></FormKit>
     </FormKit>
     <div flex p="x-5 b-5" space-x-5>
-      <FormButton
+      <AppButton
         :disabled="disabled"
         :class="{ 'remove-before': closed }"
+        flex="1 inline"
         before="content-none mr-0 h-5 w-0 border-2 border-transparent rounded-full transition-margin-500"
         disabled:before="mr-3 w-5 border-current border-r-transparent animate-spin"
         @click="submitForm('form')"
       >
         {{ loading ? 'Submitting...' : 'Submit' }}
-      </FormButton>
-      <FormButton
+      </AppButton>
+      <AppButton
         :disabled="disabled"
-        flex-1
         px-4
         class="!bg-transparent !text-body"
         :class="{ '!text-opacity-50': disabled }"
         @click="reset"
       >
         Reset
-      </FormButton>
+      </AppButton>
     </div>
   </div>
 </template>

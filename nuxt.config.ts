@@ -6,12 +6,27 @@ export default defineNuxtConfig({
     classSuffix: '',
     fallback: 'system',
   },
+  content: {
+    highlight: { theme: 'css-variables' },
+    navigation: {
+      fields: ['description', 'image'],
+    },
+    sources: [
+      {
+        base: 'content',
+        driver: 'fs',
+        name: 'article',
+        prefix: '/article',
+      },
+    ],
+  },
   css: ['@/assets/css/main.css'],
   lodash: {
     exclude: ['now'], // I need useNow from vueuse
   },
   modules: [
     '@formkit/nuxt',
+    '@nuxt/content',
     '@nuxtjs/color-mode',
     '@nuxtjs/supabase',
     '@unocss/nuxt',
@@ -22,6 +37,7 @@ export default defineNuxtConfig({
     public: {
       formIsOnSlowMode: '',
       formIsOpen: '',
+      graphcommentId: '',
     },
   },
   typescript: { shim: false, strict: true, typeCheck: true },

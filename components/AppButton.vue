@@ -1,10 +1,8 @@
 <template>
   <button
-    inline-flex
     items-center
     justify-center
-    w-full
-    h-12
+    p="x-4 y-3"
     font-semibold
     rounded-lg
     select-none
