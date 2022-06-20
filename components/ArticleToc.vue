@@ -32,7 +32,7 @@ const expanded = ref(false);
     </button>
     <Transition name="toc">
       <nav v-if="expanded" max-h-64>
-        <BlogContentTocItem :value="value.links" />
+        <ArticleTocItem :value="value.links" />
       </nav>
     </Transition>
   </div>

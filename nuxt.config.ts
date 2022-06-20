@@ -15,8 +15,8 @@ export default defineNuxtConfig({
       {
         base: 'content',
         driver: 'fs',
-        name: 'blog',
-        prefix: '/blog',
+        name: 'article',
+        prefix: '/article',
       },
     ],
   },

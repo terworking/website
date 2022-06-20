@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import type { Article, Navigation } from '~~/typings/content';
 
-definePageMeta({ name: 'Blog' });
+definePageMeta({ name: 'Article' });
 
 const { data: navigation, pending: navigationPending } = await useLazyAsyncData(
-  'blog-navigation',
+  'article-navigation',
   () => fetchContentNavigation() as Promise<Navigation[]>
 );
 
 const { path } = useRoute();
-const contentPending = ref(true);
-const content = computedAsync(
+const articlePending = ref(true);
+const article = computedAsync(
   async () => {
     if (navigationPending.value) return;
 
-    const maybeContent = useState<Article | undefined>(`blog-content-${path}`);
-    if (maybeContent.value !== undefined) return maybeContent.value;
+    const maybeArticle = useState<Article | undefined>(
+      `article-content-${path}`
+    );
+    if (maybeArticle.value !== undefined) return maybeArticle.value;
 
     const candidate = flattenContentNavigation(navigation.value).find(
       ({ _path }, _, array) =>
@@ -27,23 +29,23 @@ const content = computedAsync(
     );
 
     if (candidate !== undefined) {
-      maybeContent.value = await queryContent<Article>(path)
+      maybeArticle.value = await queryContent<Article>(path)
         .where({ _path: path })
         .findOne();
 
-      return maybeContent.value;
+      return maybeArticle.value;
     }
   },
   undefined,
-  contentPending
+  articlePending
 );
 </script>
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <BlogContent v-if="content" :value="content" :navigation="navigation" />
-    <PlaceholderBlogNavigation v-else-if="navigationPending" />
-    <PlaceholderBlogContent v-else-if="contentPending" />
-    <BlogNavigation v-else :value="navigation" />
+    <ArticleContent v-if="article" :value="article" :navigation="navigation" />
+    <PlaceholderArticleNavigation v-else-if="navigationPending" />
+    <PlaceholderArticleContent v-else-if="articlePending" />
+    <ArticleNavigation v-else :value="navigation" />
   </div>
 </template>

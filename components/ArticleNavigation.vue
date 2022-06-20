@@ -53,7 +53,7 @@ useHead({ title });
     <AppBreadcrumbs p="x-4 y-2" :show-lash-path="pathIsComplete" />
     <nav card bg-body>
       <template v-if="navigation.length > 0">
-        <BlogNavigationItem
+        <ArticleNavigationItem
           v-for="(item, index) of navigation"
           :key="index"
           :value="item"

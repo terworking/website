@@ -19,7 +19,7 @@ const date = computed(() => {
 });
 
 const currentDirectory = computed(
-  () => value.value._path?.split('/').slice(0, -1).join('/') ?? '/blog'
+  () => value.value._path?.split('/').slice(0, -1).join('/') ?? '/article'
 );
 
 const navigation = computed(() =>
@@ -85,10 +85,10 @@ useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
           <time>{{ date }}</time>
         </div>
       </div>
-      <BlogContentToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
+      <ArticleToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
       <ContentRenderer :value="value" prose="~ gray dark:invert" />
     </div>
-    <BlogContentNavigation :previous="previous" :next="next" />
+    <ArticleContentNavigation :previous="previous" :next="next" />
     <AppGraphcomment :disabled="value.comment === false" my-4 />
   </div>
 </template>
