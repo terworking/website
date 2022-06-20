@@ -68,8 +68,19 @@ useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
         border="b t light-900 dark:dark-100"
         rounded-t-lg
       />
-      <div v-if="date" flex justify-end items-start py-4>
-        <div inline-flex items-center space-x-2 opacity-50>
+      <div
+        v-if="date || value.author"
+        flex
+        justify-end
+        items-center
+        space-x-4
+        py-4
+        opacity-50
+      >
+        <div v-if="value.author" inline-flex text-lg>
+          <span>~{{ value.author }}</span>
+        </div>
+        <div inline-flex items-center space-x-2>
           <div i-ci-calendar-event m-0 />
           <time>{{ date }}</time>
         </div>
