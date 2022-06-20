@@ -28,22 +28,29 @@ export default defineConfig({
     presetUno(),
     presetTypography({
       cssExtend: {
+        'h1, h2, h3': {
+          'padding-inline-start': '1.25rem',
+          'margin-inline-start': '-1.5rem',
+          'border-inline-start': '.25rem solid',
+          'padding-top': '.25rem',
+          'padding-bottom': '.25rem',
+        },
         'h2 a,h3 a,h4 a': {
-          'display': 'inline-block',
+          'display': 'inline',
           'text-decoration': 'none',
           'background-image':
             'linear-gradient(var(--un-prose-links),  var(--un-prose-links))',
-          'background-position': '0 calc(100%)',
+          'background-position': '0 100%',
           'background-size': '0% 1px',
           'background-repeat': 'no-repeat',
           'transition': 'background-size 0.3s',
           'margin': '5px 0',
         },
-        'h2 a code,h3 a code,h4 a code': {
-          background: 'transparent',
-        },
         'h2 a:hover,h3 a:hover, h4 a:hover': {
           'background-size': '100% 3px',
+        },
+        'h2 a code,h3 a code,h4 a code': {
+          background: 'transparent',
         },
         'ol,ul': {
           'margin-bottom': '0.25em',
