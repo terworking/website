@@ -6,7 +6,7 @@ const properties = defineProps<{ value: TocLink[] }>();
 
 <template>
   <ol>
-    <li v-for="link of value" :key="link.id" m="l-4 y-2">
+    <li v-for="link of value" :key="link.id" ml-4 py-1>
       <NuxtLink hover:underline :to="`#${link.id}`">
         {{ link.text }}
       </NuxtLink>
