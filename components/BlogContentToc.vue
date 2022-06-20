@@ -7,36 +7,34 @@ const expanded = ref(false);
 </script>
 
 <template>
-  <div p="y-4 x-6">
-    <div
+  <div
+    :aria-expanded="expanded"
+    card
+    overflow="x-auto y-scroll"
+    w="full md:1/2"
+  >
+    <button
       :aria-expanded="expanded"
-      card
-      overflow="x-auto y-scroll"
-      w="full md:1/2"
+      sticky
+      top-0
+      bg-inherit
+      flex
+      justify-between
+      items-center
+      p="x-4 y-2"
+      :class="{ 'py-4': expanded }"
+      transition-padding-500
+      w-full
+      @click="expanded = !expanded"
     >
-      <button
-        :aria-expanded="expanded"
-        sticky
-        top-0
-        bg-inherit
-        flex
-        justify-between
-        items-center
-        p="x-4 y-2"
-        :class="{ 'py-4': expanded }"
-        transition-padding-500
-        w-full
-        @click="expanded = !expanded"
-      >
-        <span select-none text-xl font-semibold>Table of Contents</span>
-        <span class="chevron-icon" :class="{ expanded }" />
-      </button>
-      <Transition name="toc">
-        <nav v-if="expanded" max-h-64>
-          <BlogContentTocItem :value="value.links" />
-        </nav>
-      </Transition>
-    </div>
+      <span select-none text-xl font-semibold>Table of Contents</span>
+      <span class="chevron-icon" :class="{ expanded }" />
+    </button>
+    <Transition name="toc">
+      <nav v-if="expanded" max-h-64>
+        <BlogContentTocItem :value="value.links" />
+      </nav>
+    </Transition>
   </div>
 </template>
 

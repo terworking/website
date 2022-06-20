@@ -4,6 +4,20 @@ import type { Article, Navigation } from '~~/typings/content';
 const properties = defineProps<{ value: Article; navigation: Navigation[] }>();
 const { value, navigation: navigationRaw } = toRefs(properties);
 
+const date = computed(() => {
+  const time = new Date(value.value.created ?? '');
+  if (time.toString() === 'Invalid Date') return;
+
+  const format = new Intl.DateTimeFormat(undefined, {
+    day: 'numeric',
+    month: '2-digit',
+    weekday: 'long',
+    year: 'numeric',
+  }).format;
+
+  return format(time);
+});
+
 const currentDirectory = computed(
   () => value.value._path?.split('/').slice(0, -1).join('/') ?? '/blog'
 );
@@ -38,7 +52,7 @@ useHead({ title });
 <template>
   <div>
     <AppBreadcrumbs p="x-4 y-2" />
-    <div card>
+    <div card p="x-6 b-6">
       <img
         v-if="value.image"
         :src="value.image"
@@ -50,8 +64,14 @@ useHead({ title });
         border="b t light-900 dark:dark-100"
         rounded-t-lg
       />
-      <BlogContentToc :value="value.body.toc" />
-      <ContentRenderer :value="value" p="x-6 b-6" prose="~ gray dark:invert" />
+      <div v-if="date" flex justify-end items-start pt-4>
+        <div inline-flex items-center space-x-2 opacity-50>
+          <div i-ci-calendar-event m-0 />
+          <time>{{ date }}</time>
+        </div>
+      </div>
+      <BlogContentToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
+      <ContentRenderer :value="value" prose="~ gray dark:invert" />
     </div>
     <BlogContentNavigation :previous="previous" :next="next" />
     <AppGraphcomment :disabled="value.comment === false" my-4 />
