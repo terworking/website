@@ -10,7 +10,7 @@ const properties = defineProps<{ value: TocLink[] }>();
       <NuxtLink hover:underline :to="`#${link.id}`">
         {{ link.text }}
       </NuxtLink>
-      <BlogTocItem :value="link.children ?? []" />
+      <BlogContentTocItem :value="link.children ?? []" />
     </li>
   </ol>
 </template>
