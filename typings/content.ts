@@ -1,10 +1,12 @@
 import type { ParsedContent, NavItem } from '@nuxt/content/dist/runtime/types';
 
 interface Extension {
+  author?: string;
   comment?: boolean;
   created?: string;
   description?: string;
   image?: string;
+  modified?: string;
 }
 
 export type Article = ParsedContent & Extension;

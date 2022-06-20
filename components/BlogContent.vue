@@ -45,8 +45,12 @@ const next = computed(() => {
 });
 
 const title = computed(() => useTitleTemplate(value.value.title));
+const description = computed(() => value.value.description);
+const image = computed(() => value.value.image);
+useHead(useSeoHead({ description, image, title }));
+useHead(useSeoArticleHead(value));
 
-useHead({ title });
+useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
 </script>
 
 <template>
@@ -64,7 +68,7 @@ useHead({ title });
         border="b t light-900 dark:dark-100"
         rounded-t-lg
       />
-      <div v-if="date" flex justify-end items-start pt-4>
+      <div v-if="date" flex justify-end items-start py-4>
         <div inline-flex items-center space-x-2 opacity-50>
           <div i-ci-calendar-event m-0 />
           <time>{{ date }}</time>

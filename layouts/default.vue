@@ -1,16 +1,24 @@
 <script setup lang="ts">
 const route = useRoute();
 
+const { data: host } = useAsyncData(
+  'host',
+  async () => useRequestHeaders().host
+);
+const url = computed(() => `https://${host.value}${route.path}`);
+const image = computed(() => route.meta.image);
+const title = computed(() => useTitleTemplate(route.meta.title));
+const description = computed(() => route.meta.description ?? title.value);
+useHead(useSeoHead({ description, image, title, url }));
+
 useHead({
   link: [{ href: '/favicon.ico', rel: 'ico' }],
   meta: [
-    { content: 'Website Terworking', name: 'description' },
-    {
-      content: 'rgb(245, 158, 11)',
-      name: 'theme-color',
-    },
+    { content: 'rgb(245, 158, 11)', name: 'theme-color' },
+    { content: 'Terworking', property: 'og:site_name' },
+    { content: 'website', property: 'og:type' },
   ],
-  title: computed(() => useTitleTemplate(route.meta.title)),
+  title,
 });
 </script>
 
