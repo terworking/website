@@ -12,10 +12,14 @@ const navigation = computed(() => {
     .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
     .filter(
       // don't list subdirectory items if the subdirectory is there
-      ({ _path, description }, _, array) =>
+      ({ _path, description }, index, array) =>
         // description is undefined on subdirectory
         // this will make sure the subdirectory is listed
-        description === undefined ||
+        (description === undefined &&
+          array.findIndex(
+            ({ description, _path: step }) =>
+              description === undefined && _path.startsWith(step)
+          ) === index) ||
         !array.some(
           ({ description, _path: step }) =>
             description === undefined && _path.startsWith(step)
