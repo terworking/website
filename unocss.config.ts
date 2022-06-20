@@ -39,6 +39,9 @@ export default defineConfig({
           'transition': 'background-size 0.3s',
           'margin': '5px 0',
         },
+        'h2 a code,h3 a code,h4 a code': {
+          background: 'transparent',
+        },
         'h2 a:hover,h3 a:hover, h4 a:hover': {
           'background-size': '100% 3px',
         },
