@@ -12,11 +12,10 @@ const useSupabaseClient = () => {
 
 export const useSupabase = () => ({
   key: {
-    bucket: { avatar: 'avatar' as const, gallery: 'gallery' as const },
+    bucket: { avatar: 'avatar' as const },
     table: {
       database: 'database' as const,
       databaseSlowMode: 'database-slowmode' as const,
-      gallery: 'gallery' as const,
     },
   },
   supabase: useSupabaseClient(),

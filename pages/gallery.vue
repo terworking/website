@@ -13,29 +13,7 @@ definePageMeta({
 
 // gallery implementation:
 // https://github.com/xieranmaya/blog/issues/6
-const { data: _data, pending } = useLazyFetch('/api/gallery', {
-  key: 'gallery-data',
-  transform: ({ landscape, portrait }) =>
-    useShuffle(
-      [...landscape, ...portrait].map(({ height, path, width }) => {
-        const [thumbnailHeight, thumbnailWidth] =
-          height > width
-            ? [500, width / (height / 500)]
-            : [height / (width / 500), 500];
-
-        return {
-          height,
-          path,
-          thumbnail: {
-            height: thumbnailHeight,
-            path: `${path}?thumbnail=1`,
-            width: thumbnailWidth,
-          },
-          width,
-        };
-      })
-    ),
-});
+const { data: _data, pending } = useLazyFetch('/api/gallery');
 
 const data: typeof _data = ref([]);
 const dataLength = computed(() => data.value.length);
