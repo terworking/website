@@ -88,7 +88,7 @@ useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
       <ArticleToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
       <ContentRenderer :value="value" prose="~ gray dark:invert" />
     </div>
-    <ArticleContentNavigation :previous="previous" :next="next" />
+    <ArticleNavigation :previous="previous" :next="next" />
     <AppGraphcomment :disabled="value.comment === false" my-4 />
   </div>
 </template>
