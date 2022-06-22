@@ -5,14 +5,24 @@ const headerSize = useHeaderSize();
 
 const route = useRoute();
 const location = useBrowserLocation(defaultWindow);
-const url = computed(
-  () =>
-    location.value.href ??
-    `${location.value.origin ?? 'https://terworking.vercel.app'}${route.path}`
+const host = computed(
+  () => location.value.origin ?? 'https://terworking.vercel.app'
 );
-const image = computed(() => route.meta.image);
+
+const { data: randomImage } = await useAsyncData('random-image', async () => {
+  const data = await $fetch('/api/gallery');
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const image = data.filter(({ height, width }) => width > height).pop()!;
+
+  return `${host.value}${image.path}`;
+});
+const image = computed(() => route.meta.image ?? randomImage.value);
+
+const url = computed(() => location.value.href ?? `${host.value}${route.path}`);
 const title = computed(() => useTitleTemplate(route.meta.title));
 const description = computed(() => route.meta.description ?? title.value);
+
 useHead(useSeoHead({ description, image, title, url }));
 
 useHead({
