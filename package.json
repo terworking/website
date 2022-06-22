@@ -5,7 +5,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "preview": "nuxi preview",
-    "lint": "eslint . --ext .vue,.ts",
+    "lint": "eslint . --ext .vue,.ts --cache",
     "prepare": "husky install"
   },
   "devDependencies": {
