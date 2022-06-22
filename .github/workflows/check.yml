@@ -27,6 +27,9 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Generate Nuxt types
+        run: yarn nuxi prepare
+
       - name: Run typecheck
         run: yarn typecheck
 
