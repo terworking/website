@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Navigation } from '~~/typings/content';
+import type { Navigation } from '~~/types/content';
 
 const properties = defineProps({
   path: { default: () => useRoute().path, type: String },

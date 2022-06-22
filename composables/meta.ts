@@ -1,5 +1,5 @@
 import { MaybeRef } from '@vueuse/shared';
-import { Article } from '~~/typings/content';
+import { Article } from '~~/types/content';
 
 interface HeadItems {
   description?: MaybeRef<string | undefined>;

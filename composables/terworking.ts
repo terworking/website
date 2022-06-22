@@ -1,6 +1,6 @@
 // @unocss-include
 
-import { Social, Member } from '~~/typings/terworking';
+import { Social, Member } from '~~/types/terworking';
 
 const member = [
   { day: 6, month: 5, name: 'Adi Zuliarrahman', year: 2003 },

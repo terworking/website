@@ -3,7 +3,7 @@ import { filetypemime } from 'magic-bytes.js';
 
 import { useSupabase } from '~~/composables/supabase';
 import { useTerworking } from '~~/composables/terworking';
-import { definitions } from '~~/typings/database';
+import { definitions } from '~~/types/database';
 
 interface InputBody {
   name: string;

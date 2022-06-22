@@ -1,4 +1,4 @@
-import { GraphcommentParameters } from '~~/typings/graphcomment';
+import { GraphcommentParameters } from '~~/types/graphcomment';
 
 declare global {
   interface Window {

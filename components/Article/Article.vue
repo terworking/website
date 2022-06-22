@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/typings/content';
+import type { Article, Navigation } from '~~/types/content';
 
 const properties = defineProps<{ value: Article; navigation: Navigation[] }>();
 const { value, navigation: navigationRaw } = toRefs(properties);

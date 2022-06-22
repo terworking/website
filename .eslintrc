@@ -5,7 +5,7 @@
     "node": true
   },
   "ignorePatterns": [
-    "typings/database.ts" // automatically generated
+    "types/database.ts" // automatically generated
   ],
   "extends": [
     "eslint:recommended",

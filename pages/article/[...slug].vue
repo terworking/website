@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/typings/content';
+import type { Article, Navigation } from '~~/types/content';
 
 definePageMeta({ name: 'Article' });
 
