@@ -17,7 +17,7 @@ const loadGraphcomment = (identifier: string, theme?: string) => {
 
   const graphcommentParameters = {
     disable_ads: true,
-    graphcomment_id: config.public.graphcommentId as string,
+    graphcomment_id: config.public.graphcommentId,
     theme,
     uid: identifier,
   } as GraphcommentParameters;
