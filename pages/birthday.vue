@@ -1,55 +1,36 @@
 <script setup lang="ts">
-import type { BirthdayResult } from '~~/typings/birthday';
-import type { Member } from '~~/typings/terworking';
-
 definePageMeta({
   title: 'Birthday countdown',
 });
 
-const { member: members } = useTerworking();
-
-const selectedMember = useState(
-  'selected',
-  () => members[Math.floor(Math.random() * members.length)]
-);
-
 const now = useNow({ interval: 1000 });
 
-const birthdayRanges = computed(() =>
-  members
-    .map((member) => ({
-      ms:
-        now.value.valueOf() -
-        new Date(
-          now.value.getFullYear(),
-          member.month - 1,
-          member.day
-        ).valueOf(),
-      ...member,
+const { data } = await useAsyncData('birthday-data', async () => {
+  const { member } = useTerworking();
+
+  const ranges = member
+    .map((it) => ({
+      seconds: Math.floor(
+        (now.value.valueOf() -
+          new Date(now.value.getFullYear(), it.month - 1, it.day).valueOf()) /
+          1000
+      ),
+      ...it,
     }))
-    .sort((a, b) => a.ms - b.ms)
-);
+    .sort((a, b) => a.seconds - b.seconds);
 
-const throttledBirthdayRanges = ref(birthdayRanges.value);
+  const [closest, farthest] = [
+    ranges.filter(({ seconds }) => seconds < 0).pop() as typeof member[number],
+    ranges.find(({ seconds }) => seconds > 0) as typeof member[number],
+  ];
 
-watch(
-  birthdayRanges,
-  useThrottleFn(
-    () => (throttledBirthdayRanges.value = birthdayRanges.value),
-    60_000,
-    true,
-    true
-  )
-);
+  return { closest, farthest, members: member };
+});
 
-const closest = computed<Member>(
+const selectedMember = useState(
+  'birthday-selected',
   () =>
-    [...throttledBirthdayRanges.value]
-      .reverse()
-      .find(({ ms }) => ms < 0) as Member
-);
-const farthest = computed<Member>(
-  () => throttledBirthdayRanges.value.find(({ ms }) => ms > 0) as Member
+    data.value.members[Math.floor(Math.random() * data.value.members.length)]
 );
 
 const birthdayIsThisYear = computed(() => {
@@ -84,7 +65,7 @@ const secondsUntilBirthday = computed(() => {
 
 const message = computed(() => `berusia ${birthdayAge.value} tahun`);
 
-const _classes = [
+const classes = ref([
   [
     'bg-lime-200',
     'divide-lime-800',
@@ -109,16 +90,11 @@ const _classes = [
     'dark:bg-indigo-800',
     'dark:divide-indigo-200',
   ],
-];
-const classes = ref(_classes);
+]);
 
-watch(
-  selectedMember,
-  useDebounceFn(() => (classes.value = useShuffle(_classes)), 250),
-  {
-    immediate: true,
-  }
-);
+watch(selectedMember, () => (classes.value = useShuffle(classes.value)), {
+  immediate: true,
+});
 
 const secondsInMinute = 60;
 const secondsInHour = secondsInMinute * 60;
@@ -143,84 +119,86 @@ const results = computed(() => {
     { colorClass: classes.value[1], key: 'hours', value: hoursLeft },
     { colorClass: classes.value[2], key: 'mins', value: minutesLeft },
     { colorClass: classes.value[3], key: 'secs', value: secondsLeft },
-  ] as BirthdayResult[];
+  ];
 });
 </script>
 
 <template>
-  <div md="max-w-xl mx-auto px-10">
-    <div my-5 p-5 gap-6 grid>
-      <h1 font-semibold text-5xl text-center mx-auto>Birthday countdown</h1>
+  <div m-auto max-w-2xl p="4 md:y-8">
+    <div card flex="~ col" items-center p="x-6 y-12" space-y-8>
+      <h1 font-semibold text-5xl text-center>Birthday countdown</h1>
       <select
         v-model="selectedMember"
         p-3
-        border-transparent
+        border
+        border-card
         rounded-lg
-        w-full
-        bg-secondary
+        w="3/4"
+        bg-transparent
       >
         <option disabled selected>Please select one</option>
-        <option :value="closest">Closest ({{ closest.name }})</option>
-        <option :value="farthest">Farthest ({{ farthest.name }})</option>
-        <option v-for="member of members" :key="member.name" :value="member">
+        <option v-if="data.closest" :value="data.closest">
+          Closest ({{ data.closest.name }})
+        </option>
+        <option v-if="data.farthest" :value="data.farthest">
+          Farthest ({{ data.farthest.name }})
+        </option>
+        <option
+          v-for="member of data.members"
+          :key="member.name"
+          :value="member"
+        >
           {{ member.name }}
         </option>
       </select>
-      <div
-        flex
-        items-center
-        justify-center
-        h-20
-        w="3/4 md:4/5"
-        text-center
-        mx-auto
-        gap-2
-      >
-        <TransitionGroup name="birthday-cards">
-          <template v-for="{ colorClass, key, value } of results" :key="key">
-            <div
-              v-if="value !== 0"
-              flex="~ col"
-              p-3
-              rounded-2xl
-              divide-y
-              transition-all-250
-              :class="colorClass"
-            >
-              <span text="2xl md:3xl">
-                {{ value }}
-              </span>
-              <span font-light text="lg md:xl">{{ key }}</span>
-            </div>
-          </template>
-        </TransitionGroup>
+      <div flex items-center justify-center text-center space-x-2>
+        <ClientOnly>
+          <TransitionGroup name="birthday-card">
+            <template v-for="{ colorClass, key, value } of results" :key="key">
+              <div
+                v-if="value !== 0"
+                flex="~ col"
+                p-3
+                rounded-2xl
+                divide-y
+                transition-all-250
+                :class="colorClass"
+              >
+                <span font-medium text="2xl md:3xl">
+                  {{ value }}
+                </span>
+                <span font-light text="lg md:xl">{{ key }}</span>
+              </div>
+            </template>
+          </TransitionGroup>
+        </ClientOnly>
       </div>
-      <div flex="~ col" text-center>
-        <p text="2xl md:3xl">{{ selectedMember.name }}</p>
-        <p text="lg md:xl">
+      <div flex="~ col" text-center max-w-md>
+        <span text="3xl md:4xl">{{ selectedMember.name }}</span>
+        <span text="xl md:2xl">
           {{ message }}
-        </p>
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.birthday-cards-move,
-.birthday-cards-enter-active,
-.birthday-cards-leave-active {
+.birthday-card-move,
+.birthday-card-enter-active,
+.birthday-card-leave-active {
   transition-property: transform, opacity;
   transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   transition-duration: 0.5s;
 }
 
-.birthday-cards-enter-from,
-.birthday-cards-leave-to {
+.birthday-card-enter-from,
+.birthday-card-leave-to {
   transform: translateY(100%) scale(0.1);
   opacity: 0;
 }
 
-.birthday-cards-leave-active {
+.birthday-card-leave-active {
   position: absolute;
 }
 </style>
