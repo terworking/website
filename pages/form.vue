@@ -4,9 +4,9 @@ import { reset as resetForm, submitForm } from '@formkit/core';
 import { createInput } from '@formkit/vue';
 import type { H3Error } from 'h3';
 
-import FormCropperVue from '~~/components/Form/FormCropper.vue';
+import { FormCropper } from '#components';
 
-const cropper = createInput(FormCropperVue);
+const cropper = createInput(FormCropper);
 
 definePageMeta({
   title: 'Form',
@@ -95,7 +95,7 @@ const validateInstagram = ({ value }: FormKitNode) => {
 </script>
 
 <template>
-  <div max-w-xl mx-auto md:px-10 :class="{ 'cursor-not-allowed': loading }">
+  <div m-auto max-w-2xl p="4 md:y-8">
     <AppAlert
       :show="showAlert"
       v-bind="alertProperties"
@@ -110,70 +110,72 @@ const validateInstagram = ({ value }: FormKitNode) => {
         </template>
       </Teleport>
     </ClientOnly>
-    <FormKit
-      id="form"
-      :actions="false"
-      :disabled="loading"
-      type="form"
-      mt-5
-      p="x-5 t-5"
-      @submit="submit"
-    >
-      <h1 font-semibold text-5xl text-center mb-4>Form</h1>
+    <div card>
       <FormKit
-        type="select"
-        label="Name"
-        name="name"
-        validation="required"
-        placeholder="Select your name"
-        :options="names ?? []"
-      ></FormKit
-      ><FormKit
-        type="text"
-        label="Quote"
-        name="quote"
-        placeholder="Type your quote"
-        validation="length:0,50"
-      ></FormKit
-      ><FormKit
-        type="text"
-        label="Instagram"
-        name="instagram"
-        placeholder="Type your username"
-        validation="validateInstagram"
-        :validation-rules="{ validateInstagram }"
-        :validation-messages="{
-          validateInstagram: 'Your username is invalid',
-        }"
-      ></FormKit
-      ><FormKit
-        :type="cropper"
-        inner-class="$reset rounded-lg mb-1"
-        outer-class="overflow-x-auto"
-        label="Image"
-        name="avatar"
-        validation="required"
-      ></FormKit>
-    </FormKit>
-    <div flex p="x-5 b-5" space-x-5>
-      <AppButton
+        id="form"
+        :actions="false"
         :disabled="loading"
-        flex="1 inline"
-        before="content-none mr-0 h-5 w-0 border-2 border-transparent rounded-full transition-margin-500"
-        disabled:before="mr-3 w-5 border-current border-r-transparent animate-spin"
-        @click="submitForm('form')"
+        type="form"
+        mt-6
+        p="x-6 t-6"
+        @submit="submit"
       >
-        {{ loading ? 'Submitting...' : 'Submit' }}
-      </AppButton>
-      <AppButton
-        :disabled="loading"
-        px-4
-        class="!bg-transparent !text-body"
-        :class="{ '!text-opacity-50': loading }"
-        @click="reset"
-      >
-        Reset
-      </AppButton>
+        <h1 font-semibold text-5xl text-center mb-4>Form</h1>
+        <FormKit
+          type="select"
+          label="Name"
+          name="name"
+          validation="required"
+          placeholder="Select your name"
+          :options="names ?? []"
+        ></FormKit
+        ><FormKit
+          type="text"
+          label="Quote"
+          name="quote"
+          placeholder="Type your quote"
+          validation="length:0,50"
+        ></FormKit
+        ><FormKit
+          type="text"
+          label="Instagram"
+          name="instagram"
+          placeholder="Type your username"
+          validation="validateInstagram"
+          :validation-rules="{ validateInstagram }"
+          :validation-messages="{
+            validateInstagram: 'Your username is invalid',
+          }"
+        ></FormKit
+        ><FormKit
+          :type="cropper"
+          inner-class="$reset rounded-lg mb-1"
+          outer-class="overflow-x-auto"
+          label="Image"
+          name="avatar"
+          validation="required"
+        ></FormKit>
+      </FormKit>
+      <div flex p="x-6 b-6" space-x-6>
+        <AppButton
+          :disabled="loading"
+          flex="1 inline"
+          before="content-none mr-0 h-6 w-0 border-2 border-transparent rounded-full transition-margin-500"
+          disabled:before="mr-3 w-6 border-current border-r-transparent animate-spin"
+          @click="submitForm('form')"
+        >
+          {{ loading ? 'Submitting...' : 'Submit' }}
+        </AppButton>
+        <AppButton
+          :disabled="loading"
+          px-4
+          class="!bg-transparent !text-body"
+          :class="{ '!text-opacity-50': loading }"
+          @click="reset"
+        >
+          Reset
+        </AppButton>
+      </div>
     </div>
   </div>
 </template>
