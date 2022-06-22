@@ -13,25 +13,15 @@ definePageMeta({
 
 // gallery implementation:
 // https://github.com/xieranmaya/blog/issues/6
-const { data: _data, pending } = useLazyFetch('/api/gallery');
+const { data: _data } = await useFetch('/api/gallery');
 
-const data: typeof _data = ref([]);
-const dataLength = computed(() => data.value.length);
-watch(
-  pending,
-  (value) => {
-    if (!value) {
-      data.value.push(..._data.value.slice(0, 14));
-    }
-  },
-  { immediate: true }
-);
+const data: typeof _data = ref(_data.value.slice(0, 14));
 
 useInfiniteScroll(
   defaultWindow,
   () => {
     data.value.push(
-      ..._data.value.slice(dataLength.value, dataLength.value + 6)
+      ..._data.value.slice(data.value.length, data.value.length + 6)
     );
   },
   { distance: 200 }
@@ -88,8 +78,8 @@ onMounted(() => {
     });
     lightbox.value.addFilter('numItems', () => _data.value.length);
     lightbox.value.addFilter('itemData', (_, index) => {
-      if (index > dataLength.value - 1) {
-        data.value.push(..._data.value.slice(dataLength.value, index + 1));
+      if (index > data.value.length - 1) {
+        data.value.push(..._data.value.slice(data.value.length, index + 1));
       }
 
       const {
