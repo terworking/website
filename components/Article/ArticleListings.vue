@@ -45,6 +45,7 @@ const pathIsComplete = computed(() => {
 
 const title = computed(() => useTitleTemplate(`${path.value} Navigation`));
 
+// @ts-expect-error nuxt type error
 useHead({ title });
 </script>
 

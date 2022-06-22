@@ -51,6 +51,7 @@ const image = computed(() => value.value.image);
 useHead(useSeoHead({ description, image, title }));
 useHead(useSeoArticleHead(value));
 
+// @ts-expect-error nuxt type error
 useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
 </script>
 

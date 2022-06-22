@@ -19,6 +19,7 @@ useHead({
     { content: 'Terworking', property: 'og:site_name' },
     { content: 'website', property: 'og:type' },
   ],
+  // @ts-expect-error nuxt type error
   title,
 });
 </script>
