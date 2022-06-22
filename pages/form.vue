@@ -1,31 +1,26 @@
 <script setup lang="ts">
 import { reset as resetForm, submitForm, FormKitNode } from '@formkit/core';
 import { createInput } from '@formkit/vue';
+import { H3Error } from 'h3';
 
 import FormCropperVue from '~~/components/FormCropper.vue';
-import FormInstagramInputVue from '~~/components/FormInstagramInput.vue';
 
 const cropper = createInput(FormCropperVue);
-const instagram = createInput(FormInstagramInputVue);
 
 definePageMeta({
   title: 'Form',
 });
 
-const { isOpen } = useFormStatus();
 const { member } = useTerworking();
-const { data: names, refresh: refreshNames } = useAsyncData(
-  'form',
+const { data: names, refresh: refreshNames } = await useAsyncData(
+  'form-select',
   async () => {
-    if (!isOpen) return;
-
-    const response = await $fetch('/api/member', { params: { pick: 'name' } });
-
-    if (typeof response === 'string' || response.length === member.length)
-      return;
+    // fetch the inputted data till now
+    const data = await $fetch('/api/member');
 
     return member.map(({ name }) => ({
-      attrs: { disabled: response.some((it) => it.name === name) },
+      // disable the option if it's already been submitted
+      attrs: { disabled: data.some((it) => it.name === name) },
       label: name,
       value: name,
     }));
@@ -34,8 +29,6 @@ const { data: names, refresh: refreshNames } = useAsyncData(
 
 const loading = ref(false);
 const success = ref(false);
-const closed = computed(() => names.value === undefined);
-const disabled = computed(() => loading.value || closed.value);
 
 const reset = async () => {
   resetForm('form');
@@ -44,9 +37,7 @@ const reset = async () => {
 
 const showAlert = ref(false);
 const alertDescription = ref('');
-const closeAlert = () => {
-  showAlert.value = false;
-};
+const closeAlert = () => (showAlert.value = false);
 const closeAlertWithReset = async () => {
   closeAlert();
   await reset();
@@ -54,31 +45,37 @@ const closeAlertWithReset = async () => {
 const alertProperties = computed(() => {
   return success.value
     ? {
-        button: { primary: 'OK' },
-        options: { closeOnClickOutside: true },
-        title: 'Success',
-        type: 'success' as const,
+        value: {
+          button: { primary: 'OK' },
+          options: { closeOnClickOutside: true },
+          title: 'Success',
+          type: 'success' as const,
+        },
       }
     : {
-        button: { primary: 'RESET', secondary: 'CLOSE' },
-        description: alertDescription.value,
         onClickSecondary: closeAlert,
-        title: 'Failed',
-        type: 'error' as const,
+        value: {
+          button: { primary: 'RESET', secondary: 'CLOSE' },
+          description: alertDescription.value,
+          title: 'Failed',
+          type: 'error' as const,
+        },
       };
 });
 
 const submit = async (body: unknown) => {
   loading.value = true;
 
-  const response = await $fetch('/api/form', {
+  const response = await $fetch('/api/submit', {
     body: body as never,
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
-  });
+  }).catch((error) => error.data as H3Error);
 
   success.value = response === 'OK';
-  alertDescription.value = response;
+  if (typeof response !== 'string') {
+    alertDescription.value = response.message;
+  }
 
   showAlert.value = true;
   await until(showAlert).toBe(false);
@@ -97,18 +94,25 @@ const validateInstagram = ({ value }: FormKitNode) => {
 </script>
 
 <template>
-  <div max-w-xl md="mx-auto px-10" :class="{ 'cursor-not-allowed': disabled }">
+  <div max-w-xl mx-auto md:px-10 :class="{ 'cursor-not-allowed': loading }">
     <AppAlert
       :show="showAlert"
       v-bind="alertProperties"
       @click-primary="closeAlertWithReset"
       @close="closeAlertWithReset"
     />
-    <div v-if="disabled" fixed z-99 w-full h-full cursor-not-allowed></div>
+    <ClientOnly>
+      <Teleport to="body">
+        <template v-if="loading">
+          <Body overflow-hidden />
+          <div fixed z-100 inset-0 cursor-not-allowed></div>
+        </template>
+      </Teleport>
+    </ClientOnly>
     <FormKit
       id="form"
       :actions="false"
-      :disabled="disabled"
+      :disabled="loading"
       type="form"
       mt-5
       p="x-5 t-5"
@@ -131,7 +135,7 @@ const validateInstagram = ({ value }: FormKitNode) => {
         validation="length:0,50"
       ></FormKit
       ><FormKit
-        :type="instagram"
+        type="text"
         label="Instagram"
         name="instagram"
         placeholder="Type your username"
@@ -152,8 +156,7 @@ const validateInstagram = ({ value }: FormKitNode) => {
     </FormKit>
     <div flex p="x-5 b-5" space-x-5>
       <AppButton
-        :disabled="disabled"
-        :class="{ 'remove-before': closed }"
+        :disabled="loading"
         flex="1 inline"
         before="content-none mr-0 h-5 w-0 border-2 border-transparent rounded-full transition-margin-500"
         disabled:before="mr-3 w-5 border-current border-r-transparent animate-spin"
@@ -162,10 +165,10 @@ const validateInstagram = ({ value }: FormKitNode) => {
         {{ loading ? 'Submitting...' : 'Submit' }}
       </AppButton>
       <AppButton
-        :disabled="disabled"
+        :disabled="loading"
         px-4
         class="!bg-transparent !text-body"
-        :class="{ '!text-opacity-50': disabled }"
+        :class="{ '!text-opacity-50': loading }"
         @click="reset"
       >
         Reset
@@ -173,9 +176,3 @@ const validateInstagram = ({ value }: FormKitNode) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.remove-before:before {
-  content: none;
-}
-</style>

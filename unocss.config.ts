@@ -1,4 +1,4 @@
-// @ts-expect-error It should work
+// @ts-expect-error nuxt does not support Node16 module resolution
 import formkitUnoCSS from '@formkit/themes/unocss';
 
 import {

@@ -35,8 +35,6 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      formIsOnSlowMode: '',
-      formIsOpen: '',
       graphcommentId: '',
     },
   },
