@@ -3,7 +3,7 @@ import { reset as resetForm, submitForm, FormKitNode } from '@formkit/core';
 import { createInput } from '@formkit/vue';
 import { H3Error } from 'h3';
 
-import FormCropperVue from '~~/components/FormCropper.vue';
+import FormCropperVue from '~~/components/Form/FormCropper.vue';
 
 const cropper = createInput(FormCropperVue);
 
