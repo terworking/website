@@ -44,8 +44,8 @@ const article = computedAsync(
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
     <ArticleContent v-if="article" :value="article" :navigation="navigation" />
-    <PlaceholderArticleNavigation v-else-if="navigationPending" />
+    <PlaceholderArticleListings v-else-if="navigationPending" />
     <PlaceholderArticleContent v-else-if="articlePending" />
-    <ArticleNavigation v-else :value="navigation" />
+    <ArticleListings v-else :value="navigation" />
   </div>
 </template>
