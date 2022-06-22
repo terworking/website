@@ -40,7 +40,7 @@ export default defineEventHandler(async ({ event }) => {
     filename,
     url,
     output: 'webp',
-    q: '75',
+    q: '80',
     ...thumbnailParameter,
   });
 
