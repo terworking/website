@@ -27,11 +27,13 @@ const fileInputOnChange = (event: Event) => {
 const cropperOnChange = ({ canvas }: CropperResult) => {
   if (canvas !== undefined) {
     canvas.toBlob(
-      async (blob) => {
+      (blob) => {
         if (blob) {
-          const arrayBuffer = await blob.arrayBuffer();
-          const result = Buffer.from(arrayBuffer).toString('base64');
-          properties.context.node.input(result);
+          blob
+            .arrayBuffer()
+            .then((arrayBuffer) => Buffer.from(arrayBuffer).toString('base64'))
+            .then((result) => properties.context.node.input(result))
+            .catch(console.error);
         }
       },
       'image/webp',

@@ -9,14 +9,14 @@ const date = computed(() => {
   const time = new Date(value.value.created ?? '');
   if (time.toString() === 'Invalid Date') return;
 
-  const format = new Intl.DateTimeFormat(undefined, {
+  const dateTimeFormat = new Intl.DateTimeFormat(undefined, {
     day: 'numeric',
     month: '2-digit',
     weekday: 'long',
     year: 'numeric',
-  }).format;
+  });
 
-  return format(time);
+  return dateTimeFormat.format(time);
 });
 
 const currentDirectory = computed(

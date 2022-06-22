@@ -2,7 +2,7 @@ import type { RouterConfig } from '@nuxt/schema';
 
 export default {
   scrollBehavior: (to) => {
-    if (to.hash) {
+    if (to.hash !== '') {
       const heading = document.querySelector(to.hash);
 
       if (heading instanceof HTMLHeadingElement) {

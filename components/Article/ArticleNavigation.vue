@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FlatNavigation } from '~~/types/content';
 
-const properties = defineProps<{
+defineProps<{
   previous?: FlatNavigation;
   next?: FlatNavigation;
 }>();

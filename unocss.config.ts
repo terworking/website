@@ -15,6 +15,7 @@ import { presetScrollbar } from 'unocss-preset-scrollbar';
 
 export default defineConfig({
   presets: [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     formkitUnoCSS(),
     presetAttributify(),
     presetIcons({

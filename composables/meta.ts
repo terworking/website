@@ -39,23 +39,20 @@ export const useSeoHead = reactify((items: HeadItems) => {
   return { link, meta };
 });
 
-export const useSeoArticleHead = reactify((article: Article) => {
-  const meta = [] as Record<string, string>[];
+export const useSeoArticleHead = reactify(
+  (article: Pick<Article, 'author' | 'created' | 'modified'>) => {
+    const meta = [] as Record<string, string>[];
 
-  const pick = {
-    author: 'author',
-    created: 'published_time',
-    modified: 'modified_time',
-  };
-  for (const [key, value] of Object.entries(article)) {
-    if (key in pick && value !== undefined) {
-      // @ts-expect-error see^
-      meta.push({ content: value, property: `article:${pick[key]}` });
+    const { author, created, modified } = article;
+    const property = ['author', 'published_time', 'modified_time'];
+    for (const [index, value] of [author, created, modified].entries()) {
+      if (value !== undefined)
+        meta.push({ content: value, property: `article:${property[index]}` });
     }
-  }
 
-  return { meta };
-});
+    return { meta };
+  }
+);
 
 export const useTitleTemplate = (title?: string) =>
   title !== undefined ? `${title} - Terworking` : 'Terworking';

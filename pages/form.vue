@@ -2,11 +2,12 @@
 import type { FormKitNode } from '@formkit/core';
 import { reset as resetForm, submitForm } from '@formkit/core';
 import { createInput } from '@formkit/vue';
+import { Component } from '@nuxt/schema';
 import type { H3Error } from 'h3';
-
+import { FetchError } from 'ohmyfetch';
 import { FormCropper } from '#components';
 
-const cropper = createInput(FormCropper);
+const cropper = createInput(FormCropper as unknown as Component);
 
 definePageMeta({
   title: 'Form',
@@ -71,7 +72,7 @@ const submit = async (body: unknown) => {
     body: body as never,
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
-  }).catch((error) => error.data as H3Error);
+  }).catch((error) => (error as FetchError).data as H3Error);
 
   success.value = response === 'OK';
   if (typeof response !== 'string') {

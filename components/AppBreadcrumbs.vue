@@ -11,7 +11,7 @@ const { path, showLashPath } = toRefs(properties);
 const items = computed(() => {
   const split = path.value.split('/').slice(1);
 
-  return showLashPath.value === true ? split : split.slice(0, -1);
+  return showLashPath.value ? split : split.slice(0, -1);
 });
 
 const itemsHref = computed(() =>
