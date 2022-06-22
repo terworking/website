@@ -1,5 +1,10 @@
 import { FlatNavigation, Navigation } from '~~/typings/content';
 
+const headerSizeRem = 4.5;
+export const useHeaderSize = () => ({
+  height: { rem: headerSizeRem, px: useRemToPx(headerSizeRem) },
+});
+
 // https://stackoverflow.com/a/42769683
 export const useRemToPx = (rem: number) => {
   try {
