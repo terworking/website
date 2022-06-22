@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Buffer } from 'buffer';
-import { FormKitFrameworkContext } from '@formkit/core';
-import { Cropper, CircleStencil, CropperResult } from 'vue-advanced-cropper';
+import type { FormKitFrameworkContext } from '@formkit/core';
+import { Cropper, CircleStencil } from 'vue-advanced-cropper';
+import type { CropperResult } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 import 'vue-advanced-cropper/dist/theme.compact.css';
 

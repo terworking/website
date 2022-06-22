@@ -1,9 +1,10 @@
-import { H3Event, createError } from 'h3';
+import type { H3Event } from 'h3';
+import { createError } from 'h3';
 import { filetypemime } from 'magic-bytes.js';
 
 import { useSupabase } from '~~/composables/supabase';
 import { useTerworking } from '~~/composables/terworking';
-import { definitions } from '~~/types/database';
+import type { definitions } from '~~/types/database';
 
 interface InputBody {
   name: string;

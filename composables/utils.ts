@@ -1,4 +1,4 @@
-import { FlatNavigation, Navigation } from '~~/types/content';
+import type { FlatNavigation, Navigation } from '~~/types/content';
 
 const headerSizeRem = 4.5;
 export const useHeaderSize = () => ({

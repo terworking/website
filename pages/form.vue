@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { reset as resetForm, submitForm, FormKitNode } from '@formkit/core';
+import type { FormKitNode } from '@formkit/core';
+import { reset as resetForm, submitForm } from '@formkit/core';
 import { createInput } from '@formkit/vue';
-import { H3Error } from 'h3';
+import type { H3Error } from 'h3';
 
 import FormCropperVue from '~~/components/Form/FormCropper.vue';
 

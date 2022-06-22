@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defaultWindow } from '@vueuse/core';
 
-import { GraphcommentParameters } from '~~/types/graphcomment';
+import type { GraphcommentParameters } from '~~/types/graphcomment';
 
 const properties = defineProps<{ disabled?: boolean }>();
 

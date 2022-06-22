@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlertProperties } from '~~/types/alert';
+import type { AlertProperties } from '~~/types/alert';
 
 const properties = defineProps<{ show: boolean; value: AlertProperties }>();
 const emit = defineEmits(['clickPrimary', 'clickSecondary', 'close']);

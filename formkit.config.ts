@@ -1,7 +1,7 @@
 // @unocss-include
 
 import { generateClasses } from '@formkit/themes';
-import { DefaultConfigOptions } from '@formkit/vue';
+import type { DefaultConfigOptions } from '@formkit/vue';
 
 export default {
   config: {

@@ -1,5 +1,5 @@
 import { useSupabase } from '~~/composables/supabase';
-import { definitions } from '~~/types/database';
+import type { definitions } from '~~/types/database';
 
 const {
   supabase,
