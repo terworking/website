@@ -1,7 +1,7 @@
 import { shuffle } from 'lodash-es';
 
 import { useGDrive } from '~~/composables/gdrive';
-import { GalleryData } from '~~/typings/gallery';
+import { GalleryData } from '~~/types/gallery';
 
 const gdrive = useGDrive();
 

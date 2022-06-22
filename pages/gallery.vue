@@ -42,6 +42,7 @@ const lightbox = ref<PhotoSwipeLightBoxType>();
 onMounted(() => {
   if (lightbox.value === undefined) {
     // https://photoswipe.com/options/
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     lightbox.value = new PhotoSwipeLightBox({
       children: 'a',
       gallery: '#gallery',
@@ -68,7 +69,8 @@ onMounted(() => {
           pswp.on('change', () => {
             element.setAttribute(
               'href',
-              `${pswp.currSlide.data.src}?download=1`
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              `${pswp.currSlide.data.src!}?download=1`
             );
           });
         },
