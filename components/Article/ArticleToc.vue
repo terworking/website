@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Toc } from '@nuxt/content/dist/runtime/types';
+import type { Toc } from '@nuxt/content/dist/runtime/types';
 
-const properties = defineProps<{ value: Toc }>();
+defineProps<{ value: Toc }>();
 
 const expanded = ref(false);
 </script>

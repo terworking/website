@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { TocLink } from '@nuxt/content/dist/runtime/types';
+import type { TocLink } from '@nuxt/content/dist/runtime/types';
 
-const properties = defineProps<{ value: TocLink[] }>();
+defineProps<{ value: TocLink[] }>();
 </script>
 
 <template>

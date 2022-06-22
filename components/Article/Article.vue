@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/typings/content';
+import type { Article, Navigation } from '~~/types/content';
 
 const properties = defineProps<{ value: Article; navigation: Navigation[] }>();
 const { value, navigation: navigationRaw } = toRefs(properties);
@@ -8,14 +9,14 @@ const date = computed(() => {
   const time = new Date(value.value.created ?? '');
   if (time.toString() === 'Invalid Date') return;
 
-  const format = new Intl.DateTimeFormat(undefined, {
+  const dateTimeFormat = new Intl.DateTimeFormat(undefined, {
     day: 'numeric',
     month: '2-digit',
     weekday: 'long',
     year: 'numeric',
-  }).format;
+  });
 
-  return format(time);
+  return dateTimeFormat.format(time);
 });
 
 const currentDirectory = computed(
@@ -50,6 +51,7 @@ const image = computed(() => value.value.image);
 useHead(useSeoHead({ description, image, title }));
 useHead(useSeoArticleHead(value));
 
+// @ts-expect-error nuxt type error
 useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
 </script>
 
@@ -88,7 +90,7 @@ useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
       <ArticleToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
       <ContentRenderer :value="value" prose="~ gray dark:invert" />
     </div>
-    <ArticleContentNavigation :previous="previous" :next="next" />
+    <ArticleNavigation :previous="previous" :next="next" />
     <AppGraphcomment :disabled="value.comment === false" my-4 />
   </div>
 </template>

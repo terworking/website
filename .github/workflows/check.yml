@@ -1,4 +1,4 @@
-name: Lint Code Base
+name: Check Code Base
 
 on:
   push:
@@ -30,5 +30,8 @@ jobs:
       - name: Generate Nuxt types
         run: yarn nuxi prepare
 
-      - name: Run ESLint
+      - name: Run typecheck
+        run: yarn typecheck
+
+      - name: Run lint
         run: yarn lint

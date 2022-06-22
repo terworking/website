@@ -1,34 +1,16 @@
 <script setup lang="ts">
-type AlertType = 'success' | 'error';
+import type { AlertProperties } from '~~/types/alert';
 
-interface Button {
-  primary: string;
-  secondary?: string;
-}
-
-interface Options {
-  closeOnClickOutside?: boolean;
-}
-
-interface AlertProperties {
-  button: Button;
-  description?: string;
-  show: boolean;
-  title?: string;
-  type: AlertType;
-  options?: Options;
-}
-
-const properties = defineProps<AlertProperties>();
+const properties = defineProps<{ show: boolean; value: AlertProperties }>();
 const emit = defineEmits(['clickPrimary', 'clickSecondary', 'close']);
 
 const alertContainer = ref<HTMLDivElement>();
 onClickOutside(alertContainer, () => {
-  if (properties.options?.closeOnClickOutside === true) emit('close');
+  if (properties.value.options?.closeOnClickOutside === true) emit('close');
 });
 
 const containerClass = computed(() => {
-  switch (properties.type) {
+  switch (properties.value.type) {
     case 'success':
       return 'text-green shadow-green';
 
@@ -38,7 +20,7 @@ const containerClass = computed(() => {
 });
 
 const iconClass = computed(() => {
-  switch (properties.type) {
+  switch (properties.value.type) {
     case 'success':
       return 'i-ci-check';
 
@@ -48,7 +30,7 @@ const iconClass = computed(() => {
 });
 
 const primaryButtonClass = computed(() => {
-  switch (properties.type) {
+  switch (properties.value.type) {
     case 'success':
       return 'bg-green border-green hover:text-green';
 
@@ -58,7 +40,7 @@ const primaryButtonClass = computed(() => {
 });
 
 const secondaryButtonClass = computed(() => {
-  switch (properties.type) {
+  switch (properties.value.type) {
     case 'success':
       return 'border-green text-green';
 
@@ -102,8 +84,8 @@ const secondaryButtonClass = computed(() => {
             <div border="4 dashed" rounded-full mb-2>
               <div w-full h-full m-0 p-16 :class="iconClass"></div>
             </div>
-            <h1 font-semibold italic text-body text-xl>{{ title }}</h1>
-            <p text="body center">{{ description }}</p>
+            <h1 font-semibold italic text-body text-xl>{{ value.title }}</h1>
+            <p text="body center">{{ value.description }}</p>
             <div
               flex
               justify-around
@@ -112,12 +94,12 @@ const secondaryButtonClass = computed(() => {
               class="children-(h-8 w-24 font-semibold transition-background-color-200 border-2)"
             >
               <button
-                v-if="button.secondary"
+                v-if="value.button.secondary"
                 bg-transparent
                 :class="secondaryButtonClass"
                 @click="emit('clickSecondary')"
               >
-                {{ button.secondary }}
+                {{ value.button.secondary }}
               </button>
               <button
                 hover:bg-transparent
@@ -126,7 +108,7 @@ const secondaryButtonClass = computed(() => {
                 :class="primaryButtonClass"
                 @click="emit('clickPrimary')"
               >
-                {{ button.primary }}
+                {{ value.button.primary }}
               </button>
             </div>
           </div>

@@ -1,9 +1,16 @@
+# Nuxt
 node_modules
 *.log
 .nuxt
 nuxt.d.ts
 .output
 .env
-# Local Netlify folder
+
+# ESLint
+.eslintcache
+
+# Netlify
 .netlify
+
+# Vercel
 .vercel

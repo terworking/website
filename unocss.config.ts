@@ -1,4 +1,4 @@
-// @ts-expect-error It should work
+// @ts-expect-error nuxt does not support Node16 module resolution
 import formkitUnoCSS from '@formkit/themes/unocss';
 
 import {
@@ -15,6 +15,7 @@ import { presetScrollbar } from 'unocss-preset-scrollbar';
 
 export default defineConfig({
   presets: [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     formkitUnoCSS(),
     presetAttributify(),
     presetIcons({
@@ -67,25 +68,24 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: [
-    {
-      'bg-body': 'bg-white dark:bg-dark-800',
-      'bg-card': 'bg-white dark:bg-dark-500',
-      'bg-secondary': 'bg-light-500 dark:bg-dark-500',
-      'bg-placeholder': 'bg-light-900 dark:bg-dark-100',
-      'border-card': 'border-light-900 dark:border-dark-100',
-      'border-primary': 'border-black/20 dark:border-white/20',
-      'text-body': 'text-black dark:text-white',
-      'card': 'bg-card border border-rounded-lg border-card',
-      'content-placeholder': 'bg-placeholder cursor-wait',
-      'text-placeholder':
-        'inline-block mx-1 min-h-1em content-placeholder animate-pulse',
+  shortcuts: {
+    'bg-body': 'bg-white dark:bg-dark-800',
+    'bg-card': 'bg-white dark:bg-dark-500',
+    'bg-secondary': 'bg-light-500 dark:bg-dark-500',
+    'bg-placeholder': 'bg-light-900 dark:bg-dark-100',
+    'border-card': 'border-light-900 dark:border-dark-100',
+    'border-primary': 'border-black/20 dark:border-white/20',
+    'text-body': 'text-black dark:text-white',
+    'card': 'bg-card border border-rounded-lg border-card',
+    'content-placeholder': 'bg-placeholder cursor-wait',
+    'text-placeholder':
+      'inline-block mx-1 min-h-1em content-placeholder animate-pulse',
+  },
+  theme: {
+    colors: {
+      accent: 'var(--accent)',
     },
-    [
-      /^(bg|border|text)-accent$/,
-      ([, v]) => `${v}-$accent dark:${v}-$accent-dark`,
-    ],
-  ],
+  },
   transformers: [
     transformerCompileClass({ classPrefix: 'u-' }),
     transformerDirectives(),

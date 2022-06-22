@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/typings/content';
+import type { Article, Navigation } from '~~/types/content';
 
 definePageMeta({ name: 'Article' });
 
@@ -43,9 +43,9 @@ const article = computedAsync(
 
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
-    <ArticleContent v-if="article" :value="article" :navigation="navigation" />
-    <PlaceholderArticleNavigation v-else-if="navigationPending" />
-    <PlaceholderArticleContent v-else-if="articlePending" />
-    <ArticleNavigation v-else :value="navigation" />
+    <Article v-if="article" :value="article" :navigation="navigation" />
+    <PlaceholderArticleListings v-else-if="navigationPending" />
+    <PlaceholderArticle v-else-if="articlePending" />
+    <ArticleListings v-else :value="navigation" />
   </div>
 </template>

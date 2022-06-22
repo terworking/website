@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defaultWindow } from '@vueuse/core';
 
+import type { GraphcommentParameters } from '~~/types/graphcomment';
+
 const properties = defineProps<{ disabled?: boolean }>();
 
 const loaded = ref(false);
@@ -9,7 +11,19 @@ const show = ref(false);
 const { path } = useRoute();
 const graphcomment = ref<HTMLDivElement>();
 const { y: scrollY } = useScroll(defaultWindow);
-const { load: loadGraphcomment } = useGraphcomment();
+
+const loadGraphcomment = (identifier: string, theme?: string) => {
+  const config = useRuntimeConfig();
+
+  const graphcommentParameters = {
+    disable_ads: true,
+    graphcomment_id: config.public.graphcommentId,
+    theme,
+    uid: identifier,
+  } as GraphcommentParameters;
+
+  window.graphcomment(graphcommentParameters);
+};
 
 const { value: colorMode } = toRefs(useColorMode());
 watch(colorMode, (value) => {

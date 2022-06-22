@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const route = useRoute();
 
-const { data: host } = useAsyncData(
+const { data: host } = await useAsyncData(
   'host',
-  async () => useRequestHeaders().host
+  async () => useRequestHeaders().host,
+  { default: () => 'terworking.vercel.app' }
 );
 const url = computed(() => `https://${host.value}${route.path}`);
 const image = computed(() => route.meta.image);
@@ -18,6 +19,7 @@ useHead({
     { content: 'Terworking', property: 'og:site_name' },
     { content: 'website', property: 'og:type' },
   ],
+  // @ts-expect-error nuxt type error
   title,
 });
 </script>

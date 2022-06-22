@@ -1,6 +1,5 @@
 :root {
   --accent: rgb(217, 119, 6); /* amber-600 */
-  --accent-dark: rgb(245, 158, 11); /* amber-500 */
 
   /* https://github.com/shikijs/shiki/blob/bc915263a0b461f131f9c164c31da2d27d024a96/packages/shiki/themes/github-light.json */
   --shiki-color-text: #24292f;
@@ -18,6 +17,8 @@
 }
 
 .dark {
+  --accent: rgb(245, 158, 11); /* amber-500 */
+
   /* https://github.com/shikijs/shiki/blob/bc915263a0b461f131f9c164c31da2d27d024a96/packages/shiki/themes/github-dark-dimmed.json */
   --shiki-color-text: #adbac7;
   --shiki-color-border: #444c56;

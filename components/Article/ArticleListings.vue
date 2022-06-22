@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Navigation } from '~~/typings/content';
+import type { Navigation } from '~~/types/content';
 
 const properties = defineProps({
   path: { default: () => useRoute().path, type: String },
@@ -45,6 +45,7 @@ const pathIsComplete = computed(() => {
 
 const title = computed(() => useTitleTemplate(`${path.value} Navigation`));
 
+// @ts-expect-error nuxt type error
 useHead({ title });
 </script>
 
@@ -53,7 +54,7 @@ useHead({ title });
     <AppBreadcrumbs p="x-4 y-2" :show-lash-path="pathIsComplete" />
     <nav card bg-body>
       <template v-if="navigation.length > 0">
-        <ArticleNavigationItem
+        <ArticleListingsItem
           v-for="(item, index) of navigation"
           :key="index"
           :value="item"

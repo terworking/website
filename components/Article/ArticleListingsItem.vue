@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { FlatNavigation } from '~~/typings/content';
+import type { FlatNavigation } from '~~/types/content';
 
-const properties = defineProps<{ value: FlatNavigation }>();
+defineProps<{ value: FlatNavigation }>();
 </script>
 
 <template>

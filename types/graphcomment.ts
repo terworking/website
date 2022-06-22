@@ -4,5 +4,4 @@ export interface GraphcommentParameters {
   disable_ads: boolean;
   uid: string;
   theme?: string;
-  target?: HTMLElement;
 }
