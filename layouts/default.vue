@@ -15,7 +15,7 @@ const { data: randomImage } = await useAsyncData('random-image', async () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const image = data.filter(({ height, width }) => width > height).pop()!;
 
-  return `${host.value}${image.path}`;
+  return `${host.value}${image.thumbnail.path}`;
 });
 const image = computed(() => route.meta.image ?? randomImage.value);
 
