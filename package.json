@@ -5,7 +5,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "preview": "nuxi preview",
-    "lint": "eslint . --ext .vue,.ts --cache",
+    "lint": "eslint . --ext .vue,.ts",
     "typecheck": "nuxi typecheck",
     "prepare": "husky install"
   },
