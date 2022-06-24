@@ -69,7 +69,9 @@ onMounted(() => {
       });
     });
 
-    lightbox.value.addFilter('thumbEl', (thumbnail, _, index) => {
+    lightbox.value.addFilter('thumbEl', (thumbnail, _, index_) => {
+      const index =
+        index_ >= data.value.length ? data.value.length - 1 : index_;
       const candidate = gallery.value?.querySelector(
         `[data-id="${index}"] img`
       );
@@ -78,16 +80,12 @@ onMounted(() => {
     });
     lightbox.value.addFilter('numItems', () => _data.value.length);
     lightbox.value.addFilter('itemData', (_, index) => {
-      if (index > data.value.length - 1) {
-        data.value.push(..._data.value.slice(data.value.length, index + 1));
-      }
-
       const {
         height,
         path,
         thumbnail: { path: msrc },
         width,
-      } = data.value[index];
+      } = _data.value[index];
       return { height, msrc, src: path, width };
     });
 
