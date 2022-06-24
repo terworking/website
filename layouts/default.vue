@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const route = useRoute();
+const headerSize = useHeaderSize();
 
+const route = useRoute();
 const { data: host } = await useAsyncData(
   'host',
   async () => useRequestHeaders().host,
@@ -28,9 +29,14 @@ useHead({
   <div>
     <TheHeader />
     <TheAside />
-    <main>
+    <main
+      :style="{
+        'min-height': `calc(100vh - calc(${headerSize.height.rem}rem * 2))`,
+      }"
+    >
       <slot />
     </main>
+    <TheFooter />
   </div>
 </template>
 

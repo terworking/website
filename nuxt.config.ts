@@ -20,7 +20,7 @@ export default defineNuxtConfig({
       },
     ],
   },
-  css: ['@/assets/css/main.css'],
+  css: ['~~/assets/css/main.css', 'hint.css'],
   lodash: {
     exclude: ['now'], // I need useNow from vueuse
   },
