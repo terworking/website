@@ -13,15 +13,23 @@ definePageMeta({
 
 // gallery implementation:
 // https://github.com/xieranmaya/blog/issues/6
-const { data: _data } = await useFetch('/api/gallery');
+const { data: data_ } = await useFetch('/api/gallery');
 
-const data: typeof _data = ref(_data.value.slice(0, 14));
+const data: typeof data_ = ref(data_.value.slice(0, 14));
+
+const loaded = ref<string[]>([]);
+const imageOnLoad = async (event: Event) => {
+  const element = event.target as HTMLImageElement;
+  await until(() => element.complete).toBe(true);
+  const { pathname, search } = new URL(element.src);
+  loaded.value.push(`${pathname}${search}`);
+};
 
 useInfiniteScroll(
   defaultWindow,
   () => {
     data.value.push(
-      ..._data.value.slice(data.value.length, data.value.length + 6)
+      ...data_.value.slice(data.value.length, data.value.length + 6)
     );
   },
   { distance: 200 }
@@ -78,14 +86,14 @@ onMounted(() => {
 
       return (candidate ? candidate : thumbnail) as HTMLElement;
     });
-    lightbox.value.addFilter('numItems', () => _data.value.length);
+    lightbox.value.addFilter('numItems', () => data_.value.length);
     lightbox.value.addFilter('itemData', (_, index) => {
       const {
         height,
         path,
         thumbnail: { path: msrc },
         width,
-      } = _data.value[index];
+      } = data_.value[index];
       return { height, msrc, src: path, width };
     });
 
@@ -122,11 +130,24 @@ onUnmounted(() => {
       >
         <i
           block
+          :class="{
+            'content-placeholder animate-pulse': !loaded.includes(
+              thumbnail.path
+            ),
+          }"
           :style="{
             'padding-bottom': `${(thumbnail.height / thumbnail.width) * 100}%`,
           }"
         />
-        <img absolute top-0 w-full align-bottom :src="thumbnail.path" alt="" />
+        <img
+          absolute
+          top-0
+          w-full
+          align-bottom
+          :src="thumbnail.path"
+          alt=""
+          @load="imageOnLoad"
+        />
       </a>
     </ClientOnly>
   </div>
