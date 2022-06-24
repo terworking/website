@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { Member } from '~~/types/terworking';
+
 definePageMeta({
   title: 'Birthday countdown',
 });
 
 const now = useNow({ interval: 1000 });
 
-const { data } = await useAsyncData('birthday-data', async () => {
+const { data } = await useAsyncData<{
+  closest?: Member;
+  farthest?: Member;
+  members: Member[];
+}>('birthday-data', async () => {
   const { member } = useTerworking();
 
   const ranges = member
@@ -20,8 +26,8 @@ const { data } = await useAsyncData('birthday-data', async () => {
     .sort((a, b) => a.seconds - b.seconds);
 
   const [closest, farthest] = [
-    ranges.filter(({ seconds }) => seconds < 0).pop() as typeof member[number],
-    ranges.find(({ seconds }) => seconds > 0) as typeof member[number],
+    ranges.filter(({ seconds }) => seconds < 0).pop(),
+    ranges.find(({ seconds }) => seconds > 0),
   ];
 
   return { closest, farthest, members: member };
