@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { defaultWindow } from '@vueuse/core';
+
 const headerSize = useHeaderSize();
 
 const route = useRoute();
-const { data: host } = await useAsyncData(
-  'host',
-  async () => useRequestHeaders().host,
-  { default: () => 'terworking.vercel.app' }
+const location = useBrowserLocation(defaultWindow);
+const url = computed(
+  () =>
+    location.value.href ??
+    `${location.value.origin ?? 'https://terworking.vercel.app'}${route.path}`
 );
-const url = computed(() => `https://${host.value}${route.path}`);
 const image = computed(() => route.meta.image);
 const title = computed(() => useTitleTemplate(route.meta.title));
 const description = computed(() => route.meta.description ?? title.value);
