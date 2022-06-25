@@ -21,14 +21,9 @@ const filteredQuotes = computed(() =>
 );
 
 const { data, refresh } = await useLazyAsyncData('footer-quote', async () => {
+  let retryCount = 0;
   let maybeQuote = filteredQuotes.value.pop();
-  while (maybeQuote === undefined) {
-    if (filteredQuotes.value.length === 0 && fetchedQuotes.value.length > 0) {
-      // fallback in case of no quote is suitable
-      maybeQuote = fetchedQuotes.value.at(-1);
-      continue;
-    }
-
+  while (maybeQuote === undefined && retryCount <= 3) {
     const candidate = await $fetch<{ data: Quote[] }>(
       'https://quotes.terworking.workers.dev/50' // fetch 50 quotes
     ).catch(() => ({ data: [] }));
@@ -42,6 +37,13 @@ const { data, refresh } = await useLazyAsyncData('footer-quote', async () => {
       )
     );
     maybeQuote = filteredQuotes.value.pop();
+    retryCount += 1;
+  }
+
+  // fallback in case of no quote is suitable
+  if (maybeQuote === undefined) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    maybeQuote = fetchedQuotes.value.at(-1)!;
   }
 
   fetchedQuotes.value = fetchedQuotes.value.filter(
