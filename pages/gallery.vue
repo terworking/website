@@ -145,7 +145,7 @@ onUnmounted(() => {
           w-full
           align-bottom
           :src="thumbnail.path"
-          alt=""
+          alt="Our pictures"
           @load="imageOnLoad"
         />
       </a>
