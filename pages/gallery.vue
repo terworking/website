@@ -17,12 +17,14 @@ const { data: data_ } = await useFetch('/api/gallery');
 
 const data: typeof data_ = ref(data_.value.slice(0, 14));
 
-const loaded = ref<string[]>([]);
+const loaded = ref<number[]>([]);
 const imageOnLoad = async (event: Event) => {
   const element = event.target as HTMLImageElement;
   await until(() => element.complete).toBe(true);
-  const { pathname, search } = new URL(element.src);
-  loaded.value.push(`${pathname}${search}`);
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const id = Number.parseInt(element.parentElement!.dataset.id!);
+  loaded.value.push(id);
 };
 
 useInfiniteScroll(
@@ -131,9 +133,7 @@ onUnmounted(() => {
         <i
           block
           :class="{
-            'content-placeholder animate-pulse': !loaded.includes(
-              thumbnail.path
-            ),
+            'content-placeholder animate-pulse': !loaded.includes(index),
           }"
           :style="{
             'padding-bottom': `${(thumbnail.height / thumbnail.width) * 100}%`,
