@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defaultWindow } from '@vueuse/core';
+import { defaultWindow, isClient } from '@vueuse/core';
 
 import PhotoSwipe from 'photoswipe';
 import type PhotoSwipeLightBoxType from 'photoswipe/dist/types/lightbox/lightbox';
@@ -17,14 +17,32 @@ const { data: data_ } = await useFetch('/api/gallery');
 
 const data: typeof data_ = ref(data_.value.slice(0, 14));
 
-const loaded = ref<number[]>([]);
-const imageOnLoad = async (event: Event) => {
-  const element = event.target as HTMLImageElement;
+const loaded = ref<string[]>([]);
+const loading = ref<string[]>([]);
+watch(
+  () => data.value.length,
+  () => {
+    if (isClient) {
+      const filtered = data.value.filter(
+        ({ thumbnail: { path } }) =>
+          !(loaded.value.includes(path) || loading.value.includes(path))
+      );
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const id = Number.parseInt(element.parentElement!.dataset.id!);
-  loaded.value.push(id);
-};
+      for (const {
+        thumbnail: { path },
+      } of filtered) {
+        const image = new Image();
+        image.addEventListener('load', () => {
+          loading.value.splice(loading.value.indexOf(path), 1);
+          loaded.value.push(path);
+        });
+        image.src = path;
+        loading.value.push(path);
+      }
+    }
+  },
+  { immediate: true }
+);
 
 useInfiniteScroll(
   defaultWindow,
@@ -132,20 +150,22 @@ onUnmounted(() => {
         <i
           block
           :class="{
-            'content-placeholder animate-pulse': !loaded.includes(index),
+            'content-placeholder animate-pulse': !loaded.includes(
+              thumbnail.path
+            ),
           }"
           :style="{
             'padding-bottom': `${(thumbnail.height / thumbnail.width) * 100}%`,
           }"
         />
         <img
+          v-if="loaded.includes(thumbnail.path)"
           absolute
           top-0
           w-full
           align-bottom
           :src="thumbnail.path"
           alt="Our pictures"
-          @load="imageOnLoad"
         />
       </a>
     </ClientOnly>
