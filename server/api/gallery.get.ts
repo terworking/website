@@ -1,4 +1,3 @@
-import { getClientIp } from '../utils';
 import { useGDrive } from '~~/composables/gdrive';
 import { shuffle } from '~~/composables/random';
 import { GalleryData } from '~~/types/gallery';
@@ -39,7 +38,7 @@ export default defineEventHandler(async ({ event }) => {
   const from = from_ < 0 || Number.isNaN(from_) ? 0 : from_;
   const until = count < 1 || Number.isNaN(count) ? undefined : count;
 
-  const seed = getClientIp(event);
+  const seed = event.context.shared.clientIp;
   const shuffled = shuffle(galleryData, seed);
 
   return shuffled.slice(from, until);

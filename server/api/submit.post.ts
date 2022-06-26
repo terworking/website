@@ -1,7 +1,6 @@
 import { createError } from 'h3';
 import { filetypemime } from 'magic-bytes.js';
 
-import { getClientIp } from '../utils';
 import { useSupabase } from '~~/composables/supabase';
 import { useTerworking } from '~~/composables/terworking';
 import type { definitions } from '~~/types/database';
@@ -22,7 +21,7 @@ const {
 } = useSupabase();
 
 export default defineEventHandler(async ({ event }) => {
-  const clientIp = getClientIp(event);
+  const clientIp = event.context.shared.clientIp;
 
   await supabase // delete all 'expired' records
     .from<definitions[typeof slowMode]>(slowMode)

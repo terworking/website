@@ -1,6 +1,6 @@
 import { H3Event } from 'h3';
 
-export const getClientIp = (event: H3Event) => {
+const getClientIp = (event: H3Event) => {
   const fallback = '127.0.0.1';
   if (process.env.NODE_ENV === 'development') return fallback;
 
@@ -18,3 +18,9 @@ export const getClientIp = (event: H3Event) => {
       fallback) as string
   );
 };
+
+export default defineEventHandler(({ event }) => {
+  const clientIp = getClientIp(event.event);
+
+  event.context.shared = { clientIp };
+});
