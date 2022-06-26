@@ -40,7 +40,7 @@ const { data: data_ } = await useFetch('/api/gallery', {
     }),
 });
 
-const data = ref(data_.value.slice(0, 21));
+const data = ref(data_.value.slice(0, randomInt(14, 35)));
 
 const loaded = ref<string[]>([]);
 const loading = ref<string[]>([]);
@@ -73,10 +73,15 @@ useInfiniteScroll(
   defaultWindow,
   () => {
     data.value.push(
-      ...data_.value.slice(data.value.length, data.value.length + 6)
+      ...data_.value.slice(
+        data.value.length, // add 7~14 data
+        data.value.length + randomInt(6, 13)
+      )
     );
   },
-  { distance: 200 }
+  {
+    distance: (defaultWindow?.innerHeight ?? 600) + 272, // 272 is footer height + last item height
+  }
 );
 
 const gallery = ref<HTMLDivElement>();
@@ -157,7 +162,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="gallery" flex="~ wrap">
+  <div id="gallery" ref="gallery" flex="~ wrap">
     <ClientOnly>
       <a
         v-for="({ thumbnail, ...original }, index) of data"
