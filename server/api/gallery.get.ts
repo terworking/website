@@ -1,6 +1,6 @@
 import { useGDrive } from '~~/composables/gdrive';
 import { shuffle } from '~~/composables/random';
-import { GalleryData } from '~~/types/gallery';
+import type { GalleryData } from '~~/types/gallery';
 
 const gdrive = useGDrive();
 
@@ -14,20 +14,9 @@ export default defineEventHandler(async ({ event }) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const { height, width } = imageMediaMetadata!;
 
-      const thumbnailSize = 500;
-      const [thumbnailHeight, thumbnailWidth] =
-        height > width
-          ? [thumbnailSize, width / (height / thumbnailSize)]
-          : [height / (width / thumbnailSize), thumbnailSize];
-
       return {
         height,
         path,
-        thumbnail: {
-          height: thumbnailHeight,
-          path: `${path}?thumbnail=1`,
-          width: thumbnailWidth,
-        },
         width,
       };
     });

@@ -1,4 +1,4 @@
-import { H3Event } from 'h3';
+import type { H3Event } from 'h3';
 
 const getClientIp = (event: H3Event) => {
   const fallback = '127.0.0.1';

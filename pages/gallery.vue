@@ -17,10 +17,30 @@ definePageMeta({
 // https://github.com/xieranmaya/blog/issues/6
 const { data: data_ } = await useFetch('/api/gallery', {
   default: () => [] as GalleryData[],
+  key: 'gallery-data',
   server: false,
+  transform: (value) =>
+    value.map(({ height, path, width }) => {
+      const thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize;
+      const [thumbnailHeight, thumbnailWidth] =
+        height > width
+          ? [thumbnailSize, width / (height / thumbnailSize)]
+          : [height / (width / thumbnailSize), thumbnailSize];
+
+      return {
+        height,
+        path,
+        thumbnail: {
+          height: thumbnailHeight,
+          path: `${path}?thumbnail=1`,
+          width: thumbnailWidth,
+        },
+        width,
+      };
+    }),
 });
 
-const data: typeof data_ = ref(data_.value.slice(0, 14));
+const data = ref(data_.value.slice(0, 21));
 
 const loaded = ref<string[]>([]);
 const loading = ref<string[]>([]);
@@ -60,6 +80,7 @@ useInfiniteScroll(
 );
 
 const gallery = ref<HTMLDivElement>();
+const items = ref<HTMLAnchorElement[]>([]);
 const lightbox = ref<PhotoSwipeLightBoxType>();
 onMounted(() => {
   if (lightbox.value === undefined) {
@@ -67,7 +88,7 @@ onMounted(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     lightbox.value = new PhotoSwipeLightBox({
       children: 'a',
-      gallery: '#gallery',
+      gallery: gallery.value,
       pswpModule: PhotoSwipe,
       wheelToZoom: true,
     }) as PhotoSwipeLightBoxType;
@@ -101,22 +122,24 @@ onMounted(() => {
       });
     });
 
-    lightbox.value.addFilter('thumbEl', (thumbnail, _, index_) => {
-      const index =
-        index_ >= data.value.length ? data.value.length - 1 : index_;
-      const candidate = gallery.value?.querySelector(
-        `[data-id="${index}"] img`
-      );
-
-      return (candidate ? candidate : thumbnail) as HTMLElement;
+    lightbox.value.addFilter('numItems', () => {
+      return data_.value.length; // use the real data length
     });
-    lightbox.value.addFilter('numItems', () => data_.value.length);
+    lightbox.value.addFilter(
+      'thumbEl',
+      (_, __, index) =>
+        items.value[
+          // return the last item if it's overflowing
+          Math.min(items.value.length - 1, index)
+        ]
+    );
     lightbox.value.addFilter('itemData', (_, index) => {
       const {
         height,
         path,
         thumbnail: { path: msrc },
         width,
+        // always use the real (not-lazy) data
       } = data_.value[index];
       return { height, msrc, src: path, width };
     });
@@ -134,12 +157,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div id="gallery" ref="gallery" flex="~ wrap">
+  <div ref="gallery" flex="~ wrap">
     <ClientOnly>
       <a
         v-for="({ thumbnail, ...original }, index) of data"
+        ref="items"
         :key="index"
-        :data-id="index"
         :data-pswp-src="original.path"
         :data-pswp-width="original.width"
         :data-pswp-height="original.height"

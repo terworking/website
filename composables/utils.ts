@@ -1,4 +1,5 @@
 import type { FlatNavigation, Navigation } from '~~/types/content';
+import type { ConvertibleToString } from '~~/types/utils';
 
 const headerSizeRem = 4.5;
 export const useHeaderSize = () => ({
@@ -51,11 +52,11 @@ export const randomInt = (a = 1, b = 0) => {
 
 // https://images.weserv.nl/docs/quick-reference.html
 export const useImageProxy = (
-  parameters: { url: string } & Record<string, string>
+  parameters: { url: string } & Record<string, ConvertibleToString>
 ) => {
   const url = new URL('https://images.weserv.nl/');
   for (const [key, value] of Object.entries(parameters)) {
-    url.searchParams.append(key, value);
+    url.searchParams.append(key, value.toString());
   }
   return url.toString();
 };

@@ -15,7 +15,7 @@ const { data: image } = await useAsyncData('opengraph-image', async () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const image = data.filter(({ height, width }) => width > height).pop()!;
 
-  return `${host.value}${image.thumbnail.path}`;
+  return `${host.value}${image.path}?thumbnail=1`;
 });
 
 const url = computed(() => `${host.value}${route.path}`);

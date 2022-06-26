@@ -28,19 +28,20 @@ export default defineEventHandler(async ({ event }) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { height, width } = imageMediaMetadata!;
 
-  // lower the longest one's pixel to 500px
-  const thumbnailParameter: Record<string, string> = {};
+  // lower the longest one's pixel to thumbnail size
+  const thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize;
+  const thumbnailParameter: Record<string, number> = {};
   if (height > width) {
-    thumbnailParameter.h = '500';
+    thumbnailParameter.h = thumbnailSize;
   } else {
-    thumbnailParameter.w = '500';
+    thumbnailParameter.w = thumbnailSize;
   }
 
   const thumbnailUrl = useImageProxy({
     filename,
     url,
     output: 'webp',
-    q: '80',
+    q: 80,
     ...thumbnailParameter,
   });
 

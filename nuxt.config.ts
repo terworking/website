@@ -40,6 +40,7 @@ export default defineNuxtConfig({
     },
     public: {
       graphcommentId: '',
+      galleryThumbnailSize: 500,
     },
   },
   typescript: { shim: false, strict: true, typeCheck: true },
