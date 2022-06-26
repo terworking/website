@@ -34,8 +34,13 @@ export default defineNuxtConfig({
     'nuxt-lodash',
   ],
   runtimeConfig: {
+    gdriveCdn: {
+      url: '',
+      token: '',
+    },
     public: {
       graphcommentId: '',
+      galleryThumbnailSize: 500,
     },
   },
   typescript: { shim: false, strict: true, typeCheck: true },

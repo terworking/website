@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { defaultWindow } from '@vueuse/core';
-
 const headerSize = useHeaderSize();
 
 const route = useRoute();
-const location = useBrowserLocation(defaultWindow);
-const url = computed(
-  () =>
-    location.value.href ??
-    `${location.value.origin ?? 'https://terworking.vercel.app'}${route.path}`
-);
-const image = computed(() => route.meta.image);
+const { data: host } = await useAsyncData('host', async () => {
+  return `https://${
+    useRequestEvent().req.headers.host ?? 'terworking.vercel.app'
+  }`;
+});
+
+const { data: image } = await useAsyncData('opengraph-image', async () => {
+  if (route.meta.image !== undefined) return route.meta.image;
+
+  const data = await $fetch('/api/gallery');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const image = data.filter(({ height, width }) => width > height).pop()!;
+
+  return `${host.value}${image.path}?thumbnail=1`;
+});
+
+const url = computed(() => `${host.value}${route.path}`);
 const title = computed(() => useTitleTemplate(route.meta.title));
 const description = computed(() => route.meta.description ?? title.value);
+
 useHead(useSeoHead({ description, image, title, url }));
 
 useHead({

@@ -1,4 +1,5 @@
 import type { FlatNavigation, Navigation } from '~~/types/content';
+import type { ConvertibleToString } from '~~/types/utils';
 
 const headerSizeRem = 4.5;
 export const useHeaderSize = () => ({
@@ -42,9 +43,13 @@ export const flattenContentNavigation = (data: Navigation[]) => {
   return transformAll(data);
 };
 
-// https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-export const randomInt = (a = 1, b = 0) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
+// https://images.weserv.nl/docs/quick-reference.html
+export const useImageProxy = (
+  parameters: { url: string } & Record<string, ConvertibleToString>
+) => {
+  const url = new URL('https://images.weserv.nl/');
+  for (const [key, value] of Object.entries(parameters)) {
+    url.searchParams.append(key, value.toString());
+  }
+  return url.toString();
 };

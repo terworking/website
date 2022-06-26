@@ -1,4 +1,3 @@
-import type { H3Event } from 'h3';
 import { createError } from 'h3';
 import { filetypemime } from 'magic-bytes.js';
 
@@ -21,27 +20,8 @@ const {
   },
 } = useSupabase();
 
-const getClientIp = (event: H3Event) => {
-  const fallback = '127.0.0.1';
-  if (process.env.NODE_ENV === 'development') return fallback;
-
-  const headers = event.req.headers;
-  return (
-    // netlify
-    (headers['x-nf-client-connection-ip'] ??
-      // vercel
-      headers['x-vercel-forwarded-for'] ??
-      // cloudflare workers
-      headers['cf-connecting-ip'] ??
-      // others?
-      headers['x-forwarded-for'] ??
-      headers['x-real-ip'] ??
-      fallback) as string
-  );
-};
-
 export default defineEventHandler(async ({ event }) => {
-  const clientIp = getClientIp(event);
+  const clientIp = event.context.shared.clientIp;
 
   await supabase // delete all 'expired' records
     .from<definitions[typeof slowMode]>(slowMode)
