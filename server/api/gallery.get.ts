@@ -1,11 +1,11 @@
-import { shuffle } from 'lodash-es';
-
+import { getClientIp } from '../utils';
 import { useGDrive } from '~~/composables/gdrive';
+import { shuffle } from '~~/composables/random';
 import { GalleryData } from '~~/types/gallery';
 
 const gdrive = useGDrive();
 
-export default defineEventHandler(async () => {
+export default defineEventHandler(async ({ event }) => {
   const data = await gdrive.list('/');
 
   const galleryData = data
@@ -33,5 +33,6 @@ export default defineEventHandler(async () => {
       };
     });
 
-  return shuffle(galleryData) as GalleryData[];
+  const seed = getClientIp(event);
+  return shuffle(galleryData, seed) as GalleryData[];
 });
