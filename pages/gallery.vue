@@ -13,7 +13,7 @@ definePageMeta({
 
 // gallery implementation:
 // https://github.com/xieranmaya/blog/issues/6
-const { data: data_ } = await useFetch('/api/gallery');
+const { data: data_ } = await useFetch('/api/gallery', { server: false });
 
 const data: typeof data_ = ref(data_.value.slice(0, 14));
 
