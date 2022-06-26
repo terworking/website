@@ -36,7 +36,7 @@ export default defineEventHandler(async ({ event }) => {
   const count = Number.parseInt(query.count?.toString() ?? '');
   const from_ = Number.parseInt(query.from?.toString() ?? '0');
   const from = from_ < 0 || Number.isNaN(from_) ? 0 : from_;
-  const until = count < 1 || Number.isNaN(count) ? undefined : count;
+  const until = count < 1 || Number.isNaN(count) ? undefined : from + count;
 
   const seed = event.context.shared.clientIp;
   const shuffled = shuffle(galleryData, seed);
