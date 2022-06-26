@@ -10,18 +10,18 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.0.2",
-    "@commitlint/config-conventional": "^17.0.2",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@formkit/nuxt": "^1.0.0-beta.8",
-    "@iconify-json/ci": "^1.1.1",
-    "@iconify-json/tabler": "^1.1.15",
+    "@iconify-json/ci": "^1.1.2",
+    "@iconify-json/tabler": "^1.1.17",
     "@nuxt/content": "^2.0.1",
     "@nuxtjs/color-mode": "^3.1.4",
     "@nuxtjs/supabase": "^0.1.17",
-    "@typescript-eslint/eslint-plugin": "^5.28.0",
-    "@typescript-eslint/parser": "^5.28.0",
-    "@unocss/nuxt": "^0.39.3",
-    "@vueuse/nuxt": "^8.7.4",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "@unocss/nuxt": "^0.41.0",
+    "@vueuse/nuxt": "^8.7.5",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -30,7 +30,7 @@
     "eslint-plugin-unicorn": "^42.0.0",
     "eslint-plugin-vue": "^9.1.1",
     "husky": "^8.0.1",
-    "netlify-cli": "^10.5.1",
+    "netlify-cli": "^10.6.2",
     "nuxt": "3.0.0-rc.4",
     "nuxt-lodash": "^2.2.0",
     "prettier": "2.7.1",
@@ -42,7 +42,7 @@
     "alea": "^1.0.1",
     "hint.css": "^2.7.0",
     "magic-bytes.js": "^1.0.12",
-    "photoswipe": "^5.2.7",
-    "vue-advanced-cropper": "^2.8.2"
+    "photoswipe": "^5.2.8",
+    "vue-advanced-cropper": "^2.8.3"
   }
 }
