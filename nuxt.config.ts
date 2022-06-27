@@ -31,7 +31,6 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@unocss/nuxt',
     '@vueuse/nuxt',
-    'nuxt-lodash',
   ],
   runtimeConfig: {
     gdriveCdn: {

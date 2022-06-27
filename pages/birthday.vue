@@ -35,8 +35,7 @@ const { data } = await useAsyncData<{
 
 const selectedMember = useState(
   'birthday-selected',
-  () =>
-    data.value.members[Math.floor(Math.random() * data.value.members.length)]
+  () => data.value.members[Math.floor(random() * data.value.members.length)]
 );
 
 const birthdayIsThisYear = computed(() => {
@@ -98,7 +97,7 @@ const classes = ref([
   ],
 ]);
 
-watch(selectedMember, () => (classes.value = useShuffle(classes.value)), {
+watch(selectedMember, () => (classes.value = shuffle(classes.value)), {
   immediate: true,
 });
 

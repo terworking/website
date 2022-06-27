@@ -1,9 +1,20 @@
 import Alea from 'alea';
 
-import { ConvertibleToString } from '~~/types/utils';
+import type { ConvertibleToString } from '~~/types/utils';
 
 export const random = (...seeds: ConvertibleToString[]) => {
   return Alea(...seeds).next();
+};
+
+// https://stackoverflow.com/a/27149357
+export const distribute = (length: number, value: number): number[] => {
+  if (length <= 1) return [value];
+  const half = Math.floor(length / 2);
+  const distribution = Math.floor(Math.random() * value);
+  return [
+    ...distribute(half, distribution),
+    ...distribute(length - half, value - distribution),
+  ];
 };
 
 export const randomInt = (a = 1, b = 0, ...seeds: ConvertibleToString[]) => {

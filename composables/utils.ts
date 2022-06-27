@@ -18,17 +18,6 @@ export const useRemToPx = (rem: number) => {
   }
 };
 
-// https://stackoverflow.com/a/27149357
-export const distribute = (length: number, value: number): number[] => {
-  if (length <= 1) return [value];
-  const half = Math.floor(length / 2);
-  const distribution = Math.floor(Math.random() * value);
-  return [
-    ...distribute(half, distribution),
-    ...distribute(length - half, value - distribution),
-  ];
-};
-
 export const flattenContentNavigation = (data: Navigation[]) => {
   // https://stackoverflow.com/a/54245371
   const transform1 = ({ children = [], ...rest }: Navigation) => [

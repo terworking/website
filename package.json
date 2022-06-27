@@ -32,7 +32,6 @@
     "husky": "^8.0.1",
     "netlify-cli": "^10.6.2",
     "nuxt": "3.0.0-rc.4",
-    "nuxt-lodash": "^2.2.0",
     "prettier": "2.7.1",
     "unocss-preset-scrollbar": "^0.2.1",
     "vercel": "^25.1.0"
