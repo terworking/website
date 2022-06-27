@@ -21,19 +21,12 @@ const { data: data_ } = await useFetch('/api/gallery', {
   server: false,
   transform: (value) =>
     value.map(({ height, path, width }) => {
-      const thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize;
-      const [thumbnailHeight, thumbnailWidth] =
-        height > width
-          ? [thumbnailSize, width / (height / thumbnailSize)]
-          : [height / (width / thumbnailSize), thumbnailSize];
-
       return {
         height,
         path,
         thumbnail: {
-          height: thumbnailHeight,
           path: `${path}?thumbnail=1`,
-          width: thumbnailWidth,
+          ...calculateThumbnailSize({ height, width }),
         },
         width,
       };
