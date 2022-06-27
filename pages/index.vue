@@ -25,13 +25,15 @@ const titleStyle = computed(() => {
 const { data: banners } = await useFetch('/api/gallery', {
   key: 'index-banners',
   transform: (data) => {
-    return data // only use landscape images
-      .filter(({ height, width }) => width > height)
-      .map(({ path }) => path);
+    return shuffle(
+      data // only use landscape images
+        .filter(({ height, width }) => width > height)
+        .map(({ path }) => path)
+    );
   },
 });
 
-const banner = ref(banners.value[0]);
+const banner = ref(sample(banners.value));
 const nextBanner = computed(
   () =>
     banners.value[
