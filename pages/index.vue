@@ -111,6 +111,25 @@ const onClickBannerCycle = (event: MouseEvent) => {
     );
   }
 };
+
+const { data: youtubeVideos } = await useAsyncData(
+  'index-youtube-videos',
+  async () => {
+    const data = await $fetch<{
+      videos: Record<'title' | 'videoId', string>[];
+    }>('https://y.com.sb/api/v1/playlists/PLm2GaWqOUKvkmQ24tBx1No8u8u3DVeiCf', {
+      params: { fields: 'videos(videoId,title)' },
+    });
+
+    return shuffle(
+      data.videos.map(({ title, videoId: id }) => ({
+        id,
+        title,
+        url: `https://youtu.be/${id}`,
+      }))
+    );
+  }
+);
 </script>
 
 <template>
@@ -175,7 +194,10 @@ const onClickBannerCycle = (event: MouseEvent) => {
             <h1 text-6xl mb-4 font-semibold>INDEX</h1>
             <p>
               Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >. Tidak terasa <b>3 tahun sudah berlalu</b> dan sekarang kita
               sudah harus berpisah agar bisa untuk melanjutkan hidup ke tahap
@@ -208,30 +230,45 @@ const onClickBannerCycle = (event: MouseEvent) => {
               <i>(baca memberi nilai)</i>
               kepada kita, sebab tanpa mereka kita tidak akan bisa lulus dari
               sekolah
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >
               yang tercinta ini.
             </p>
             <p>
               Meskipun biaya yang sudah saya keluarkan di sekolah
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >
               yang tercinta ini tidak bisa dibilang sedikit
               <i>(karena masuk TKJ + bayar komite)</i>, saya
               <b>tetap cinta</b> pada sekolah
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >
               <i> (no homo, no endorse)</i>. Salah satu alasannya tentu saja
               karena berkat
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >
               lah saya bisa melanjutkan ke halaman
               <i>(baca jenjang)</i> berikutnya, lalu
-              <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              <NuxtLink
+                class="smkn2kdglink"
+                target="_blank"
+                to="https://smkn2kandangan.sch.id/"
                 >SMKN 2 KANDANGAN</NuxtLink
               >
               ini juga secara tidak langsung telah membuat saya sadar bahwa
@@ -278,6 +315,7 @@ const onClickBannerCycle = (event: MouseEvent) => {
                   Halaman ini berisi foto-foto semasa sekolah di
                   <NuxtLink
                     class="smkn2kdglink"
+                    target="_blank"
                     to="https://smkn2kandangan.sch.id/"
                     >SMKN 2 KANDANGAN</NuxtLink
                   >, kalau ingin foto yang bersangkutan dihapus silahkan hubungi
@@ -288,6 +326,18 @@ const onClickBannerCycle = (event: MouseEvent) => {
                 </p>
               </li>
             </ul>
+          </section>
+          <section class="content">
+            <h2 text-6xl my-2 font-semibold>YOUTUBE</h2>
+            <p>Silahkan nikmati konten-konten Youtube <i>random</i> berikut.</p>
+            <div v-for="{ id, title, url } of youtubeVideos" :key="id">
+              <EmbedYoutube :id="id" h="64 md:96" w-full />
+              <p>
+                <b
+                  ><NuxtLink target="_blank" :to="url">{{ title }}</NuxtLink></b
+                >
+              </p>
+            </div>
           </section>
         </div>
       </div>
