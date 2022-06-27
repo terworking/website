@@ -22,16 +22,14 @@ const titleStyle = computed(() => {
   }
 });
 
-const { data: _banners } = await useFetch('/api/gallery');
-
-const view = reactive(useWindowSize());
-const banners = computed(() =>
-  _banners.value
-    .filter(({ height, width }) =>
-      view.height > view.width ? height > width : height < width
-    )
-    .map(({ path }) => path)
-);
+const { data: banners } = await useFetch('/api/gallery', {
+  key: 'index-banners',
+  transform: (data) => {
+    return data // only use landscape images
+      .filter(({ height, width }) => width > height)
+      .map(({ path }) => path);
+  },
+});
 
 const banner = ref(banners.value[0]);
 const nextBanner = computed(
