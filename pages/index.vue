@@ -114,9 +114,9 @@ const onClickBannerCycle = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div class="parallax bg-body">
+  <div class="parallax">
     <section class="parallax__group">
-      <div class="parallax__layer parallax__layer--back">
+      <div h="64 md:auto" class="parallax__layer parallax__layer--back">
         <div
           ref="bannerContainer"
           flex
@@ -170,34 +170,99 @@ const onClickBannerCycle = (event: MouseEvent) => {
     </section>
     <section class="parallax__group">
       <div class="parallax__layer parallax__layer--base">
+        <div
+          flex="~ col"
+          space-y-8
+          items-center
+          w-full
+          h-full
+          bg-body
+          p="x-2 y-6"
+          children:max-w-2xl
+          text="center lg"
+        >
+          <h1 text-6xl mb-4 font-semibold>INDEX</h1>
+          <p>
+            Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >. Tidak terasa <b>3 tahun sudah berlalu</b> dan sekarang kita sudah
+            harus berpisah agar bisa untuk melanjutkan hidup ke tahap
+            berikutnya. Ada yang melanjutkan kuliah, ada yang langsung bekerja,
+            bahkan ada juga yang langsung menikah. Bagaimanapun cara
+            melanjutkannya, yang terpenting adalah
+            <b>selalu mensyukurinya</b> dan jangan pernah berpikir untuk
+            mengakhiri hidup yang telah diberi kepada kita ini, tidaklah ada
+            masalah yang tidak memiliki jalan keluar.
+          </p>
+          <p>
+            Semoga dengan perpisahan ini bisa dijadikan pelajaran untuk jangan
+            terlalu banyak berpikir atau terlalu berpikir kedepan, kalau ada
+            yang ingin disampaikan alangkah baiknya jika
+            <b>segera disampaikan</b>
+            kalau-kalau nanti tidak bisa bertemu secara langsung lagi. Kalau
+            <b>menyampaikan secara online</b> pasti akan selalu terasa ada yang
+            kurang
+            <i>(kurang rasa, kurang dekat, kurang feeling, 愛は足りない？)</i>.
+          </p>
+          <p>
+            Jangan lupa untuk selalu mengingat teman-teman
+            <i
+              >(teman satu kelompok, teman bersebelahan, teman dekat, sahabat,
+              teman-teman-an, bestie, TTM, 恋人, BFFL, FOAF, FWB, OWF,
+              ...lanjutkan)</i
+            >, bagaimanapun juga mereka sudah mau menjadi teman kalian. Lalu
+            jangan lupakan juga guru-guru yang sudah mengajar
+            <i>(baca memberi nilai)</i>
+            kepada kita, sebab tanpa mereka kita tidak akan bisa lulus dari
+            sekolah
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >
+            yang tercinta ini.
+          </p>
+          <p>
+            Meskipun biaya yang sudah saya keluarkan di sekolah
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >
+            yang tercinta ini tidak bisa dibilang sedikit
+            <i>(karena masuk TKJ + bayar komite)</i>, saya
+            <b>tetap cinta</b> pada sekolah
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >
+            <i> (no homo, no endorse)</i>. Salah satu alasannya tentu saja
+            karena berkat
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >
+            lah saya bisa melanjutkan ke halaman
+            <i>(baca jenjang)</i> berikutnya, lalu
+            <NuxtLink class="smkn2kdglink" to="https://smkn2kandangan.sch.id/"
+              >SMKN 2 KANDANGAN</NuxtLink
+            >
+            ini juga secara tidak langsung telah membuat saya sadar bahwa
+            <b>tidak ada yang permanen dalam hidup ini</b>, semua hal memiliki
+            waktu kadaluarsanya masing-masing, intinya usahakan untuk tidak
+            terlalu banyak <b>membuang-buang waktu</b> saat melakukan sesuatu.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- <section class="parallax__group">
+      <div class="parallax__layer parallax__layer--base">
         <div flex items-center justify-center w-full h-full bg-body>
           <span>THIS SECTION IS INTENTIONALLY LEFT BLANK</span>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
 <style scoped>
-.parallax {
-  --at-apply: perspect-1px overflow-x-hidden overflow-y-auto;
-  height: calc(100vh - 9rem);
-}
-
-.parallax__group {
-  --at-apply: h-screen relative preserve-3d transition-transform-500;
-}
-
-.parallax__layer {
-  --at-apply: absolute top-0 right-0 bottom-0 left-0;
-}
-
-.parallax__layer--base {
-  transform: translateZ(0);
-}
-
-.parallax__layer--back {
-  transform: translateZ(-1px) scale(2);
+.smkn2kdglink {
+  --at-apply: underline underline-2 underline-dotted;
 }
 
 #banner {
@@ -213,5 +278,27 @@ const onClickBannerCycle = (event: MouseEvent) => {
 .banner-enter-from,
 .banner-leave-to {
   opacity: 0;
+}
+@media (min-width: 768px) {
+  .parallax {
+    --at-apply: perspect-1px overflow-x-hidden overflow-y-auto;
+    height: calc(100vh - 9rem);
+  }
+
+  .parallax__group {
+    --at-apply: h-screen relative preserve-3d transition-transform-500;
+  }
+
+  .parallax__layer {
+    --at-apply: absolute top-0 right-0 bottom-0 left-0;
+  }
+
+  .parallax__layer--base {
+    transform: translateZ(0);
+  }
+
+  .parallax__layer--back {
+    transform: translateZ(-1px) scale(2);
+  }
 }
 </style>
