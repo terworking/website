@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Photoswipe from 'photoswipe';
+
 definePageMeta({
   name: 'home',
   title: 'Home',
@@ -28,88 +30,66 @@ const { data: banners } = await useFetch('/api/gallery', {
     return shuffle(
       data // only use landscape images
         .filter(({ height, width }) => width > height)
-        .map(({ path }) => path)
     );
   },
 });
 
-const banner = ref(sample(banners.value));
-const nextBanner = computed(
-  () =>
-    banners.value[
-      wrapNumber(banners.value.indexOf(banner.value) + 1, banners.value.length)
-    ]
-);
-const previousBanner = computed(
-  () =>
-    banners.value[
-      wrapNumber(banners.value.indexOf(banner.value) - 1, banners.value.length)
-    ]
+const current = ref(banners.value[0]);
+const currentIndex = computed(() =>
+  banners.value.findIndex(({ path }) => path === current.value.path)
 );
 
-onMounted(() => {
-  const preloadedImages: Record<string, HTMLImageElement> = {};
-  watch(
-    banner,
-    () =>
-      Promise.all(
-        [nextBanner.value, previousBanner.value]
-          .filter((it) => !(it in Object.keys(preloadedImages)))
-          .map((it) => {
-            const img = new Image();
-            img.addEventListener('load', () => (preloadedImages[it] = img));
-            img.src = it;
-          })
-      ),
-    { immediate: true }
-  );
-});
+const loaded = [] as string[];
+const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
+  watchPausable(currentIndex, (value) => {
+    const preload = [-1, 1]
+      .map((v) => banners.value[wrapNumber(value + v, banners.value.length)])
+      .filter(({ path }) => !loaded.includes(path));
 
-const cycleBanner = (reverse?: boolean) => {
-  banner.value = (reverse === true ? previousBanner : nextBanner).value;
+    return Promise.all(
+      preload.map(async (v) => {
+        const image = new Image();
+        image.addEventListener('load', () => loaded.push(v.path));
+        image.src = v.path;
+      })
+    );
+  });
+
+const cycleBanner = () => {
+  current.value =
+    banners.value[wrapNumber(currentIndex.value + 1, banners.value.length)];
 };
-
 const { pause: pauseAutomaticBannerCycle, resume: resumeAutomaticBannerCycle } =
-  useIntervalFn(cycleBanner, 20_000);
+  useIntervalFn(cycleBanner, 10_000);
 
 const isLeft = usePageLeave();
 watch(isLeft, (left) =>
   left ? pauseAutomaticBannerCycle() : resumeAutomaticBannerCycle()
 );
 
-const disableManualBannerCycle = refAutoReset(false, 3000);
-const manualBannerCycle = (reverse: boolean) => {
-  if (disableManualBannerCycle.value) return;
+const openPhotoswipe = (index: number) => {
+  const pswp = new Photoswipe({
+    dataSource: banners.value.map(({ path, ...rest }) => ({
+      msrc: `${path}?thumbnail=1`,
+      src: path,
+      ...rest,
+    })),
+    index,
+  });
 
-  pauseAutomaticBannerCycle();
+  pswp.on('change', () => {
+    current.value = banners.value[pswp.currIndex];
+  });
+  pswp.on('firstUpdate', () => {
+    pauseAutomaticBannerCycle();
+    pauseBannerPreload();
+  });
+  pswp.on('close', () => {
+    resumeAutomaticBannerCycle();
+    resumeBannerPreload();
+  });
 
-  cycleBanner(reverse);
-
-  disableManualBannerCycle.value = true;
-
-  resumeAutomaticBannerCycle();
-};
-
-const { direction: swipeDirection, isSwiping } = useSwipe(bannerContainer);
-whenever(isSwiping, () => {
-  switch (swipeDirection.value) {
-    case 'RIGHT':
-      manualBannerCycle(true);
-      break;
-
-    case 'LEFT':
-      manualBannerCycle(false);
-      break;
-  }
-});
-
-const onClickBannerCycle = (event: MouseEvent) => {
-  if (!isSwiping.value) {
-    manualBannerCycle(
-      // reverse if clicked on 20% of window width from left
-      (event.view?.innerWidth ?? 0) * 0.2 > event.x
-    );
-  }
+  pswp.init();
 };
 
 const { data: youtubeVideos } = await useAsyncData(
@@ -143,13 +123,14 @@ const { data: youtubeVideos } = await useAsyncData(
           relative
           select-none
           h-full
-          @click="onClickBannerCycle"
+          cursor-pointer
+          @click="openPhotoswipe(currentIndex)"
         >
           <Transition name="banner" mode="out-in">
             <img
               id="banner"
-              :key="banner"
-              :src="banner"
+              :key="current.path"
+              :src="current.path"
               object-cover
               w-full
               h-full
@@ -162,11 +143,7 @@ const { data: youtubeVideos } = await useAsyncData(
             justify-center
             md:perspect-500px
             absolute
-            top-0
-            left-0
-            h-full
-            w-full
-            backdrop="brightness-80 dark:brightness-60"
+            inset-0
           >
             <span
               :style="titleStyle"
@@ -179,6 +156,7 @@ const { data: youtubeVideos } = await useAsyncData(
               backdrop="blur-sm hover:blur-0"
               transition-all-500
               ease-out
+              cursor-default
               @click="(e) => e.stopPropagation()"
             >
               WELCOME TO OUR WEBSITE
@@ -329,7 +307,7 @@ const { data: youtubeVideos } = await useAsyncData(
           </section>
           <section class="content">
             <h2 text-6xl my-2 font-semibold>YOUTUBE</h2>
-            <p>Silahkan nikmati konten-konten Youtube <i>random</i> berikut.</p>
+            <p>Silahkan nikmati konten-konten Youtube <i>random</i> kami.</p>
             <div v-for="{ id, title, url } of youtubeVideos" :key="id">
               <EmbedYoutube :id="id" h="64 md:96" w-full />
               <p>
