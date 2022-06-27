@@ -25,11 +25,13 @@ const titleStyle = computed(() => {
 const { data: _banners } = await useFetch('/api/gallery');
 
 const view = reactive(useWindowSize());
-const banners = computed(() => {
-  const { landscape, portrait } = _banners.value;
-
-  return view.height > view.width ? portrait : landscape;
-});
+const banners = computed(() =>
+  _banners.value
+    .filter(({ height, width }) =>
+      view.height > view.width ? height > width : height < width
+    )
+    .map(({ path }) => path)
+);
 
 const banner = ref(banners.value[0]);
 const nextBanner = computed(
@@ -179,7 +181,7 @@ const onClickBannerCycle = (event: MouseEvent) => {
 <style scoped>
 .parallax {
   --at-apply: perspect-1px overflow-x-hidden overflow-y-auto;
-  height: calc(100vh - var(--header-h));
+  height: calc(100vh - 9rem);
 }
 
 .parallax__group {
