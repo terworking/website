@@ -41,19 +41,23 @@ const currentIndex = computed(() =>
 
 const loaded = [] as string[];
 const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
-  watchPausable(currentIndex, (value) => {
-    const preload = [-1, 1, 2]
-      .map((v) => banners.value[wrapNumber(value + v, banners.value.length)])
-      .filter(({ path }) => !loaded.includes(path));
+  watchPausable(
+    currentIndex,
+    (value) => {
+      const preload = [-1, 1, 2]
+        .map((v) => banners.value[wrapNumber(value + v, banners.value.length)])
+        .filter(({ path }) => !loaded.includes(path));
 
-    return Promise.all(
-      preload.map(async (v) => {
-        const image = new Image();
-        image.addEventListener('load', () => loaded.push(v.path));
-        image.src = v.path;
-      })
-    );
-  });
+      return Promise.all(
+        preload.map(async (v) => {
+          const image = new Image();
+          image.addEventListener('load', () => loaded.push(v.path));
+          image.src = v.path;
+        })
+      );
+    },
+    { immediate: true }
+  );
 
 const cycleBanner = (reverse?: boolean) => {
   current.value =

@@ -15,7 +15,6 @@ watch(scrollY, (value, oldValue) => {
     return;
   }
 
-  console.log(value, oldValue);
   if (value < oldValue || value < windowHeight.value) {
     header.value.visible = true;
   } else if (value > oldValue) {
