@@ -42,7 +42,7 @@ const currentIndex = computed(() =>
 const loaded = [] as string[];
 const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
   watchPausable(currentIndex, (value) => {
-    const preload = [-1, 1]
+    const preload = [-1, 1, 2]
       .map((v) => banners.value[wrapNumber(value + v, banners.value.length)])
       .filter(({ path }) => !loaded.includes(path));
 
