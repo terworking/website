@@ -55,19 +55,77 @@ const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
     );
   });
 
-const cycleBanner = () => {
+const cycleBanner = (reverse?: boolean) => {
   current.value =
-    banners.value[wrapNumber(currentIndex.value + 1, banners.value.length)];
+    banners.value[
+      wrapNumber(
+        currentIndex.value + (reverse === true ? -1 : 1),
+        banners.value.length
+      )
+    ];
 };
 const { pause: pauseAutomaticBannerCycle, resume: resumeAutomaticBannerCycle } =
   useIntervalFn(cycleBanner, 10_000);
 
-const isLeft = usePageLeave();
-watch(isLeft, (left) =>
-  left ? pauseAutomaticBannerCycle() : resumeAutomaticBannerCycle()
+const bannerLeft = ref('0');
+const { distanceX, isSwiping, posEnd, posStart } = usePointerSwipe(
+  bannerContainer,
+  {
+    onSwipe: () => {
+      bannerLeft.value = `${-distanceX.value}px`;
+    },
+    onSwipeEnd: () => {
+      resumeAutomaticBannerCycle();
+      if (bannerContainer.value !== undefined) {
+        const percentage = distanceX.value / bannerContainer.value.clientWidth;
+        // only change the banner when swipped more than 1/3 element width
+        if (percentage <= -0.34) {
+          cycleBanner(true);
+        } else if (percentage >= 0.34) {
+          cycleBanner();
+        } else {
+          bannerLeft.value = '0';
+        }
+      }
+    },
+    onSwipeStart: () => {
+      pauseAutomaticBannerCycle();
+    },
+    pointerTypes: ['mouse', 'pen'],
+  }
 );
 
+const cycleIsReversed = ref(false);
+watch(currentIndex, (value, oldValue) => {
+  // this is when the index is wrapped, (e.g 60 > 0, 0 > 60)
+  if (oldValue === banners.value.length - 1 && value === 0) {
+    cycleIsReversed.value = false;
+  } else if (oldValue === 0 && value === banners.value.length - 1) {
+    cycleIsReversed.value = true;
+  } else {
+    cycleIsReversed.value = value < oldValue;
+  }
+});
+
+const bannerOnEnter = (element: HTMLElement) => {
+  element.style.left = '0';
+  element.classList.add('banner-transition');
+  if (cycleIsReversed.value) {
+    element.classList.add('reversed');
+  } else {
+    element.classList.remove('reversed');
+  }
+};
+const bannerOnAfterEnter = (element: HTMLElement) => {
+  element.classList.remove('reversed', 'banner-transition');
+};
+const bannerOnLeave = bannerOnEnter;
+
+const photoswipeIsOpen = ref(false);
 const openPhotoswipe = (index: number) => {
+  // only open when the cursor is moved less than 10px
+  if (Math.abs(posEnd.x - posStart.x) > 10) return;
+
   const pswp = new Photoswipe({
     dataSource: banners.value.map(({ path, ...rest }) => ({
       msrc: `${path}?thumbnail=1`,
@@ -78,19 +136,32 @@ const openPhotoswipe = (index: number) => {
   });
 
   pswp.on('change', () => {
+    // also change the current banner
+    // when Photoswipe slide is changed
     current.value = banners.value[pswp.currIndex];
   });
   pswp.on('firstUpdate', () => {
+    photoswipeIsOpen.value = true;
     pauseAutomaticBannerCycle();
+
+    // Photoswipe will preload them
     pauseBannerPreload();
   });
   pswp.on('close', () => {
+    photoswipeIsOpen.value = false;
     resumeAutomaticBannerCycle();
     resumeBannerPreload();
   });
 
   pswp.init();
 };
+
+const pageIsLeft = usePageLeave();
+watch([pageIsLeft, photoswipeIsOpen], (value) => {
+  value.some(Boolean)
+    ? pauseAutomaticBannerCycle()
+    : resumeAutomaticBannerCycle();
+});
 
 const { data: youtubeVideos } = await useAsyncData(
   'index-youtube-videos',
@@ -118,24 +189,40 @@ const { data: youtubeVideos } = await useAsyncData(
       <div h="64 md:auto" class="parallax__layer parallax__layer--back">
         <div
           ref="bannerContainer"
+          relative
+          w-full
+          h-full
           flex
           overflow-hidden
-          relative
           select-none
-          h-full
-          cursor-pointer
+          :style="{ cursor: isSwiping ? 'grabbing' : 'grab' }"
           @click="openPhotoswipe(currentIndex)"
         >
-          <Transition name="banner" mode="out-in">
-            <img
-              id="banner"
+          <Transition
+            name="banner"
+            mode="out-in"
+            @after-enter="bannerOnAfterEnter"
+            @enter="bannerOnEnter"
+            @leave="bannerOnLeave"
+          >
+            <div
               :key="current.path"
-              :src="current.path"
-              object-cover
+              absolute
+              inset-0
               w-full
               h-full
-              alt="Banner"
-            />
+              :class="{ 'banner-transition': !isSwiping }"
+              :style="{ left: bannerLeft }"
+            >
+              <img
+                :src="current.path"
+                object-cover
+                w-full
+                h-full
+                z-1
+                alt="Banner"
+              />
+            </div>
           </Transition>
           <div
             flex
@@ -344,19 +431,35 @@ ul > li > h3 {
   --at-apply: underline underline-2 underline-dotted;
 }
 
-#banner {
-  transition-property: opacity;
-  transition-timing-function: ease;
+.banner-transition {
+  transition-property: opacity, left;
+  transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
   transition-duration: 0.5s;
 }
 
 .banner-enter-active {
-  transition-duration: 2s;
+  transition-duration: 0.2s;
 }
 
 .banner-enter-from,
 .banner-leave-to {
   opacity: 0;
+}
+
+.banner-enter-from {
+  left: 100% !important;
+}
+
+.banner-enter-from.reversed {
+  left: -100% !important;
+}
+
+.banner-leave-to {
+  left: -100% !important;
+}
+
+.banner-leave-to.reversed {
+  left: 100% !important;
 }
 
 @media (min-width: 768px) {
