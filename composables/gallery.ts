@@ -1,14 +1,22 @@
 import type { GalleryData } from '~~/types/gallery';
 
-export const calculateThumbnailSize = (
-  data: Pick<GalleryData, 'height' | 'width'>
+export const getThumbnail = (
+  data: GalleryData,
+  thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize
 ) => {
-  const { height, width } = data;
-  const thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize;
+  const { height, width, path } = data;
+
   const [thumbnailHeight, thumbnailWidth] =
     height > width
       ? [thumbnailSize, width / (height / thumbnailSize)]
       : [height / (width / thumbnailSize), thumbnailSize];
 
-  return { height: thumbnailHeight, width: thumbnailWidth };
+  const searchParameters = new URLSearchParams();
+  searchParameters.append('thumbnail', thumbnailSize.toString());
+
+  return {
+    path: `${path}?${searchParameters.toString()}`,
+    height: thumbnailHeight,
+    width: thumbnailWidth,
+  };
 };

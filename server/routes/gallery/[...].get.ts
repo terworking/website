@@ -5,7 +5,7 @@ const gdrive = useGDrive();
 
 export default defineEventHandler(async ({ event }) => {
   const { _: path } = event.context.params as Record<string, string>;
-  const { download, thumbnail } = useQuery(event);
+  const query = useQuery(event);
 
   const data = await gdrive.list(path);
   const item = data
@@ -20,29 +20,10 @@ export default defineEventHandler(async ({ event }) => {
     .replace(/[^\w.]/g, '') // remove all non-alphanumeric characters
     .replace(/\..*/, ''); // remove file extension
 
+  const { download, thumbnail } = query;
   const downloadUrl = useImageProxy({
     filename,
     url,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { height, width } = imageMediaMetadata!;
-
-  // lower the longest one's pixel to thumbnail size
-  const thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize;
-  const thumbnailParameter: Record<string, number> = {};
-  if (height > width) {
-    thumbnailParameter.h = thumbnailSize;
-  } else {
-    thumbnailParameter.w = thumbnailSize;
-  }
-
-  const thumbnailUrl = useImageProxy({
-    filename,
-    url,
-    output: 'webp',
-    q: 80,
-    ...thumbnailParameter,
   });
 
   if (download === '1') {
@@ -52,11 +33,35 @@ export default defineEventHandler(async ({ event }) => {
     }
 
     return response.body;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const { height, width } = imageMediaMetadata!;
+
+  if (thumbnail !== undefined) {
+    const thumbnail_ = Number.parseInt(thumbnail.toString());
+    const thumbnailSize = Number.isNaN(thumbnail_)
+      ? useRuntimeConfig().public.galleryThumbnailSize
+      : thumbnail_;
+
+    // lower the longest one's pixel to thumbnail size
+    const thumbnailParameter: Record<string, number> = {};
+    if (height > width) {
+      thumbnailParameter.h = thumbnailSize;
+    } else {
+      thumbnailParameter.w = thumbnailSize;
+    }
+
+    const thumbnailUrl = useImageProxy({
+      filename,
+      url,
+      output: 'webp',
+      q: 80,
+      ...thumbnailParameter,
+    });
+
+    return sendRedirect(event, thumbnailUrl, 301);
   } else {
-    return sendRedirect(
-      event,
-      thumbnail === '1' ? thumbnailUrl : downloadUrl,
-      301
-    );
+    return sendRedirect(event, downloadUrl, 301);
   }
 });

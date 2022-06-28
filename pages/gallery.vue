@@ -19,18 +19,12 @@ const { data: data_ } = await useFetch('/api/gallery', {
   default: () => [] as GalleryData[],
   key: 'gallery-data',
   server: false,
-  transform: (value) =>
-    value.map(({ height, path, width }) => {
-      return {
-        height,
-        path,
-        thumbnail: {
-          path: `${path}?thumbnail=1`,
-          ...calculateThumbnailSize({ height, width }),
-        },
-        width,
-      };
-    }),
+  transform: (value) => {
+    return value.map((data) => ({
+      thumbnail: getThumbnail(data),
+      ...data,
+    }));
+  },
 });
 
 const data = ref(data_.value.slice(0, randomInt(14, 35)));
