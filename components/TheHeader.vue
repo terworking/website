@@ -10,37 +10,33 @@ const { social } = useTerworking();
 const { y: scrollY } = useScroll(defaultWindow);
 const { height: windowHeight } = useWindowSize();
 
-watchDebounced(
-  scrollY,
-  (value, oldValue) => {
-    if (value < oldValue || value < windowHeight.value) {
-      header.value.visible = true;
-    } else if (value > oldValue) {
-      header.value.visible = false;
-    }
-  },
-  { debounce: 100, maxWait: 200 }
-);
+watch(scrollY, (value, oldValue) => {
+  if (Math.abs(value - oldValue) === headerSize.height.px) {
+    return;
+  }
+
+  console.log(value, oldValue);
+  if (value < oldValue || value < windowHeight.value) {
+    header.value.visible = true;
+  } else if (value > oldValue) {
+    header.value.visible = false;
+  }
+});
 </script>
 
 <template>
-  <div
-    :style="{
-      height: `${headerSize.height.rem}rem`,
-    }"
-    sticky
-    top-0
-    z-100
-    pointer-events="none children:auto"
-  >
-    <Transition name="header">
-      <header
-        v-if="header.visible"
-        bg="body opacity-50"
-        h-full
-        backdrop-blur-md
-        border="b primary"
-      >
+  <Transition name="header">
+    <div
+      v-if="header.visible"
+      :style="{
+        height: `${headerSize.height.rem}rem`,
+      }"
+      sticky
+      top-0
+      z-100
+      pointer-events="none children:auto"
+    >
+      <header bg="body opacity-50" h-full backdrop-blur-md border="b primary">
         <div flex items-center h-full max-w-7xl mx-auto px="3 lg:6">
           <button
             aria-label="openAside"
@@ -89,21 +85,44 @@ watchDebounced(
           </div>
         </div>
       </header>
-    </Transition>
-    <TheScrollToTop />
-  </div>
+      <Transition name="scroll-to-top">
+        <TheScrollToTop
+          v-if="scrollY > windowHeight * 2"
+          class="scroll-to-top"
+        />
+      </Transition>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
 .header-enter-active,
 .header-leave-active {
   transition-property: transform;
-  transition-timing-function: ease;
+  transition-timing-function: cubic-bezier(0.785, 0.135, 0.15, 0.86);
   transition-duration: 0.45s;
 }
 
 .header-enter-from,
 .header-leave-to {
   transform: translateY(-100%);
+}
+
+.header-enter-active .scroll-to-top,
+.header-leave-active .scroll-to-top,
+.scroll-to-top-enter-active,
+.scroll-to-top-leave-active {
+  transition-property: opacity, transform;
+  transition-timing-function: ease-in-out,
+    cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition-duration: 0.2s, 0.5s;
+}
+
+.header-enter-from .scroll-to-top,
+.header-leave-to .scroll-to-top,
+.scroll-to-top-enter-from,
+.scroll-to-top-leave-to {
+  opacity: 0;
+  transform: translateY(-50%);
 }
 </style>
