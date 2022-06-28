@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isClient } from '@vueuse/shared';
 import Photoswipe from 'photoswipe';
 
 definePageMeta({
@@ -39,25 +40,49 @@ const currentIndex = computed(() =>
   banners.value.findIndex(({ path }) => path === current.value.path)
 );
 
-const loaded = [] as string[];
+const { width: windowWidth } = useWindowSize();
+const thumbnails = computed(() =>
+  banners.value.map((data) => getThumbnail(data, unref(windowWidth)))
+);
+const currentThumbnail = computed(() => thumbnails.value[currentIndex.value]);
+
+const loaded = ref<string[]>([]);
+const loading = ref<string[]>([]);
 const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
   watchPausable(
     currentIndex,
     (value) => {
-      const preload = [-1, 1, 2]
-        .map((v) => banners.value[wrapNumber(value + v, banners.value.length)])
-        .filter(({ path }) => !loaded.includes(path));
+      if (isClient) {
+        const preload = [0, 1, -1, 2]
+          .map(
+            (v) => banners.value[wrapNumber(value + v, banners.value.length)]
+          )
+          .filter(
+            ({ path }) =>
+              !(loaded.value.includes(path) || loading.value.includes(path))
+          );
 
-      return Promise.all(
-        preload.map(async (v) => {
-          const image = new Image();
-          image.addEventListener('load', () => loaded.push(v.path));
-          image.src = v.path;
-        })
-      );
+        return Promise.all(
+          preload.map(async ({ path }) => {
+            const image = new Image();
+            image.addEventListener('load', () => {
+              loading.value.splice(loading.value.indexOf(path), 1);
+              loaded.value.push(path);
+            });
+            image.src = path;
+            loading.value.push(path);
+          })
+        );
+      }
     },
     { immediate: true }
   );
+
+const bannerImage = computed(
+  () =>
+    (loaded.value.includes(current.value.path) ? current : currentThumbnail)
+      .value
+);
 
 const cycleBanner = (reverse?: boolean) => {
   current.value =
@@ -131,8 +156,8 @@ const openPhotoswipe = (index: number) => {
   if (Math.abs(posEnd.x - posStart.x) > 10) return;
 
   const pswp = new Photoswipe({
-    dataSource: banners.value.map(({ path, ...rest }) => ({
-      msrc: `${path}?thumbnail=1`,
+    dataSource: banners.value.map(({ path, ...rest }, index) => ({
+      msrc: thumbnails.value[index].path,
       src: path,
       ...rest,
     })),
@@ -219,7 +244,9 @@ const { data: youtubeVideos } = await useAsyncData(
               :style="{ left: bannerLeft }"
             >
               <img
-                :src="current.path"
+                :height="bannerImage.height"
+                :src="bannerImage.path"
+                :width="bannerImage.width"
                 object-cover
                 w-full
                 h-full
