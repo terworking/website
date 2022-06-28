@@ -2,10 +2,11 @@ import type { GalleryData } from '~~/types/gallery';
 
 export const getThumbnail = (
   data: GalleryData,
-  thumbnailSize = useRuntimeConfig().public.galleryThumbnailSize
+  size = useRuntimeConfig().public.galleryThumbnailSize
 ) => {
   const { height, width, path } = data;
 
+  const thumbnailSize = Math.min(Math.max(height, width), size);
   const [thumbnailHeight, thumbnailWidth] =
     height > width
       ? [thumbnailSize, width / (height / thumbnailSize)]
