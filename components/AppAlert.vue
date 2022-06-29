@@ -74,7 +74,7 @@ const secondaryButtonClass = computed(() => {
             shadow="lg opacity-25"
             items-center
             rounded-lg
-            bg-body
+            bg-body_b
             border
             w-72
             p="y-6 x-4"

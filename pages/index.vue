@@ -279,7 +279,7 @@ const { data: youtubeVideos } = await useAsyncData(
     </div>
     <div class="parallax__group">
       <div class="parallax__layer parallax__layer--base">
-        <div w-full h-full divide="y-2 current dashed" bg-body>
+        <div w-full h-full divide="y-2 current dashed" bg-body_b>
           <section class="content">
             <h1>INDEX</h1>
             <p>

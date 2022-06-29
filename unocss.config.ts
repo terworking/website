@@ -69,13 +69,11 @@ export default defineConfig({
     }),
   ],
   shortcuts: {
-    'bg-body': 'bg-white dark:bg-dark-800',
     'bg-card': 'bg-white dark:bg-dark-500',
     'bg-secondary': 'bg-light-500 dark:bg-dark-500',
     'bg-placeholder': 'bg-light-900 dark:bg-dark-100',
     'border-card': 'border-light-900 dark:border-dark-100',
     'border-primary': 'border-black/20 dark:border-white/20',
-    'text-body': 'text-black dark:text-white',
     'card': 'bg-card border border-rounded-lg border-card',
     'content-placeholder': 'bg-placeholder cursor-wait',
     'text-placeholder':
@@ -84,6 +82,8 @@ export default defineConfig({
   theme: {
     colors: {
       accent: 'var(--accent)',
+      body: 'var(--body)', // text-body
+      body_b: 'var(--body-bg)', // bg-body
     },
   },
   transformers: [

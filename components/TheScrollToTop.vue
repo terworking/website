@@ -22,7 +22,7 @@ const scrollToTop = () =>
       space-x-2
       p="y-2 x-4"
       items-center
-      bg-body
+      bg-body_b
       border="~ card dashed"
       cursor-pointer
       select-none

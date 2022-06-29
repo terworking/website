@@ -35,7 +35,7 @@ watch(scrollY, (value, oldValue) => {
       z-100
       pointer-events="none children:auto"
     >
-      <header bg="body opacity-50" h-full backdrop-blur-md border="b primary">
+      <header bg="body_b opacity-50" h-full backdrop-blur-md border="b primary">
         <div flex items-center h-full max-w-7xl mx-auto px="3 lg:6">
           <button
             aria-label="openAside"
