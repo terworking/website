@@ -282,7 +282,7 @@ const { data: youtubeVideos } = await useAsyncData(
       <div class="parallax__layer parallax__layer--base">
         <div w-full h-full divide="y-2 current dashed" bg-body>
           <section class="content">
-            <h1 text-6xl mb-4 font-semibold>INDEX</h1>
+            <h1>INDEX</h1>
             <p>
               Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
               <NuxtLink
@@ -367,14 +367,14 @@ const { data: youtubeVideos } = await useAsyncData(
               waktu kadaluarsanya masing-masing, intinya usahakan untuk tidak
               terlalu banyak <b>membuang-buang waktu</b> saat melakukan sesuatu.
             </p>
-            <p text-xl>
+            <p text="lg md:xl">
               <b>
                 <i>TLDR (TooLong;DidntRead):</i> Tidak penting, hanya curhat.</b
               >
             </p>
           </section>
           <section class="content">
-            <h2 text-6xl my-2 font-semibold>FEATURES</h2>
+            <h2>FEATURES</h2>
             <p>Website ini memiliki fitur-fitur berikut.</p>
             <ul>
               <li>
@@ -419,7 +419,7 @@ const { data: youtubeVideos } = await useAsyncData(
             </ul>
           </section>
           <section class="content">
-            <h2 text-6xl my-2 font-semibold>YOUTUBE</h2>
+            <h2>YOUTUBE</h2>
             <p>Silahkan nikmati konten-konten Youtube <i>random</i> kami.</p>
             <div v-for="{ id, title, url } of youtubeVideos" :key="id">
               <EmbedYoutube :id="id" h="64 md:96" w-full />
@@ -438,7 +438,15 @@ const { data: youtubeVideos } = await useAsyncData(
 
 <style scoped>
 .content {
-  --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center text-lg;
+  --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center
+}
+
+.content > h1,h2 {
+  --at-apply: text-4xl md:text-6xl my-2 font-semibold;
+}
+
+.content > p {
+  --at-apply: md:text-lg;
 }
 
 ul {
@@ -450,7 +458,7 @@ ul > li {
 }
 
 ul > li > h3 {
-  --at-apply: text-5xl mb-2 underline;
+  --at-apply: text-2xl md:text-3xl mb-1 underline;
 }
 
 .smkn2kdglink {
