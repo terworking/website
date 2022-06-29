@@ -8,8 +8,9 @@ export const getThumbnail = (
 
   const thumbnailSize = Math.min(Math.max(height, width), size);
   const [thumbnailHeight, thumbnailWidth] =
-    // fallback to original size if the size is lower than or equal to 0
-    thumbnailSize > 0
+    // fallback to original size if the size is
+    // lower than or equal to 0 or is infinity
+    thumbnailSize > 0 && Number.isFinite(thumbnailSize)
       ? height > width
         ? [thumbnailSize, width / (height / thumbnailSize)]
         : [height / (width / thumbnailSize), thumbnailSize]

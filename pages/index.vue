@@ -40,7 +40,7 @@ const currentIndex = computed(() =>
   banners.value.findIndex(({ path }) => path === current.value.path)
 );
 
-const { width: windowWidth } = useWindowSize();
+const { width: windowWidth } = useWindowSize({ initialWidth: 0 });
 const thumbnails = computedWithControl(banners, () =>
   banners.value.map((data) => getThumbnail(data, windowWidth.value))
 );
@@ -218,35 +218,37 @@ const { data: youtubeVideos } = await useAsyncData(
           :style="{ cursor: isSwiping ? 'grabbing' : 'grab' }"
           @click="openPhotoswipe(currentIndex)"
         >
-          <Transition
-            name="banner"
-            mode="out-in"
-            @after-enter="bannerOnAfterEnter"
-            @enter="bannerOnEnter"
-            @leave="bannerOnLeave"
-          >
-            <div
-              :key="current.path"
-              absolute
-              inset-0
-              w-full
-              h-full
-              :class="{ 'banner-transition': !isSwiping }"
-              :style="{ transform: bannerTransform }"
+          <ClientOnly>
+            <Transition
+              name="banner"
+              mode="out-in"
+              @after-enter="bannerOnAfterEnter"
+              @enter="bannerOnEnter"
+              @leave="bannerOnLeave"
             >
-              <img
-                v-if="loaded.includes(currentThumbnail.path)"
-                :height="currentThumbnail.height"
-                :src="currentThumbnail.path"
-                :width="currentThumbnail.width"
-                object-cover
+              <div
+                :key="current.path"
+                absolute
+                inset-0
                 w-full
                 h-full
-                alt="Banner"
-              />
-              <PlaceholderImage v-else h-full animate-pulse />
-            </div>
-          </Transition>
+                :class="{ 'banner-transition': !isSwiping }"
+                :style="{ transform: bannerTransform }"
+              >
+                <img
+                  v-if="loaded.includes(currentThumbnail.path)"
+                  :height="currentThumbnail.height"
+                  :src="currentThumbnail.path"
+                  :width="currentThumbnail.width"
+                  object-cover
+                  w-full
+                  h-full
+                  alt="Banner"
+                />
+                <PlaceholderImage v-else h-full animate-pulse />
+              </div>
+            </Transition>
+          </ClientOnly>
           <div
             flex
             items-center
