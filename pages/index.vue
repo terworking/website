@@ -8,6 +8,8 @@ definePageMeta({
   weight: -1,
 });
 
+const expandMainContent = ref(false);
+
 const bannerContainer = ref<HTMLDivElement>();
 const mouse = reactive(useMouse());
 const parallax = reactive(useParallax(bannerContainer));
@@ -280,98 +282,137 @@ const { data: youtubeVideos } = await useAsyncData(
     <div class="parallax__group">
       <div class="parallax__layer parallax__layer--base">
         <div w-full h-full divide="y-2 current dashed" bg-body_b>
-          <section class="content">
-            <h1>INDEX</h1>
-            <p>
-              Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
-              >. Tidak terasa <b>3 tahun sudah berlalu</b> dan sekarang kita
-              sudah harus berpisah agar bisa untuk melanjutkan hidup ke tahap
-              berikutnya. Ada yang melanjutkan kuliah, ada yang langsung
-              bekerja, bahkan ada juga yang langsung menikah. Bagaimanapun cara
-              melanjutkannya, yang terpenting adalah
-              <b>selalu mensyukurinya</b> dan jangan pernah berpikir untuk
-              mengakhiri hidup yang telah diberi kepada kita ini, tidaklah ada
-              masalah yang tidak memiliki jalan keluar.
-            </p>
-            <p>
-              Semoga dengan perpisahan ini bisa dijadikan pelajaran untuk jangan
-              terlalu banyak berpikir atau terlalu berpikir kedepan, kalau ada
-              yang ingin disampaikan alangkah baiknya jika
-              <b>segera disampaikan</b>
-              kalau-kalau nanti tidak bisa bertemu secara langsung lagi. Kalau
-              <b>menyampaikan secara online</b> pasti akan selalu terasa ada
-              yang kurang
-              <i>(kurang rasa, kurang dekat, kurang feeling, 愛は足りない？)</i
-              >.
-            </p>
-            <p>
-              Jangan lupa untuk selalu mengingat teman-teman
-              <i
-                >(teman satu kelompok, teman bersebelahan, teman dekat, sahabat,
-                teman-teman-an, bestie, TTM, 恋人, BFFL, FOAF, FWB, OWF,
-                ...lanjutkan)</i
-              >, bagaimanapun juga mereka sudah mau menjadi teman kalian. Lalu
-              jangan lupakan juga guru-guru yang sudah mengajar
-              <i>(baca memberi nilai)</i>
-              kepada kita, sebab tanpa mereka kita tidak akan bisa lulus dari
-              sekolah
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
+          <div
+            relative
+            class="expandable"
+            overflow-hidden
+            max-h="333px md:530px"
+            :style="{
+              'max-height': expandMainContent ? '222rem' : undefined,
+            }"
+          >
+            <Transition appear name="expandable">
+              <div
+                v-if="!expandMainContent"
+                z-5
+                absolute
+                inset-x-0
+                bottom-0
+                p="t-24 md:t-36 b-8"
+                bg-gradient="to-t from-body_b"
+                text-center
+                class="expandable-container"
               >
-              yang tercinta ini.
-            </p>
-            <p>
-              Meskipun biaya yang sudah saya keluarkan di sekolah
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
-              >
-              yang tercinta ini tidak bisa dibilang sedikit
-              <i>(karena masuk TKJ + bayar komite)</i>, saya
-              <b>tetap cinta</b> pada sekolah
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
-              >
-              <i> (no homo, no endorse)</i>. Salah satu alasannya tentu saja
-              karena berkat
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
-              >
-              lah saya bisa melanjutkan ke halaman
-              <i>(baca jenjang)</i> berikutnya, lalu
-              <NuxtLink
-                class="smkn2kdglink"
-                target="_blank"
-                to="https://smkn2kandangan.sch.id/"
-                >SMKN 2 KANDANGAN</NuxtLink
-              >
-              ini juga secara tidak langsung telah membuat saya sadar bahwa
-              <b>tidak ada yang permanen dalam hidup ini</b>, semua hal memiliki
-              waktu kadaluarsanya masing-masing, intinya usahakan untuk tidak
-              terlalu banyak <b>membuang-buang waktu</b> saat melakukan sesuatu.
-            </p>
-            <p text="lg md:xl">
-              <b>
-                <i>TLDR (TooLong;DidntRead):</i> Tidak penting, hanya curhat.</b
-              >
-            </p>
-          </section>
+                <button
+                  bg-body_b
+                  p="x-4 y-2"
+                  text="lg md:xl"
+                  border="~ hover:accent"
+                  font-semibold
+                  @click="expandMainContent = true"
+                >
+                  SHOW MORE...
+                </button>
+              </div>
+            </Transition>
+            <section class="content">
+              <h1>INDEX</h1>
+              <p>
+                Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >. Tidak terasa <b>3 tahun sudah berlalu</b> dan sekarang kita
+                sudah harus berpisah agar bisa untuk melanjutkan hidup ke tahap
+                berikutnya. Ada yang melanjutkan kuliah, ada yang langsung
+                bekerja, bahkan ada juga yang langsung menikah. Bagaimanapun
+                cara melanjutkannya, yang terpenting adalah
+                <b>selalu mensyukurinya</b> dan jangan pernah berpikir untuk
+                mengakhiri hidup yang telah diberi kepada kita ini, tidaklah ada
+                masalah yang tidak memiliki jalan keluar.
+              </p>
+              <p>
+                Semoga dengan perpisahan ini bisa dijadikan pelajaran untuk
+                jangan terlalu banyak berpikir atau terlalu berpikir kedepan,
+                kalau ada yang ingin disampaikan alangkah baiknya jika
+                <b>segera disampaikan</b>
+                kalau-kalau nanti tidak bisa bertemu secara langsung lagi. Kalau
+                <b>menyampaikan secara online</b> pasti akan selalu terasa ada
+                yang kurang
+                <i
+                  >(kurang rasa, kurang dekat, kurang feeling,
+                  愛は足りない？)</i
+                >.
+              </p>
+              <p>
+                Jangan lupa untuk selalu mengingat teman-teman
+                <i
+                  >(teman satu kelompok, teman bersebelahan, teman dekat,
+                  sahabat, teman-teman-an, bestie, TTM, 恋人, BFFL, FOAF, FWB,
+                  OWF, ...lanjutkan)</i
+                >, bagaimanapun juga mereka sudah mau menjadi teman kalian. Lalu
+                jangan lupakan juga guru-guru yang sudah mengajar
+                <i>(baca memberi nilai)</i>
+                kepada kita, sebab tanpa mereka kita tidak akan bisa lulus dari
+                sekolah
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >
+                yang tercinta ini.
+              </p>
+              <p>
+                Meskipun biaya yang sudah saya keluarkan di sekolah
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >
+                yang tercinta ini tidak bisa dibilang sedikit
+                <i>(karena masuk TKJ + bayar komite)</i>, saya
+                <b>tetap cinta</b> pada sekolah
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >
+                <i> (no homo, no endorse)</i>. Salah satu alasannya tentu saja
+                karena berkat
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >
+                lah saya bisa melanjutkan ke halaman
+                <i>(baca jenjang)</i> berikutnya, lalu
+                <NuxtLink
+                  class="smkn2kdglink"
+                  target="_blank"
+                  to="https://smkn2kandangan.sch.id/"
+                  >SMKN 2 KANDANGAN</NuxtLink
+                >
+                ini juga secara tidak langsung telah membuat saya sadar bahwa
+                <b>tidak ada yang permanen dalam hidup ini</b>, semua hal
+                memiliki waktu kadaluarsanya masing-masing, intinya usahakan
+                untuk tidak terlalu banyak <b>membuang-buang waktu</b> saat
+                melakukan sesuatu.
+              </p>
+              <p text="lg md:xl">
+                <b>
+                  <i>TLDR (TooLong;DidntRead):</i> Tidak penting, hanya
+                  curhat.</b
+                >
+              </p>
+            </section>
+          </div>
+
           <section class="content">
             <h2>FEATURES</h2>
             <p>Website ini memiliki fitur-fitur berikut.</p>
@@ -438,6 +479,24 @@ const { data: youtubeVideos } = await useAsyncData(
 <style scoped>
 .content {
   --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center
+}
+
+.expandable {
+  transition-property: max-height;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+  transition-duration: 2000ms;
+}
+
+.expandable-container {
+  transition-property: opacity, transform;
+  transition-timing-function: ease-in-out, cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition-duration: 500ms, 750ms;
+}
+
+.expandable-enter-from,
+.expandable-leave-to {
+  opacity: 0;
+  transform: translateY(50%);
 }
 
 .content > h1,h2 {
