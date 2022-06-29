@@ -44,12 +44,10 @@ export default defineEventHandler(async ({ event }) => {
       ? useRuntimeConfig().public.galleryThumbnailSize
       : thumbnail_;
 
-    // lower the longest one's pixel to thumbnail size
     const thumbnailParameter: Record<string, number> = {};
-    if (height > width) {
-      thumbnailParameter.h = thumbnailSize;
-    } else {
-      thumbnailParameter.w = thumbnailSize;
+    if (thumbnailSize > 0) {
+      // lower the longest one's pixel to thumbnail size
+      thumbnailParameter[height > width ? 'h' : 'w'] = thumbnailSize;
     }
 
     const thumbnailUrl = useImageProxy({

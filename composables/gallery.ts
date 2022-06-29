@@ -8,9 +8,12 @@ export const getThumbnail = (
 
   const thumbnailSize = Math.min(Math.max(height, width), size);
   const [thumbnailHeight, thumbnailWidth] =
-    height > width
-      ? [thumbnailSize, width / (height / thumbnailSize)]
-      : [height / (width / thumbnailSize), thumbnailSize];
+    // fallback to original size if the size is lower than or equal to 0
+    thumbnailSize > 0
+      ? height > width
+        ? [thumbnailSize, width / (height / thumbnailSize)]
+        : [height / (width / thumbnailSize), thumbnailSize]
+      : [height, width];
 
   const searchParameters = new URLSearchParams();
   searchParameters.append('thumbnail', thumbnailSize.toString());
