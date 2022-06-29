@@ -96,6 +96,7 @@ const { pause: pauseAutomaticBannerCycle, resume: resumeAutomaticBannerCycle } =
   useIntervalFn(cycleBanner, 10_000);
 
 const bannerLeft = ref('0');
+const bannerTransform = computed(() => `translateX(${bannerLeft.value})`);
 const { distanceX, isSwiping, posEnd, posStart } = usePointerSwipe(
   bannerContainer,
   {
@@ -136,7 +137,7 @@ watch(currentIndex, (value, oldValue) => {
 });
 
 const bannerOnEnter = (element: HTMLElement) => {
-  element.style.left = '0';
+  element.style.transform = 'translateX(0)';
   element.classList.add('banner-transition');
   if (cycleIsReversed.value) {
     element.classList.add('reversed');
@@ -236,9 +237,10 @@ const { data: youtubeVideos } = await useAsyncData(
               w-full
               h-full
               :class="{ 'banner-transition': !isSwiping }"
-              :style="{ left: bannerLeft }"
+              :style="{ transform: bannerTransform }"
             >
               <img
+                v-if="loaded.includes(currentThumbnail.path)"
                 :height="currentThumbnail.height"
                 :src="currentThumbnail.path"
                 :width="currentThumbnail.width"
@@ -247,6 +249,7 @@ const { data: youtubeVideos } = await useAsyncData(
                 h-full
                 alt="Banner"
               />
+              <PlaceholderImage v-else h-full animate-pulse />
             </div>
           </Transition>
           <div
@@ -457,7 +460,7 @@ ul > li > h3 {
 }
 
 .banner-transition {
-  transition-property: opacity, left;
+  transition-property: opacity, transform;
   transition-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
   transition-duration: 0.5s;
 }
@@ -471,20 +474,14 @@ ul > li > h3 {
   opacity: 0;
 }
 
-.banner-enter-from {
-  left: 100% !important;
-}
-
-.banner-enter-from.reversed {
-  left: -100% !important;
-}
-
-.banner-leave-to {
-  left: -100% !important;
-}
-
+.banner-enter-from,
 .banner-leave-to.reversed {
-  left: 100% !important;
+  transform: translateX(100%) !important;
+}
+
+.banner-leave-to,
+.banner-enter-from.reversed {
+  transform: translateX(-100%) !important;
 }
 
 @media (min-width: 768px) {

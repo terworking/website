@@ -11,14 +11,27 @@ const data = computed(() => {
   const { id, thumbnail } = properties as Properties;
   return {
     source: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`,
-    thumbnail: thumbnail ?? `https://i3.ytimg.com/vi/${id}/hqdefault.jpg`,
+    thumbnail: useImageProxy({
+      output: 'webp',
+      q: 80,
+      url: thumbnail ?? `https://i3.ytimg.com/vi/${id}/hqdefault.jpg`,
+    }),
   };
 });
 </script>
 
 <template>
   <div relative inline-block overflow-hidden card>
-    <img absolute inset-0 w-full h-full object-cover :src="data.thumbnail" />
+    <img
+      absolute
+      inset-0
+      w-full
+      h-full
+      object-cover
+      loading="lazy"
+      :src="data.thumbnail"
+      :alt="`${id} thumbnail`"
+    />
     <div v-if="loaded" absolute inset-0>
       <iframe
         w-full
@@ -43,6 +56,7 @@ const data = computed(() => {
       @click="loaded = true"
     >
       <button
+        aria-label="play"
         class="play"
         i-ci-play-circle-filled
         h-30
