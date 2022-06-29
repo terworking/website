@@ -112,10 +112,9 @@ const { distanceX, isSwiping, posEnd, posStart } = usePointerSwipe(
           cycleBanner(true);
         } else if (percentage >= 0.34) {
           cycleBanner();
-        } else {
-          bannerLeft.value = '0';
         }
       }
+      bannerLeft.value = '0';
     },
     onSwipeStart: () => {
       pauseAutomaticBannerCycle();
@@ -137,7 +136,6 @@ watch(currentIndex, (value, oldValue) => {
 });
 
 const bannerOnEnter = (element: HTMLElement) => {
-  element.style.transform = 'translateX(0)';
   element.classList.add('banner-transition');
   if (cycleIsReversed.value) {
     element.classList.add('reversed');
