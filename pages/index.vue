@@ -48,40 +48,39 @@ const currentThumbnail = computed(() => thumbnails.value[currentIndex.value]);
 
 const loaded = ref<string[]>([]);
 const loading = ref<string[]>([]);
-const { pause: pauseBannerPreload, resume: resumeBannerPreload } =
-  watchPausable(
-    currentIndex,
-    (value) => {
-      if (isClient) {
-        const preload = [0, 1, -1, 2]
-          .map(
-            (v) => banners.value[wrapNumber(value + v, banners.value.length)]
-          )
-          .filter(
-            ({ path }) =>
-              !(loaded.value.includes(path) || loading.value.includes(path))
-          );
+watch(
+  currentIndex,
+  async (value) => {
+    if (isClient) {
+      const indexes = [0, 1, -1, 2].map((v) =>
+        wrapNumber(value + v, banners.value.length)
+      );
 
-        return Promise.all(
-          preload.map(async ({ path }) => {
-            const image = new Image();
-            image.addEventListener('load', () => {
-              loading.value.splice(loading.value.indexOf(path), 1);
-              loaded.value.push(path);
-            });
-            image.src = path;
-            loading.value.push(path);
-          })
+      const preload = indexes
+        .map((v) => thumbnails.value[v].path)
+        .filter(
+          (path) =>
+            !(loaded.value.includes(path) || loading.value.includes(path))
         );
-      }
-    },
-    { immediate: true }
-  );
 
-const bannerImage = computed(
-  () =>
-    (loaded.value.includes(current.value.path) ? current : currentThumbnail)
-      .value
+      for (const [index, path] of preload.entries()) {
+        loading.value.push(path);
+        if (index !== 0) {
+          await until(() =>
+            loaded.value.includes(preload[index - 1])
+          ).toBeTruthy();
+        }
+
+        const image = new Image();
+        image.addEventListener('load', () => {
+          loading.value.splice(loading.value.indexOf(path), 1);
+          loaded.value.push(path);
+        });
+        image.src = path;
+      }
+    }
+  },
+  { immediate: true }
 );
 
 const cycleBanner = (reverse?: boolean) => {
@@ -172,14 +171,10 @@ const openPhotoswipe = (index: number) => {
   pswp.on('firstUpdate', () => {
     photoswipeIsOpen.value = true;
     pauseAutomaticBannerCycle();
-
-    // Photoswipe will preload them
-    pauseBannerPreload();
   });
   pswp.on('close', () => {
     photoswipeIsOpen.value = false;
     resumeAutomaticBannerCycle();
-    resumeBannerPreload();
   });
 
   pswp.init();
@@ -244,13 +239,12 @@ const { data: youtubeVideos } = await useAsyncData(
               :style="{ left: bannerLeft }"
             >
               <img
-                :height="bannerImage.height"
-                :src="bannerImage.path"
-                :width="bannerImage.width"
+                :height="currentThumbnail.height"
+                :src="currentThumbnail.path"
+                :width="currentThumbnail.width"
                 object-cover
                 w-full
                 h-full
-                z-1
                 alt="Banner"
               />
             </div>
