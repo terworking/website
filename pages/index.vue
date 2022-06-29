@@ -41,47 +41,42 @@ const currentIndex = computed(() =>
 );
 
 const { width: windowWidth } = useWindowSize();
-const thumbnails = computed(() =>
-  banners.value.map((data) => getThumbnail(data, unref(windowWidth)))
+const thumbnails = computedWithControl(banners, () =>
+  banners.value.map((data) => getThumbnail(data, windowWidth.value))
 );
 const currentThumbnail = computed(() => thumbnails.value[currentIndex.value]);
 
-const loaded = ref<string[]>([]);
+const loaded = ref<string[]>([currentThumbnail.value.path]);
 const loading = ref<string[]>([]);
-watch(
-  currentIndex,
-  async (value) => {
-    if (isClient) {
-      const indexes = [0, 1, -1, 2].map((v) =>
-        wrapNumber(value + v, banners.value.length)
+watch(currentIndex, async (value) => {
+  if (isClient) {
+    const indexes = [0, 1, -1, 2].map((v) =>
+      wrapNumber(value + v, banners.value.length)
+    );
+
+    const preload = indexes
+      .map((v) => thumbnails.value[v].path)
+      .filter(
+        (path) => !(loaded.value.includes(path) || loading.value.includes(path))
       );
 
-      const preload = indexes
-        .map((v) => thumbnails.value[v].path)
-        .filter(
-          (path) =>
-            !(loaded.value.includes(path) || loading.value.includes(path))
-        );
-
-      for (const [index, path] of preload.entries()) {
-        loading.value.push(path);
-        if (index !== 0) {
-          await until(() =>
-            loaded.value.includes(preload[index - 1])
-          ).toBeTruthy();
-        }
-
-        const image = new Image();
-        image.addEventListener('load', () => {
-          loading.value.splice(loading.value.indexOf(path), 1);
-          loaded.value.push(path);
-        });
-        image.src = path;
+    for (const [index, path] of preload.entries()) {
+      loading.value.push(path);
+      if (index !== 0) {
+        await until(() =>
+          loaded.value.includes(preload[index - 1])
+        ).toBeTruthy();
       }
+
+      const image = new Image();
+      image.addEventListener('load', () => {
+        loading.value.splice(loading.value.indexOf(path), 1);
+        loaded.value.push(path);
+      });
+      image.src = path;
     }
-  },
-  { immediate: true }
-);
+  }
+});
 
 const cycleBanner = (reverse?: boolean) => {
   current.value =
@@ -92,8 +87,10 @@ const cycleBanner = (reverse?: boolean) => {
       )
     ];
 };
+
+const interval = computed(() => (loaded.value.length === 1 ? 45_000 : 10_000));
 const { pause: pauseAutomaticBannerCycle, resume: resumeAutomaticBannerCycle } =
-  useIntervalFn(cycleBanner, 10_000);
+  useIntervalFn(cycleBanner, interval);
 
 const bannerLeft = ref('0');
 const bannerTransform = computed(() => `translateX(${bannerLeft.value})`);
