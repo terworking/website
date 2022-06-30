@@ -8,8 +8,6 @@ definePageMeta({
   weight: -1,
 });
 
-const expandMainContent = ref(false);
-
 const bannerContainer = ref<HTMLDivElement>();
 const mouse = reactive(useMouse());
 const parallax = reactive(useParallax(bannerContainer));
@@ -185,6 +183,15 @@ watch([pageIsLeft, photoswipeIsOpen], (value) => {
     : resumeAutomaticBannerCycle();
 });
 
+const { data: content } = await useAsyncData('index-content', () =>
+  queryContent('_pages', 'home')
+    .where({ _partial: true })
+    .only(['body', 'expanded', '_type'])
+    .find()
+);
+
+const expandContent = ref(content.value.map((v) => v.expanded !== false));
+
 const { data: youtubeVideos } = await useAsyncData(
   'index-youtube-videos',
   async () => {
@@ -283,17 +290,19 @@ const { data: youtubeVideos } = await useAsyncData(
       <div class="parallax__layer parallax__layer--base">
         <div w-full h-full divide="y-2 current dashed" bg-body_b>
           <div
+            v-for="(value, index) of content"
+            :key="index"
             relative
             class="expandable"
             overflow-hidden
             max-h="333px md:530px"
             :style="{
-              'max-height': expandMainContent ? '222rem' : undefined,
+              'max-height': expandContent[index] ? '222rem' : undefined,
             }"
           >
             <Transition appear name="expandable">
               <div
-                v-if="!expandMainContent"
+                v-if="!expandContent[index]"
                 z-5
                 absolute
                 inset-x-0
@@ -309,155 +318,14 @@ const { data: youtubeVideos } = await useAsyncData(
                   text="lg md:xl"
                   border="~ hover:accent"
                   font-semibold
-                  @click="expandMainContent = true"
+                  @click="expandContent[index] = true"
                 >
                   SHOW MORE...
                 </button>
               </div>
             </Transition>
-            <section class="content">
-              <h1>INDEX</h1>
-              <p>
-                Website ini dibuat untuk <b>mengenang masa sekolah</b> kita di
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >. Tidak terasa <b>3 tahun sudah berlalu</b> dan sekarang kita
-                sudah harus berpisah agar bisa untuk melanjutkan hidup ke tahap
-                berikutnya. Ada yang melanjutkan kuliah, ada yang langsung
-                bekerja, bahkan ada juga yang langsung menikah. Bagaimanapun
-                cara melanjutkannya, yang terpenting adalah
-                <b>selalu mensyukurinya</b> dan jangan pernah berpikir untuk
-                mengakhiri hidup yang telah diberi kepada kita ini, tidaklah ada
-                masalah yang tidak memiliki jalan keluar.
-              </p>
-              <p>
-                Semoga dengan perpisahan ini bisa dijadikan pelajaran untuk
-                jangan terlalu banyak berpikir atau terlalu berpikir kedepan,
-                kalau ada yang ingin disampaikan alangkah baiknya jika
-                <b>segera disampaikan</b>
-                kalau-kalau nanti tidak bisa bertemu secara langsung lagi. Kalau
-                <b>menyampaikan secara online</b> pasti akan selalu terasa ada
-                yang kurang
-                <i
-                  >(kurang rasa, kurang dekat, kurang feeling,
-                  愛は足りない？)</i
-                >.
-              </p>
-              <p>
-                Jangan lupa untuk selalu mengingat teman-teman
-                <i
-                  >(teman satu kelompok, teman bersebelahan, teman dekat,
-                  sahabat, teman-teman-an, bestie, TTM, 恋人, BFFL, FOAF, FWB,
-                  OWF, ...lanjutkan)</i
-                >, bagaimanapun juga mereka sudah mau menjadi teman kalian. Lalu
-                jangan lupakan juga guru-guru yang sudah mengajar
-                <i>(baca memberi nilai)</i>
-                kepada kita, sebab tanpa mereka kita tidak akan bisa lulus dari
-                sekolah
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >
-                yang tercinta ini.
-              </p>
-              <p>
-                Meskipun biaya yang sudah saya keluarkan di sekolah
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >
-                yang tercinta ini tidak bisa dibilang sedikit
-                <i>(karena masuk TKJ + bayar komite)</i>, saya
-                <b>tetap cinta</b> pada sekolah
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >
-                <i> (no homo, no endorse)</i>. Salah satu alasannya tentu saja
-                karena berkat
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >
-                lah saya bisa melanjutkan ke halaman
-                <i>(baca jenjang)</i> berikutnya, lalu
-                <NuxtLink
-                  class="smkn2kdglink"
-                  target="_blank"
-                  to="https://smkn2kandangan.sch.id/"
-                  >SMKN 2 KANDANGAN</NuxtLink
-                >
-                ini juga secara tidak langsung telah membuat saya sadar bahwa
-                <b>tidak ada yang permanen dalam hidup ini</b>, semua hal
-                memiliki waktu kadaluarsanya masing-masing, intinya usahakan
-                untuk tidak terlalu banyak <b>membuang-buang waktu</b> saat
-                melakukan sesuatu.
-              </p>
-              <p text="lg md:xl">
-                <b>
-                  <i>TLDR (TooLong;DidntRead):</i> Tidak penting, hanya
-                  curhat.</b
-                >
-              </p>
-            </section>
+            <ContentRenderer class="content" tag="section" :value="value" />
           </div>
-
-          <section class="content">
-            <h2>FEATURES</h2>
-            <p>Website ini memiliki fitur-fitur berikut.</p>
-            <ul>
-              <li>
-                <h3>
-                  <NuxtLink to="/article">Article</NuxtLink>
-                </h3>
-                <p>
-                  Halaman ini berisi artikel-artikel yang kami buat. Kedepannya
-                  kami <i>mungkin</i> akan mengisinya dengan konten-konten yang
-                  berhubungan dengan jurusan teknik komputer dan jaringan
-                  <i>(Mikrotik, Debian, Linux, ...dst)</i>.
-                </p>
-              </li>
-              <li>
-                <h3>
-                  <NuxtLink to="/birthday">Birthday (countdown)</NuxtLink>
-                </h3>
-                <p>
-                  Seperti namanya, halaman ini berisi <i>countdown</i> atau
-                  hitung mundur ulang tahun dari anggota-anggota
-                  <i>(baca siswa-siswi)</i> kelas 12 TKJ angkatan 2021/2022.
-                </p>
-              </li>
-              <li>
-                <h3>
-                  <NuxtLink to="/gallery">Gallery</NuxtLink>
-                </h3>
-                <p>
-                  Halaman ini berisi foto-foto semasa sekolah di
-                  <NuxtLink
-                    class="smkn2kdglink"
-                    target="_blank"
-                    to="https://smkn2kandangan.sch.id/"
-                    >SMKN 2 KANDANGAN</NuxtLink
-                  >, kalau ingin foto yang bersangkutan dihapus silahkan hubungi
-                  <NuxtLink underline to="https://wa.me/62887435034436"
-                    >Yasser</NuxtLink
-                  >
-                  dengan <i>screenshot</i> foto yang ingin dihapus.
-                </p>
-              </li>
-            </ul>
-          </section>
           <section class="content">
             <h2>YOUTUBE</h2>
             <p>Silahkan nikmati konten-konten Youtube <i>random</i> kami.</p>
@@ -477,10 +345,6 @@ const { data: youtubeVideos } = await useAsyncData(
 </template>
 
 <style scoped>
-.content {
-  --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center
-}
-
 .expandable {
   transition-property: max-height;
   transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
@@ -499,23 +363,27 @@ const { data: youtubeVideos } = await useAsyncData(
   transform: translateY(50%);
 }
 
-.content > h1,h2 {
+:deep(.content) {
+  --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center
+}
+
+:deep(.content) > h1, :deep(.content) > h2 {
   --at-apply: text-4xl md:text-6xl my-2 font-semibold;
 }
 
-.content > p {
+:deep(.content) > p {
   --at-apply: md:text-lg;
 }
 
-ul {
+:deep(.content) > ul {
   --at-apply: text-start;
 }
 
-ul > li {
+:deep(.content) > ul > li {
   --at-apply: mb-6;
 }
 
-ul > li > h3 {
+:deep(.content) > ul > li > h3 {
   --at-apply: text-2xl md:text-3xl mb-1 underline;
 }
 
