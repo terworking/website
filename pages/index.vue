@@ -367,27 +367,23 @@ const { data: youtubeVideos } = await useAsyncData(
   --at-apply: max-w-2xl mx-auto space-y-8 px-2 py-6 text-center
 }
 
-:deep(.content) > h1, :deep(.content) > h2 {
+:deep(.content) :where(h1, h2) {
   --at-apply: text-4xl md:text-6xl my-2 font-semibold;
 }
 
-:deep(.content) > p {
+:deep(.content) p {
   --at-apply: md:text-lg;
 }
 
-:deep(.content) > ul {
-  --at-apply: text-start;
+:deep(.content) ul > li {
+  --at-apply: text-start mb-6;
 }
 
-:deep(.content) > ul > li {
-  --at-apply: mb-6;
-}
-
-:deep(.content) > ul > li > h3 {
+:deep(.content) ul > li > h3 {
   --at-apply: text-2xl md:text-3xl mb-1 underline;
 }
 
-.smkn2kdglink {
+:deep(.content) :not(h1, h2, h3, a) > a {
   --at-apply: underline underline-2 underline-dotted;
 }
 
@@ -398,7 +394,7 @@ const { data: youtubeVideos } = await useAsyncData(
 }
 
 .banner-enter-active {
-  transition-duration: 0.2s;
+  transition-duration: 0.34s;
 }
 
 .banner-enter-from,
