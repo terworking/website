@@ -1,11 +1,30 @@
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/types/content';
+import type { Article, FlatNavigation, Navigation } from '~~/types/content';
 
 definePageMeta({ name: 'Article' });
 
 const { data: navigation, pending: navigationPending } = await useLazyAsyncData(
   'article-navigation',
-  () => fetchContentNavigation() as Promise<Navigation[]>
+  () => fetchContentNavigation() as Promise<Navigation[]>,
+  {
+    transform: (data): FlatNavigation[] => {
+      // https://stackoverflow.com/a/54245371
+      const transform1 = ({ children = [], ...rest }: Navigation) => [
+        { ...rest },
+        ...transformAll(children),
+      ];
+
+      // https://stackoverflow.com/a/54245371
+      const transformAll = (children: Navigation[] = []): FlatNavigation[] =>
+        children.flatMap((c) => transform1(c));
+
+      return transformAll(data).map(({ _path, ...rest }) => ({
+        // prefix the path with /article
+        _path: `/article${_path}`,
+        ...rest,
+      }));
+    },
+  }
 );
 
 const { path } = useRoute();
@@ -14,12 +33,13 @@ const article = computedAsync(
   async () => {
     if (navigationPending.value) return;
 
-    const maybeArticle = useState<Article | undefined>(
-      `article-content-${path}`
+    const articles = useState(
+      `article-content`,
+      () => ({} as Record<string, Article>)
     );
-    if (maybeArticle.value !== undefined) return maybeArticle.value;
+    if (path in articles.value) return articles.value[path];
 
-    const candidate = flattenContentNavigation(navigation.value).find(
+    const candidate = navigation.value.find(
       ({ _path }, _, array) =>
         _path === path &&
         !array.some(
@@ -29,11 +49,13 @@ const article = computedAsync(
     );
 
     if (candidate !== undefined) {
-      maybeArticle.value = await queryContent<Article>(path)
-        .where({ _path: path })
-        .findOne();
+      const { _path, ...rest } = await queryContent<Article>(
+        // remove the `/article` prefix because we're re-fetching
+        candidate._path.replace('/article', '')
+      ).findOne(); // add `/article` prefix back
+      articles.value[path] = { _path: `/article${_path ?? ''}`, ...rest };
 
-      return maybeArticle.value;
+      return articles.value[path];
     }
   },
   undefined,
@@ -44,8 +66,8 @@ const article = computedAsync(
 <template>
   <div m-auto max-w-2xl p="4 md:y-8">
     <Article v-if="article" :value="article" :navigation="navigation" />
-    <PlaceholderArticleListings v-else-if="navigationPending" />
     <PlaceholderArticle v-else-if="articlePending" />
+    <PlaceholderArticleListings v-else-if="navigationPending" />
     <ArticleListings v-else :value="navigation" />
   </div>
 </template>

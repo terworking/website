@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import type { FlatNavigation } from '~~/types/content';
 
-defineProps<{
-  previous?: FlatNavigation;
-  next?: FlatNavigation;
+const properties = defineProps<{
+  index: number;
+  navigation: FlatNavigation[];
 }>();
+
+const previous = computed(() => {
+  if (properties.index !== 0)
+    return properties.navigation[properties.index - 1];
+});
+
+const next = computed(() => {
+  if (properties.index !== properties.navigation.length - 1)
+    return properties.navigation[properties.index + 1];
+});
 </script>
 
 <template>
