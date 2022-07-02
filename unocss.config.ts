@@ -14,6 +14,8 @@ import {
 import { presetScrollbar } from 'unocss-preset-scrollbar';
 
 export default defineConfig({
+  exclude: ['./node_modules/**/*'],
+  include: ['**/*.vue'],
   presets: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     formkitUnoCSS(),

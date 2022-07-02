@@ -186,11 +186,11 @@ watch([pageIsLeft, photoswipeIsOpen], (value) => {
 const { data: content } = await useAsyncData('index-content', () =>
   queryContent('_pages', 'home')
     .where({ _partial: true })
-    .only(['body', 'expanded', '_type'])
+    .only(['body', '_shrink', '_type'])
     .find()
 );
 
-const expandContent = ref(content.value.map((v) => v.expanded !== false));
+const shrinkContent = ref(content.value.map((v) => v._shrink === true));
 
 const { data: youtubeVideos } = await useAsyncData(
   'index-youtube-videos',
@@ -293,16 +293,16 @@ const { data: youtubeVideos } = await useAsyncData(
             v-for="(value, index) of content"
             :key="index"
             relative
-            class="expandable"
+            class="shrinkable"
             overflow-hidden
             max-h="333px md:530px"
             :style="{
-              'max-height': expandContent[index] ? '222rem' : undefined,
+              'max-height': shrinkContent[index] ? undefined : '999rem',
             }"
           >
-            <Transition appear name="expandable">
+            <Transition appear name="shrinkable">
               <div
-                v-if="!expandContent[index]"
+                v-if="shrinkContent[index]"
                 z-5
                 absolute
                 inset-x-0
@@ -310,7 +310,8 @@ const { data: youtubeVideos } = await useAsyncData(
                 p="t-24 md:t-36 b-8"
                 bg-gradient="to-t from-body_b"
                 text-center
-                class="expandable-container"
+                pointer-events-none
+                class="shrinkable-container"
               >
                 <button
                   bg-body_b
@@ -318,7 +319,8 @@ const { data: youtubeVideos } = await useAsyncData(
                   text="lg md:xl"
                   border="~ hover:accent"
                   font-semibold
-                  @click="expandContent[index] = true"
+                  pointer-events-auto
+                  @click="shrinkContent[index] = false"
                 >
                   SHOW MORE...
                 </button>
@@ -345,20 +347,20 @@ const { data: youtubeVideos } = await useAsyncData(
 </template>
 
 <style scoped>
-.expandable {
+.shrinkable {
   transition-property: max-height;
   transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
   transition-duration: 2000ms;
 }
 
-.expandable-container {
+.shrinkable-container {
   transition-property: opacity, transform;
   transition-timing-function: ease-in-out, cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-duration: 500ms, 750ms;
 }
 
-.expandable-enter-from,
-.expandable-leave-to {
+.shrinkable-enter-from,
+.shrinkable-leave-to {
   opacity: 0;
   transform: translateY(50%);
 }
@@ -375,8 +377,12 @@ const { data: youtubeVideos } = await useAsyncData(
   --at-apply: md:text-lg;
 }
 
-:deep(.content) ul > li {
-  --at-apply: text-start mb-6;
+:deep(.content) li > ul {
+  --at-apply: ml-4 mt-2 list-disc;
+}
+
+:deep(.content) ul {
+  --at-apply: text-start space-y-4;
 }
 
 :deep(.content) ul > li > h3 {
