@@ -76,6 +76,11 @@ export default defineConfig({
     'bg-placeholder': 'bg-light-900 dark:bg-dark-100',
     'border-card': 'border-light-900 dark:border-dark-100',
     'border-primary': 'border-black/20 dark:border-white/20',
+    'btn':
+      'px-4 py-3 font-semibold select-none disabled:pointer-events-none border border-accent disabled:border-gray-400 rounded-lg',
+    'btn-primary':
+      'btn bg-accent hover:bg-transparent disabled:bg-gray-400 text-white dark:text-black hover:!text-body',
+    'btn-secondary': 'btn text-body disabled:text-opacity-50',
     'card': 'bg-card border border-rounded-lg border-card',
     'content-placeholder': 'bg-placeholder cursor-wait',
     'text-placeholder':
