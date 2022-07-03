@@ -300,10 +300,10 @@ const { data: youtubeVideos } = await useAsyncData(
               'max-height': shrinkContent[index] ? undefined : '999rem',
             }"
           >
+            <ContentRenderer class="content" tag="section" :value="value" />
             <Transition appear name="shrinkable">
               <div
                 v-if="shrinkContent[index]"
-                z-5
                 absolute
                 inset-x-0
                 bottom-0
@@ -326,7 +326,6 @@ const { data: youtubeVideos } = await useAsyncData(
                 </button>
               </div>
             </Transition>
-            <ContentRenderer class="content" tag="section" :value="value" />
           </div>
           <section class="content">
             <h2>YOUTUBE</h2>
