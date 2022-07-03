@@ -18,8 +18,8 @@ const { isInside: pointerIsInsideBanner } = usePointer({
 const titleStyle = computed(() => {
   if (mouse.sourceType === 'mouse' && pointerIsInsideBanner.value) {
     return {
-      transform: `rotateX(${parallax.roll * 20}deg) rotateY(${
-        parallax.tilt * 20
+      transform: `rotateX(${parallax.roll * 33}deg) rotateY(${
+        parallax.tilt * 33
       }deg)`,
     };
   }
@@ -262,7 +262,7 @@ const shrinkContent = ref(content.value.map((v) => v._shrink === true));
             flex
             items-center
             justify-center
-            md:perspect-500px
+            md:perspect-444px
             absolute
             inset-0
           >
