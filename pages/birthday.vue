@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Member } from '~~/types/terworking';
+import { MemberBirthday } from '~~/types/terworking';
 
 definePageMeta({
   title: 'Birthday countdown',
@@ -8,9 +8,9 @@ definePageMeta({
 const now = useNow({ interval: 1000 });
 
 const { data } = await useAsyncData<{
-  closest?: Member;
-  farthest?: Member;
-  members: Member[];
+  closest?: MemberBirthday;
+  farthest?: MemberBirthday;
+  members: MemberBirthday[];
 }>('birthday-data', async () => {
   const { member } = useTerworking();
 

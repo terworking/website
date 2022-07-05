@@ -4,13 +4,7 @@ import { filetypemime } from 'magic-bytes.js';
 import { useSupabase } from '~~/composables/supabase';
 import { useTerworking } from '~~/composables/terworking';
 import type { definitions } from '~~/types/database';
-
-interface InputBody {
-  name: string;
-  avatar: string;
-  instagram: string;
-  quote: string;
-}
+import type { Member } from '~~/types/terworking';
 
 const {
   supabase,
@@ -55,7 +49,7 @@ export default defineEventHandler(async ({ event }) => {
     name,
     instagram: instagram_,
     quote,
-  } = await useBody<InputBody>(event);
+  } = await useBody<Member>(event);
 
   const { member } = useTerworking();
   if (!member.map(({ name }) => name).includes(name)) {
@@ -78,9 +72,7 @@ export default defineEventHandler(async ({ event }) => {
   }
 
   const instagram =
-    (instagram_ as string | undefined) !== undefined
-      ? `https://instagram/${instagram_}`
-      : undefined;
+    instagram_ !== undefined ? `https://instagram/${instagram_}` : undefined;
   const { data } = await supabase
     .from<definitions[typeof database]>(database)
     .insert({ instagram, name, quote });

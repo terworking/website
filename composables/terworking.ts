@@ -1,6 +1,6 @@
 // @unocss-include
 
-import type { Social, Member } from '~~/types/terworking';
+import type { Social, MemberBirthday } from '~~/types/terworking';
 
 const member = [
   { day: 6, month: 5, name: 'Adi Zuliarrahman', year: 2003 },
@@ -36,7 +36,7 @@ const member = [
   { day: 18, month: 8, name: 'Sahrul Afriza', year: 2002 },
   { day: 9, month: 8, name: 'Wahyu Al Fatah', year: 2002 },
   { day: 23, month: 3, name: 'Yoga Rusydi Arifin', year: 2004 },
-] as Member[];
+] as MemberBirthday[];
 
 const social = [
   {

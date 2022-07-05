@@ -23,7 +23,15 @@ export const useImageProxy = (
 ) => {
   const url = new URL('https://images.weserv.nl/');
   for (const [key, value] of Object.entries(parameters)) {
-    url.searchParams.append(key, value.toString());
+    if (key === 'filename') {
+      url.searchParams.append(
+        key,
+        value // 'fix' the filename
+          .toString()
+          .replace(/[^\w.]/g, '') // remove all non-alphanumeric characters
+          .replace(/\..*/, '') // remove file extension)
+      );
+    } else url.searchParams.append(key, value.toString());
   }
   return url.toString();
 };

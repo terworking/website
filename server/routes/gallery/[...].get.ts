@@ -16,9 +16,7 @@ export default defineEventHandler(async ({ event }) => {
 
   const { url, imageMediaMetadata } = item;
 
-  const filename = (new URL(url).pathname.split('/').pop() ?? '')
-    .replace(/[^\w.]/g, '') // remove all non-alphanumeric characters
-    .replace(/\..*/, ''); // remove file extension
+  const filename = new URL(url).pathname.split('/').pop() ?? '';
 
   const { download, thumbnail } = query;
   const downloadUrl = useImageProxy({
