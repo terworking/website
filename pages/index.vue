@@ -191,25 +191,6 @@ const { data: content } = await useAsyncData('index-content', () =>
 );
 
 const shrinkContent = ref(content.value.map((v) => v._shrink === true));
-
-// const { data: youtubeVideos } = await useAsyncData(
-//   'index-youtube-videos',
-//   async () => {
-//     const data = await $fetch<{
-//       videos: Record<'title' | 'videoId', string>[];
-//     }>('https://y.com.sb/api/v1/playlists/PLm2GaWqOUKvkmQ24tBx1No8u8u3DVeiCf', {
-//       params: { fields: 'videos(videoId,title)' },
-//     });
-
-//     return shuffle(
-//       data.videos.map(({ title, videoId: id }) => ({
-//         id,
-//         title,
-//         url: `https://youtu.be/${id}`,
-//       }))
-//     );
-//   }
-// );
 </script>
 
 <template>
@@ -327,26 +308,6 @@ const shrinkContent = ref(content.value.map((v) => v._shrink === true));
               </div>
             </Transition>
           </div>
-          <!-- <section class="content">
-            <h2 id="youtube">
-              <NuxtLink to="/#youtube"> YOUTUBE </NuxtLink>
-            </h2>
-            <p>
-              Berikut ini beberapa konten Youtube yang sempat dibuat oleh
-              <NuxtLink
-                to="https://www.youtube.com/channel/UC5TtIurj60ivx5TR0686TTw"
-                >Adhim</NuxtLink
-              >.
-            </p>
-            <div v-for="{ id, title, url } of youtubeVideos" :key="id">
-              <EmbedYoutube :id="id" h="64 md:96" w-full />
-              <p>
-                <b
-                  ><NuxtLink :to="url">{{ title }}</NuxtLink></b
-                >
-              </p>
-            </div>
-          </section> -->
         </div>
       </div>
     </div>
