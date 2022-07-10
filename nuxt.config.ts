@@ -11,14 +11,6 @@ export default defineNuxtConfig({
     navigation: {
       fields: ['description', 'image'],
     },
-    sources: [
-      {
-        base: 'content',
-        driver: 'fs',
-        name: 'article',
-        prefix: '/article',
-      },
-    ],
   },
   css: ['~~/assets/css/main.css', 'hint.css'],
   lodash: {

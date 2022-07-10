@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import type { Navigation } from '~~/types/content';
+import type { FlatNavigation } from '~~/types/content';
 
 const properties = defineProps({
   path: { default: () => useRoute().path, type: String },
-  value: { required: true, type: Object as () => Navigation[] },
+  value: { required: true, type: Object as () => FlatNavigation[] },
 });
 
-const { path } = toRefs(properties);
 const navigation = computed(() => {
-  return flattenContentNavigation(properties.value)
-    .filter(({ _path }) => _path.startsWith(path.value) && _path !== path.value)
+  return properties.value
+    .filter(
+      ({ _path }) =>
+        _path.startsWith(properties.path) && _path !== properties.path
+    )
     .filter(
       // don't list subdirectory items if the subdirectory is there
       ({ _path, description }, index, array) =>
@@ -43,7 +45,7 @@ const pathIsComplete = computed(() => {
   );
 });
 
-const title = computed(() => useTitleTemplate(`${path.value} Navigation`));
+const title = computed(() => useTitleTemplate(`${properties.path} Navigation`));
 
 // @ts-expect-error nuxt type error
 useHead({ title });
@@ -52,7 +54,7 @@ useHead({ title });
 <template>
   <div>
     <AppBreadcrumbs p="x-4 y-2" :show-lash-path="pathIsComplete" />
-    <nav card bg-body>
+    <nav card bg-body_b>
       <template v-if="navigation.length > 0">
         <ArticleListingsItem
           v-for="(item, index) of navigation"

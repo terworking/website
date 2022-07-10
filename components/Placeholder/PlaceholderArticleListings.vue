@@ -8,7 +8,7 @@ defineProps({
   <ClientOnly>
     <div aria-hidden="true">
       <AppBreadcrumbs p="x-4 y-2" />
-      <nav card bg-body>
+      <nav card bg-body_b>
         <PlaceholderArticleListingsItem
           v-for="(_, index) of Array.from({ length: count })"
           :key="index"

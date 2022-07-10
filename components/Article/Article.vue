@@ -1,12 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import type { Article, Navigation } from '~~/types/content';
+import type { Article, FlatNavigation } from '~~/types/content';
 
-const properties = defineProps<{ value: Article; navigation: Navigation[] }>();
-const { value, navigation: navigationRaw } = toRefs(properties);
+const properties = defineProps<{
+  value: Article;
+  navigation: FlatNavigation[];
+}>();
 
 const date = computed(() => {
-  const time = new Date(value.value.created ?? '');
+  const time = new Date(properties.value.created ?? '');
   if (time.toString() === 'Invalid Date') return;
 
   const dateTimeFormat = new Intl.DateTimeFormat(undefined, {
@@ -20,36 +22,28 @@ const date = computed(() => {
 });
 
 const currentDirectory = computed(
-  () => value.value._path?.split('/').slice(0, -1).join('/') ?? '/article'
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  () => properties.value._path!.split('/').slice(0, -1).join('/')
 );
 
 const navigation = computed(() =>
-  flattenContentNavigation(navigationRaw.value).filter(
+  properties.navigation.filter(
     ({ _path, description }) =>
       description !== undefined &&
       _path.startsWith(currentDirectory.value) &&
-      _path.split('/').length === value.value._path?.split('/').length
+      _path.split('/').length === properties.value._path?.split('/').length
   )
 );
 
-const currentIndex = computed(() =>
-  navigation.value.findIndex(({ _path }) => _path === value.value._path)
+const index = computed(() =>
+  navigation.value.findIndex(({ _path }) => _path === properties.value._path)
 );
 
-const previous = computed(() => {
-  if (currentIndex.value !== 0) return navigation.value[currentIndex.value - 1];
-});
-
-const next = computed(() => {
-  if (currentIndex.value !== navigation.value.length - 1)
-    return navigation.value[currentIndex.value + 1];
-});
-
-const title = computed(() => useTitleTemplate(value.value.title));
-const description = computed(() => value.value.description);
-const image = computed(() => value.value.image);
+const title = computed(() => useTitleTemplate(properties.value.title));
+const description = computed(() => properties.value.description);
+const image = computed(() => properties.value.image);
 useHead(useSeoHead({ description, image, title }));
-useHead(useSeoArticleHead(value));
+useHead(useSeoArticleHead(properties.value));
 
 // @ts-expect-error nuxt type error
 useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
@@ -90,7 +84,11 @@ useHead({ meta: [{ content: 'article', property: 'og:type' }], title });
       <ArticleToc :value="value.body.toc" :class="{ 'mt-4': !date }" />
       <ContentRenderer :value="value" prose="~ gray dark:invert" />
     </div>
-    <ArticleNavigation :previous="previous" :next="next" />
+    <ArticleNavigation
+      v-if="navigation.length > 1"
+      :index="index"
+      :navigation="navigation"
+    />
     <AppGraphcomment :disabled="value.comment === false" my-4 />
   </div>
 </template>

@@ -53,7 +53,7 @@ useHead({
 
 <style>
 body {
-  --at-apply: antialiased bg-body text-body;
+  --at-apply: antialiased bg-body_b text-body;
 }
 
 * {

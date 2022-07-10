@@ -23,7 +23,7 @@ const { social } = useTerworking();
             fixed
             inset-0
             w-72
-            bg-body
+            bg-body_b
             border="r primary"
             overflow-auto
           >

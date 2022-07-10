@@ -23,6 +23,10 @@ export const randomInt = (a = 1, b = 0, ...seeds: ConvertibleToString[]) => {
   return Math.floor(lower + random(...seeds) * (upper - lower + 1));
 };
 
+export const sample = <T>(array: T[], ...seeds: ConvertibleToString[]) => {
+  return array[Math.floor(random(...seeds) * array.length)];
+};
+
 // https://bost.ocks.org/mike/shuffle/
 export const shuffle = <T>(array: T[], ...seeds: ConvertibleToString[]) => {
   let m = array.length;
