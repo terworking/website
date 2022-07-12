@@ -1,4 +1,11 @@
 export interface Member {
+  name: string;
+  avatar: string;
+  instagram?: string;
+  quote?: string;
+}
+
+export interface MemberBirthday {
   day: number;
   month: number;
   name: string;
