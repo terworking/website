@@ -90,10 +90,12 @@ const { stop } = useIntersectionObserver(
   <div card p="x-2 y-6">
     <template v-if="!disabled">
       <div v-if="show" id="graphcomment" ref="graphcomment"></div>
-      <AppButton v-else block m-auto @click="show = true">
+      <button v-else btn-primary block m-auto @click="show = true">
         Load Comments
-      </AppButton>
+      </button>
     </template>
-    <AppButton v-else block m-auto disabled> Comments is disabled </AppButton>
+    <button v-else btn-primary block m-auto disabled>
+      Comments is disabled
+    </button>
   </div>
 </template>

@@ -8,8 +8,8 @@ import type { definitions } from '~~/types/database';
 interface InputBody {
   name: string;
   avatar: string;
-  instagram: string;
-  quote: string;
+  instagram?: string;
+  quote?: string;
 }
 
 const {
@@ -78,9 +78,20 @@ export default defineEventHandler(async ({ event }) => {
   }
 
   const instagram =
-    (instagram_ as string | undefined) !== undefined
-      ? `https://instagram/${instagram_}`
+    instagram_ !== undefined
+      ? `https://instagram.com/${instagram_.toLowerCase()}`
       : undefined;
+
+  if (instagram !== undefined && instagram_ !== undefined) {
+    const instagramVerify = await fetch(instagram);
+    if (instagramVerify.status === 404) {
+      throw createError({
+        statusCode: 400,
+        message: `couldn't find instagram account with username "${instagram_.toLowerCase()}", does it exist?`,
+      });
+    }
+  }
+
   const { data } = await supabase
     .from<definitions[typeof database]>(database)
     .insert({ instagram, name, quote });

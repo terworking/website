@@ -65,7 +65,9 @@ useHead({ title });
       <template v-else>
         <div flex="~ col" justify-center items-center h-96 w-full>
           <div font-semibold opacity-75 text="3xl md:4xl">404 NOT FOUND</div>
-          <AppButton m="t-4 md:b-12" @click="$router.back">Go Back</AppButton>
+          <button btn-primary m="t-4 md:b-12" @click="$router.back">
+            Go Back
+          </button>
         </div>
       </template>
     </nav>

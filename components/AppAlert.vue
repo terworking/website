@@ -4,6 +4,7 @@ import type { AlertProperties } from '~~/types/alert';
 const properties = defineProps<{ show: boolean; value: AlertProperties }>();
 const emit = defineEmits(['clickPrimary', 'clickSecondary', 'close']);
 
+const alertTarget = 'body';
 const alertContainer = ref<HTMLDivElement>();
 onClickOutside(alertContainer, () => {
   if (properties.value.options?.closeOnClickOutside === true) emit('close');
@@ -51,71 +52,69 @@ const secondaryButtonClass = computed(() => {
 </script>
 
 <template>
-  <ClientOnly>
-    <Teleport to="body">
-      <Transition name="alert">
+  <Teleport :to="alertTarget">
+    <Transition name="alert">
+      <div
+        v-if="show"
+        id="alert-mask"
+        z-999
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        bg="black dark:transparent opacity-80"
+        backdrop-blur-sm
+      >
+        <Body overflow-hidden />
         <div
-          v-if="show"
-          id="alert-mask"
-          z-999
-          fixed
-          inset-0
-          flex
+          id="alert-container"
+          ref="alertContainer"
+          flex="~ col"
+          shadow="lg opacity-25"
           items-center
-          justify-center
-          bg="black dark:transparent opacity-80"
-          backdrop-blur-sm
+          rounded-lg
+          bg-body_b
+          border
+          w-72
+          p="y-6 x-4"
+          select-none
+          :class="containerClass"
         >
-          <Body overflow-hidden />
+          <div border="4 dashed" rounded-full mb-2>
+            <div w-full h-full m-0 p-16 :class="iconClass"></div>
+          </div>
+          <h1 font-semibold italic text-body text-xl>{{ value.title }}</h1>
+          <p text="body center">{{ value.description }}</p>
           <div
-            id="alert-container"
-            ref="alertContainer"
-            flex="~ col"
-            shadow="lg opacity-25"
-            items-center
-            rounded-lg
-            bg-body_b
-            border
-            w-72
-            p="y-6 x-4"
-            select-none
-            :class="containerClass"
+            flex
+            justify-around
+            w-full
+            mt-4
+            class="children-(h-8 w-24 font-semibold transition-background-color-200 border-2)"
           >
-            <div border="4 dashed" rounded-full mb-2>
-              <div w-full h-full m-0 p-16 :class="iconClass"></div>
-            </div>
-            <h1 font-semibold italic text-body text-xl>{{ value.title }}</h1>
-            <p text="body center">{{ value.description }}</p>
-            <div
-              flex
-              justify-around
-              w-full
-              mt-4
-              class="children-(h-8 w-24 font-semibold transition-background-color-200 border-2)"
+            <button
+              v-if="value.button.secondary"
+              bg-transparent
+              :class="secondaryButtonClass"
+              @click="emit('clickSecondary')"
             >
-              <button
-                v-if="value.button.secondary"
-                bg-transparent
-                :class="secondaryButtonClass"
-                @click="emit('clickSecondary')"
-              >
-                {{ value.button.secondary }}
-              </button>
-              <button
-                hover:bg-transparent
-                border-dashed
-                text="white dark:black"
-                :class="primaryButtonClass"
-                @click="emit('clickPrimary')"
-              >
-                {{ value.button.primary }}
-              </button>
-            </div>
+              {{ value.button.secondary }}
+            </button>
+            <button
+              hover:bg-transparent
+              border-dashed
+              text="white dark:black"
+              :class="primaryButtonClass"
+              @click="emit('clickPrimary')"
+            >
+              {{ value.button.primary }}
+            </button>
           </div>
         </div>
-      </Transition>
-    </Teleport>
-  </ClientOnly>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>
