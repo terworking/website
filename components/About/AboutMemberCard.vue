@@ -63,7 +63,12 @@ const downloadAvatar = async () => {
     />
     <div flex="~ col" justify-center space-y-2 sm:w-full>
       <figcaption>
-        <NuxtLink font-semibold hover:underline :to="value.instagram">
+        <NuxtLink
+          font-semibold
+          hover:underline
+          :to="value.instagram"
+          target="_blank"
+        >
           {{ value.name }}
         </NuxtLink>
       </figcaption>
