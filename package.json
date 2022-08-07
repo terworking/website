@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "@iconify-json/material-symbols": "^1.1.13",
+    "@nuxtjs/color-mode": "^3.1.4",
+    "@unocss/nuxt": "^0.45.5",
+    "@vueuse/nuxt": "^9.1.0",
+    "nuxt": "3.0.0-rc.6"
+  }
+}
