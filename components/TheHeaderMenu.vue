@@ -10,6 +10,7 @@ const showMenuItem = ref(false)
   <div
     class="fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
   >
+    <Body class="overflow-hidden" />
     <div class="absolute inset-0 flex items-center justify-center">
       <img
         @click="showMenuItem = !showMenuItem"
