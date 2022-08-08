@@ -299,6 +299,13 @@
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.14.53.tgz#251b4cd6760fadb4d68a05815e6dc5e432d69cd6"
   integrity sha512-W2dAL6Bnyn4xa/QRSU3ilIK4EzD5wgYXKXJiS1HDF5vU3675qc2bvFyLwbUcdmssDveyndy7FbitrCoiV/eMLg==
 
+"@iconify-json/iconoir@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@iconify-json/iconoir/-/iconoir-1.1.8.tgz#17c2a1c83a5622ae0ae69de1db852366d00600ea"
+  integrity sha512-bW9N0XCh5bSJIGZvuRFX39mqX23u2nhfsf3GTlnWusQ20z/uOxy544XVKIpPpZJkPOApC9dpZoch9qZLGfu9qA==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/material-symbols@^1.1.13":
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/@iconify-json/material-symbols/-/material-symbols-1.1.13.tgz#a36cd6db06d85235cdf05bdfa88daa6dc488aef1"
