@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   },
   pwa: {
     meta,
-    manifest: { ...meta },
+    manifest: { ...meta, background_color: '#242427' },
   },
   typescript: {
     shim: false,
