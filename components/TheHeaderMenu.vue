@@ -36,9 +36,9 @@ const showMenuItem = ref(false)
                 :title="title"
                 :to="url"
                 target="_blank"
-                class="inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) space-x-2 bg-body rounded-full shadow-cyan-5 hover:(shadow-xl scale-90) children:hover:(scale-120 text-cyan-5) dark:(shadow-cyan-2 children:hover:text-cyan-2)"
+                class="inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-body rounded-full hover:scale-90 children:hover:scale-120 dark:(shadow-cyan-2 children:hover:text-cyan-2)"
               >
-                <div :class="icon" class="w-9 h-9 md:w-12 md:h-12"></div>
+                <div :class="icon" class="w-9 h-9 md:(w-12 h-12)"></div>
               </NuxtLink>
             </li>
           </Transition>
@@ -54,7 +54,6 @@ const showMenuItem = ref(false)
   transition: opacity 300ms linear,
     transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
 }
-
 @media (min-width: 768px) {
   .menu-item {
     --menu-item-radius: 180px;
@@ -64,6 +63,14 @@ const showMenuItem = ref(false)
 .menu-item * {
   transition: transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
     box-shadow 300ms cubic-bezier(0.79, 0.14, 0.15, 0.86);
+}
+
+.menu-item > *:hover {
+  --box-shadow: 0px 0px 20px 10px var(--un-shadow-color, currentColor);
+  -moz-box-shadow: var(--box-shadow);
+  -webkit-box-shadow: var(--box-shadow);
+  -ms-box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow);
 }
 
 .menu-item-enter-active,
