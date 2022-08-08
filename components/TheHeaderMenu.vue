@@ -2,6 +2,7 @@
 const socials = [...useSocial(), ...useSocial(), ...useSocial()]
 const calculateRotation = (n: number) => (360 / socials.length) * (n + 1)
 
+const rosemi = 'ROSEMI.GIF'
 const showMenuItem = ref(false)
 </script>
 
@@ -13,7 +14,7 @@ const showMenuItem = ref(false)
       <img
         @click="showMenuItem = !showMenuItem"
         class="absolute top-1/2 left-1/2 -m-24 h-48 w-48 md:-m-32 md:h-64 md:w-64"
-        src="/ROSEMI.GIF"
+        :src="rosemi"
         alt="ROSEMI"
       />
       <ul class="relative h-screen md:h-[calc(100%-64px)]">
