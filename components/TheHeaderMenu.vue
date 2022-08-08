@@ -14,7 +14,7 @@ const showMenuItem = ref(false)
     <div class="absolute inset-0 flex items-center justify-center">
       <img
         @click="showMenuItem = !showMenuItem"
-        class="absolute top-1/2 left-1/2 -m-24 h-48 w-48 md:-m-32 md:h-64 md:w-64"
+        class="absolute top-1/2 left-1/2 -m-24 h-48 w-48 md:(-m-32 h-64 w-64)"
         :src="rosemi"
         alt="ROSEMI"
       />
@@ -30,12 +30,12 @@ const showMenuItem = ref(false)
                   index
                 )}deg)`,
               }"
-              class="menu-item absolute top-1/2 left-1/2 -m-9 w-18 h-18 md:-m-12 md:w-24 md:h-24"
+              class="menu-item absolute top-1/2 left-1/2 -m-9 w-18 h-18 md:(-m-12 w-24 h-24)"
             >
               <NuxtLink
                 :to="url"
                 target="_blank"
-                class="inline-flex items-center justify-center w-18 h-18 md:w-24 md:h-24 space-x-2 bg-body rounded-full shadow-cyan-5 dark:shadow-cyan-2 hover:shadow-xl hover:scale-90 children:hover:scale-120 children:hover:text-cyan-5 dark:children:hover:text-cyan-2"
+                class="inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) space-x-2 bg-body rounded-full shadow-cyan-5 hover:(shadow-xl scale-90) children:hover:(scale-120 text-cyan-5) dark:(shadow-cyan-2 children:hover:text-cyan-2)"
               >
                 <div :class="icon" class="w-9 h-9 md:w-12 md:h-12"></div>
               </NuxtLink>
