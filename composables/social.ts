@@ -8,6 +8,11 @@ interface Social {
 
 export const useSocial = (): Social[] => [
   {
+    title: 'Source Code',
+    icon: 'i-iconoir-code',
+    url: 'https://github.com/terworking/WEBSITE',
+  },
+  {
     title: 'GitHub',
     icon: 'i-iconoir-github',
     url: 'https://github.com/terworking',

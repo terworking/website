@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const socials = [...useSocial(), ...useSocial(), ...useSocial()]
+const socials = [...useSocial(), ...useSocial()]
 const calculateRotation = (n: number) => (360 / socials.length) * (n + 1)
 
 const rosemi = 'ROSEMI.GIF'
@@ -19,7 +19,7 @@ const showMenuItem = ref(false)
         alt="ROSEMI"
       />
       <ul class="relative h-screen md:h-[calc(100%-64px)]">
-        <template v-for="({ icon, url }, index) of socials">
+        <template v-for="({ icon, url, title }, index) of socials">
           <Transition name="menu-item">
             <li
               v-if="showMenuItem"
@@ -33,6 +33,7 @@ const showMenuItem = ref(false)
               class="menu-item absolute top-1/2 left-1/2 -m-9 w-18 h-18 md:(-m-12 w-24 h-24)"
             >
               <NuxtLink
+                :title="title"
                 :to="url"
                 target="_blank"
                 class="inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) space-x-2 bg-body rounded-full shadow-cyan-5 hover:(shadow-xl scale-90) children:hover:(scale-120 text-cyan-5) dark:(shadow-cyan-2 children:hover:text-cyan-2)"
