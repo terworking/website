@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defaultWindow } from '@vueuse/core'
 
-const showMenu = ref(false)
+const showHeaderMenu = ref(false)
 
 const headerBanner = ref<HTMLElement>()
 const { height: headerBannerHeight } = useElementSize(headerBanner)
@@ -20,9 +20,7 @@ const headerShadeStyle = computed(() => {
 <template>
   <header class="relative h-84 md:h-128">
     <TheHeaderBanner ref="headerBanner" />
-    <Transition name="header-menu">
-      <TheHeaderMenu v-if="showMenu" />
-    </Transition>
+    <TheHeaderMenu :show="showHeaderMenu" />
     <div class="fixed z-999 top-0 h-64px w-full text-cyan-1 overflow-hidden">
       <div
         :style="headerShadeStyle"
@@ -37,13 +35,13 @@ const headerShadeStyle = computed(() => {
           class="flex items-center justify-end w-full h-full"
         >
           <Transition name="header-button">
-            <div v-if="showMenu" class="flex space-x-4">
+            <div v-if="showHeaderMenu" class="flex space-x-4">
               <ColorModeToggler />
-              <button @click="showMenu = false">
+              <button @click="showHeaderMenu = false">
                 <Icon class="i-material-symbols-close-rounded" />
               </button>
             </div>
-            <button v-else @click="showMenu = true">
+            <button v-else @click="showHeaderMenu = true">
               <Icon class="i-material-symbols-menu-rounded" />
             </button>
           </Transition>
@@ -54,18 +52,6 @@ const headerShadeStyle = computed(() => {
 </template>
 
 <style scoped>
-.header-menu-enter-active,
-.header-menu-leave-active {
-  transition: transform 450ms cubic-bezier(0.08, 0.82, 0.17, 1),
-    opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.header-menu-enter-from,
-.header-menu-leave-to {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-
 #header-button > * {
   position: absolute;
   transition: transform 500ms cubic-bezier(0.08, 0.82, 0.17, 1),
