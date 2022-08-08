@@ -17,7 +17,7 @@ const showMenuItem = ref(false)
       v-show="show"
       class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
-      <Body class="overflow-hidden" />
+      <Body v-if="show" class="overflow-hidden" />
       <div class="absolute inset-0 flex items-center justify-center">
         <img
           @click="showMenuItem = !showMenuItem"
