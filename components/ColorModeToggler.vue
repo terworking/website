@@ -25,9 +25,8 @@ const toggleColorMode = () => {
 #color-mode-toggler > * {
   position: absolute;
   inset: 0;
-  transition-duration: 200ms;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
+  transition: var(--default-transition),
+    transform 200ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .color-mode-toggler-enter-from,

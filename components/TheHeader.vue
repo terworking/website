@@ -56,10 +56,9 @@ const headerShadeStyle = computed(() => {
 <style scoped>
 .header-menu-enter-active,
 .header-menu-leave-active {
-  transition-duration: 450ms, 600ms;
-  transition-property: transform, opacity;
-  transition-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1),
-    cubic-bezier(0.19, 1, 0.22, 1);
+  transition: var(--default-transition),
+    transform 450ms cubic-bezier(0.08, 0.82, 0.17, 1),
+    opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .header-menu-enter-from,
@@ -70,10 +69,9 @@ const headerShadeStyle = computed(() => {
 
 #header-button > * {
   position: absolute;
-  transition-duration: 500ms;
-  transition-property: transform, opacity;
-  transition-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1),
-    cubic-bezier(0.19, 1, 0.22, 1);
+  transition: var(--default-transition),
+    transform 500ms cubic-bezier(0.08, 0.82, 0.17, 1),
+    opacity 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .header-button-enter-from {

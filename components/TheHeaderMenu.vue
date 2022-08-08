@@ -48,10 +48,9 @@ const showMenuItem = ref(false)
 
 <style scoped>
 .menu-item {
-  transition-duration: 750ms, 300ms;
-  transition-property: transform, opacity;
-  transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1), linear;
   --menu-item-radius: 120px;
+  transition: var(--default-transition), opacity 300ms linear,
+    transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 @media (min-width: 768px) {
@@ -61,9 +60,9 @@ const showMenuItem = ref(false)
 }
 
 .menu-item * {
-  transition-duration: 200ms, 300ms;
-  transition-property: transform, box-shadow, color;
-  transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: var(--default-transition),
+    transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
+    box-shadow 300ms cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
 .menu-item-enter-active,
