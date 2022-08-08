@@ -15,7 +15,7 @@ const showMenuItem = ref(false)
   >
     <div
       v-show="show"
-      class="fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
+      class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
       <Body class="overflow-hidden" />
       <div class="absolute inset-0 flex items-center justify-center">
@@ -57,20 +57,23 @@ const showMenuItem = ref(false)
 </template>
 
 <style scoped>
-.header-menu-enter-active,
-.header-menu-leave-active {
+.header-menu {
   transition: transform 450ms cubic-bezier(0.08, 0.82, 0.17, 1),
-    opacity 600ms cubic-bezier(0.19, 1, 0.22, 1);
+    opacity 500ms var(--header-menu-opacity-fn, cubic-bezier(0.19, 1, 0.22, 1));
+}
+
+.header-menu-leave-active {
+  --header-menu-opacity-fn: cubic-bezier(0.17, 0.84, 0.44, 1);
 }
 
 .header-menu-enter-from {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: scale(0.5);
 }
 
 .header-menu-leave-to {
   opacity: 0;
-  transform: translateY(-50%);
+  transform: scale(1.5);
 }
 
 .header-menu-item {
