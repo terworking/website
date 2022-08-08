@@ -51,7 +51,7 @@ const showMenuItem = ref(false)
 <style scoped>
 .menu-item {
   --menu-item-radius: 120px;
-  transition: var(--default-transition), opacity 300ms linear,
+  transition: opacity 300ms linear,
     transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -62,8 +62,7 @@ const showMenuItem = ref(false)
 }
 
 .menu-item * {
-  transition: var(--default-transition),
-    transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
+  transition: transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
     box-shadow 300ms cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
