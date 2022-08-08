@@ -1,8 +1,20 @@
 import { defineNuxtConfig } from 'nuxt'
 
+const meta = {
+  name: 'Terworking',
+  description: 'WEBSITE TERWORKING',
+  lang: 'id',
+  theme_color: 'rgb(165, 243, 252)',
+}
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  modules: ['@vueuse/nuxt', '@unocss/nuxt', '@nuxtjs/color-mode'],
+  modules: [
+    '@vueuse/nuxt',
+    '@unocss/nuxt',
+    '@nuxtjs/color-mode',
+    '@kevinmarrec/nuxt-pwa',
+  ],
   colorMode: {
     dataValue: 'theme',
     classSuffix: '',
@@ -10,6 +22,10 @@ export default defineNuxtConfig({
   },
   unocss: {
     preflight: true,
+  },
+  pwa: {
+    meta,
+    manifest: { ...meta },
   },
   typescript: {
     shim: false,
