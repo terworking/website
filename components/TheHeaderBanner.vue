@@ -1,7 +1,24 @@
 <script lang="ts" setup>
+import { isClient } from '@vueuse/shared'
+
 const imageIndex = ref(0)
 const { width } = useWindowSize()
 const src = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
+
+const isLoaded = ref(false)
+const placeholder = '/banner-placeholder.png'
+watch(
+  src,
+  () => {
+    if (isClient) {
+      isLoaded.value = false
+      const image = new Image()
+      image.addEventListener('load', () => (isLoaded.value = true))
+      image.src = src.value
+    }
+  },
+  { immediate: true }
+)
 
 const bannerImage = ref<HTMLImageElement>()
 const { lengthX } = useSwipe(bannerImage, {
@@ -19,9 +36,9 @@ const { lengthX } = useSwipe(bannerImage, {
 
 const calculatedRandom = computedWithControl(imageIndex, () => [
   Math.random(),
-  `${Math.random() * 100}%`,
-  `${Math.random() * 100}%`,
-  `${Math.random() * 360}deg`,
+  `${Math.random() * 200 - 100}%`,
+  `${Math.random() * 200 - 100}%`,
+  `${Math.random() * 720 - 360}deg`,
 ])
 </script>
 
@@ -49,7 +66,8 @@ const calculatedRandom = computedWithControl(imageIndex, () => [
           :key="src"
           ref="bannerImage"
           class="banner-image w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
-          :src="src"
+          :class="{ 'animate-pulse': !isLoaded }"
+          :src="isLoaded ? src : placeholder"
           alt="BANNER IMAGE"
         />
       </Transition>
