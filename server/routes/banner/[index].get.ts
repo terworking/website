@@ -16,17 +16,17 @@ export default defineEventHandler(async ({ event }) => {
     return sendRedirect(event, '/banner/0', 301)
   }
 
-  const actualIndex = index === 0 ? 0 : index % banners.length
-  if (actualIndex !== index) {
-    return sendRedirect(event, `/banner/${actualIndex}`, 301)
-  }
-
   if (banners.length === 0) {
     banners = await $fetch<CfGdriveResponse[]>(
       'https://cf-gdrive.terworking.workers.dev/?list'
     ).then((it) =>
       it.filter(({ imageMediaMetadata: { height, width } }) => width > height)
     )
+  }
+
+  const actualIndex = index === 0 ? 0 : index % banners.length
+  if (actualIndex !== index) {
+    return sendRedirect(event, `/banner/${actualIndex}`, 301)
   }
 
   const banner = banners.at(actualIndex)!
