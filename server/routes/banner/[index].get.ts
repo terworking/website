@@ -41,17 +41,14 @@ export default defineEventHandler(async ({ event }) => {
   url.searchParams.append('output', 'webp')
   url.searchParams.append('q', '80')
 
-  if (query.small !== undefined) {
-    url.searchParams.append(
-      'h',
-      Math.min(banner.imageMediaMetadata.height, 336).toString()
-    )
-  } else {
-    url.searchParams.append(
-      'h',
-      Math.min(banner.imageMediaMetadata.height, 512).toString()
-    )
-  }
+  const width = Math.min(
+    Number.parseInt(query.w as string),
+    banner.imageMediaMetadata.height
+  )
+  url.searchParams.append(
+    'w',
+    Number.isNaN(width) || width <= 0 ? '1440' : width.toString()
+  )
 
   const filename = `${banner.id}.webp`
   const response = await fetch(url.href)
