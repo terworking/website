@@ -37,11 +37,18 @@ const headerShadeStyle = computed(() => {
           <Transition name="header-button">
             <div v-if="showHeaderMenu" class="flex space-x-4">
               <ColorModeToggler />
-              <button @click="showHeaderMenu = false">
+              <button
+                aria-label="Close Header Menu"
+                @click="showHeaderMenu = false"
+              >
                 <Icon class="i-material-symbols-close-rounded" />
               </button>
             </div>
-            <button v-else @click="showHeaderMenu = true">
+            <button
+              v-else
+              aria-label="Show Header Menu"
+              @click="showHeaderMenu = true"
+            >
               <Icon class="i-material-symbols-menu-rounded" />
             </button>
           </Transition>
