@@ -6,14 +6,20 @@ const { width } = useWindowSize()
 const src = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
 
 const isLoaded = ref(false)
+const timeout = ref<NodeJS.Timeout>()
 const placeholder = '/banner-placeholder.png'
 watch(
-  src,
+  imageIndex,
   () => {
     if (isClient) {
       isLoaded.value = false
+      if (timeout.value !== undefined) clearTimeout(timeout.value)
+
       const image = new Image()
-      image.addEventListener('load', () => (isLoaded.value = true))
+      image.addEventListener('load', () => {
+        isLoaded.value = true
+        timeout.value = setTimeout(() => (imageIndex.value += 1), 6667)
+      })
       image.src = src.value
     }
   },
