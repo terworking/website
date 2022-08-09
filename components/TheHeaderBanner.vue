@@ -40,12 +40,19 @@ const { lengthX } = useSwipe(bannerImage, {
   },
 })
 
-const calculatedRandom = computedWithControl(imageIndex, () => [
-  Math.random(),
-  `${Math.random() * 200 - 100}%`,
-  `${Math.random() * 200 - 100}%`,
-  `${Math.random() * 720 - 360}deg`,
-])
+const randomTransforms = computedWithControl(imageIndex, () => {
+  const r = Math.random
+  const rs = (i: number) => r() * (i * 2) - i
+  const items = [
+    `translate(${rs(100)}%, ${rs(100)}%)`,
+    `skew(${rs(72)}deg, ${rs(72)}deg)`,
+    `scale3d(${rs(3)}, ${rs(3)}, ${rs(3)})`,
+    `rotate3d(${r()}, ${r()}, ${r()}, ${rs(360)}deg)`,
+  ]
+
+  useShuffle(items)
+  return items.join(' ')
+})
 </script>
 
 <template>
@@ -97,7 +104,7 @@ const calculatedRandom = computedWithControl(imageIndex, () => [
 .banner-image-enter-from,
 .banner-image-leave-to {
   opacity: 0;
-  transform: scale(v-bind('calculatedRandom[0]')) translateX(v-bind('calculatedRandom[1]')) translateY(v-bind('calculatedRandom[2]')) rotate(v-bind('calculatedRandom[3]'));
+  transform: v-bind('randomTransforms');
 }
 
 .banner-button {
