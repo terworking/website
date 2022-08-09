@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     preflight: true,
   },
   pwa: {
-    meta,
+    meta: { ...meta, favicon: false },
     manifest: { ...meta, background_color: '#242427' },
   },
   typescript: {
