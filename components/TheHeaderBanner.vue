@@ -3,6 +3,20 @@ const imageIndex = ref(0)
 const { width } = useWindowSize()
 const src = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
 
+const bannerImage = ref<HTMLImageElement>()
+const { lengthX } = useSwipe(bannerImage, {
+  onSwipeEnd: () => {
+    if (bannerImage.value !== undefined) {
+      const percentage = lengthX.value / bannerImage.value.clientWidth
+      if (percentage <= -0.2) {
+        imageIndex.value -= 1
+      } else if (percentage >= 0.2) {
+        imageIndex.value += 1
+      }
+    }
+  },
+})
+
 const calculatedRandom = computedWithControl(imageIndex, () => [
   Math.random(),
   `${Math.random() * 100}%`,
@@ -33,6 +47,7 @@ const calculatedRandom = computedWithControl(imageIndex, () => [
       <Transition name="banner-image" mode="out-in">
         <img
           :key="src"
+          ref="bannerImage"
           class="banner-image w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
           :src="src"
           alt="BANNER IMAGE"
