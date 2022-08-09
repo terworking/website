@@ -5,39 +5,39 @@ const bannerSrc = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
 </script>
 
 <template>
-  <ClientOnly>
-    <div id="header-banner" class="relative overflow-hidden">
-      <div class="hidden md:block">
-        <button
-          aria-label="Prev Banner"
-          class="prev-banner-button banner-button"
-          @click="imageIndex -= 1"
-        >
-          <div class="i-material-symbols-chevron-left" />
-        </button>
-        <button
-          aria-label="Next Banner"
-          class="next-banner-button banner-button"
-          @click="imageIndex += 1"
-        >
-          <div class="i-material-symbols-chevron-right" />
-        </button>
-      </div>
+  <div id="header-banner" class="relative overflow-hidden">
+    <div class="hidden md:block">
+      <button
+        aria-label="Prev Banner"
+        class="prev-banner-button banner-button"
+        @click="imageIndex -= 1"
+      >
+        <div class="i-material-symbols-chevron-left" />
+      </button>
+      <button
+        aria-label="Next Banner"
+        class="next-banner-button banner-button"
+        @click="imageIndex += 1"
+      >
+        <div class="i-material-symbols-chevron-right" />
+      </button>
+    </div>
+    <ClientOnly>
       <img
         class="w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
         :src="bannerSrc"
         alt="BANNER IMAGE"
       />
-      <div
-        class="flex flex-col absolute inset-0 text-cyan-2 py-48 md:py-52 px-6 md:px-24 lg:px-36 pointer-events-none"
-      >
-        <h1 class="text-lg md:text-2xl lg:text-4xl font-semibold">
-          Website TEROWROROKING
-        </h1>
-        <p>website terowrororkwing websitew tewrorrkisng website terwwprlomg</p>
-      </div>
+    </ClientOnly>
+    <div
+      class="flex flex-col absolute inset-0 text-cyan-2 py-48 md:py-52 px-6 md:px-24 lg:px-36 pointer-events-none"
+    >
+      <h1 class="text-lg md:text-2xl lg:text-4xl font-semibold">
+        Website TEROWROROKING
+      </h1>
+      <p>website terowrororkwing websitew tewrorrkisng website terwwprlomg</p>
     </div>
-  </ClientOnly>
+  </div>
 </template>
 
 <style scoped>
