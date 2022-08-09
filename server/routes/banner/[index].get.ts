@@ -11,9 +11,14 @@ let banners: CfGdriveResponse[] = []
 export default defineEventHandler(async ({ event }) => {
   const { index: tryIndex } = event.context.params as Record<string, string>
 
+  const query = useQuery(event)
+  const searchParams = new URLSearchParams(
+    query as Record<string, string>
+  ).toString()
+
   const index = Number.parseInt(tryIndex)
   if (Number.isNaN(index)) {
-    return sendRedirect(event, '/banner/0', 301)
+    return sendRedirect(event, `/banner/0?${searchParams}`, 301)
   }
 
   if (banners.length === 0) {
@@ -26,7 +31,7 @@ export default defineEventHandler(async ({ event }) => {
 
   const actualIndex = index === 0 ? 0 : index % banners.length
   if (actualIndex !== index) {
-    return sendRedirect(event, `/banner/${actualIndex}`, 301)
+    return sendRedirect(event, `/banner/${actualIndex}?${searchParams}`, 301)
   }
 
   const banner = banners.at(actualIndex)!
@@ -36,7 +41,6 @@ export default defineEventHandler(async ({ event }) => {
   url.searchParams.append('output', 'webp')
   url.searchParams.append('q', '80')
 
-  const query = useQuery(event)
   if (query.small !== undefined) {
     url.searchParams.append(
       'h',
