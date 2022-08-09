@@ -27,7 +27,7 @@ const headerShadeStyle = computed(() => {
         class="absolute inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
       />
       <div class="h-full px-6 md:px-8 lg:px-12 flex items-center">
-        <NuxtLink class="flex-1" to="/">
+        <NuxtLink title="Homepage" class="flex-1" to="/">
           <Icon class="i-local-terworking" />
         </NuxtLink>
         <div
