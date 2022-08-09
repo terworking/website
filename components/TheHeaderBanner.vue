@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 const imageIndex = ref(0)
 const { width } = useWindowSize()
-const bannerSrc = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
+const src = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
+
+const calculatedRandom = computedWithControl(imageIndex, () => [
+  Math.random(),
+  `${Math.random() * 100}%`,
+  `${Math.random() * 100}%`,
+  `${Math.random() * 360}deg`,
+])
 </script>
 
 <template>
@@ -23,11 +30,14 @@ const bannerSrc = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
       </button>
     </div>
     <ClientOnly>
-      <img
-        class="w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
-        :src="bannerSrc"
-        alt="BANNER IMAGE"
-      />
+      <Transition name="banner-image" mode="out-in">
+        <img
+          :key="src"
+          class="banner-image w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
+          :src="src"
+          alt="BANNER IMAGE"
+        />
+      </Transition>
     </ClientOnly>
     <div
       class="flex flex-col absolute inset-0 text-cyan-2 py-48 md:py-52 px-6 md:px-24 lg:px-36 pointer-events-none"
@@ -41,6 +51,16 @@ const bannerSrc = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
 </template>
 
 <style scoped>
+.banner-image {
+  transition: opacity 450ms, transform 500ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.banner-image-enter-from,
+.banner-image-leave-to {
+  opacity: 0;
+  transform: scale(v-bind('calculatedRandom[0]')) translateX(v-bind('calculatedRandom[1]')) translateY(v-bind('calculatedRandom[2]')) rotate(v-bind('calculatedRandom[3]'));
+}
+
 .banner-button {
   --at-apply: absolute z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current
     rounded-full opacity-0;
