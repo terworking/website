@@ -24,6 +24,7 @@ const showMenuItem = ref(false)
           class="absolute top-1/2 left-1/2 -m-24 h-48 w-48 md:(-m-32 h-64 w-64)"
           :src="rosemi"
           alt="ROSEMI"
+          loading="lazy"
         />
         <ul class="relative h-screen md:h-[calc(100%-64px)]">
           <template v-for="({ icon, url, title }, index) of socials">
