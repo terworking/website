@@ -16,7 +16,7 @@ export default defineEventHandler(async ({ event }) => {
     return sendRedirect(event, '/banner/0', 301)
   }
 
-  const actualIndex = index % banners.length
+  const actualIndex = index === 0 ? 0 : index % banners.length
   if (actualIndex !== index) {
     return sendRedirect(event, `/banner/${actualIndex}`, 301)
   }
