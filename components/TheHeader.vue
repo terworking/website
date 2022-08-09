@@ -27,7 +27,7 @@ const headerShadeStyle = computed(() => {
         class="absolute inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
       />
       <div class="h-full px-6 md:px-8 lg:px-12 flex items-center">
-        <NuxtLink class="flex-1" to="/">
+        <NuxtLink title="Homepage" class="flex-1" to="/">
           <Icon class="i-local-terworking" />
         </NuxtLink>
         <div
@@ -37,11 +37,18 @@ const headerShadeStyle = computed(() => {
           <Transition name="header-button">
             <div v-if="showHeaderMenu" class="flex space-x-4">
               <ColorModeToggler />
-              <button @click="showHeaderMenu = false">
+              <button
+                aria-label="Close Header Menu"
+                @click="showHeaderMenu = false"
+              >
                 <Icon class="i-material-symbols-close-rounded" />
               </button>
             </div>
-            <button v-else @click="showHeaderMenu = true">
+            <button
+              v-else
+              aria-label="Show Header Menu"
+              @click="showHeaderMenu = true"
+            >
               <Icon class="i-material-symbols-menu-rounded" />
             </button>
           </Transition>

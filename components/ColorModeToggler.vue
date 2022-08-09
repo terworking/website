@@ -9,6 +9,7 @@ const toggleColorMode = () => {
   <button
     class="relative w-8 h-8"
     id="color-mode-toggler"
+    aria-label="Toggle Color Mode"
     @click="toggleColorMode"
   >
     <Transition name="color-mode-toggler">
