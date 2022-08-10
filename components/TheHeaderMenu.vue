@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const rosemi = 'ROSEMI.GIF'
-const socials = [...useSocial(), ...useSocial()]
-const calculateRotation = (n: number) => (360 / socials.length) * (n + 1)
+const socials = useSocial()
+const calculateRotation = (n: number) => (360 / socials.length) * (n + 1) + 56
 
 defineProps<{ show: boolean }>()
 const showMenuItem = ref(false)
