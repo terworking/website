@@ -56,7 +56,7 @@ const randomTransforms = computedWithControl(imageIndex, () => {
 </script>
 
 <template>
-  <div id="header-banner" class="relative overflow-hidden">
+  <div id="header-banner" class="relative bg-black overflow-hidden">
     <div class="hidden md:block">
       <button
         aria-label="Prev Banner"
