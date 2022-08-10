@@ -7,26 +7,33 @@ const src = computed(
   () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
 )
 
+const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
+  () => (imageIndex.value += 1),
+  6667
+)
+
 const isLoaded = ref(false)
-const timeout = ref<NodeJS.Timeout>()
 const placeholder = '/banner-placeholder.png'
 watch(
   imageIndex,
   () => {
     if (isClient) {
+      stopTimeout()
       isLoaded.value = false
-      if (timeout.value !== undefined) clearTimeout(timeout.value)
 
       const image = new Image()
       image.addEventListener('load', () => {
         isLoaded.value = true
-        timeout.value = setTimeout(() => (imageIndex.value += 1), 6667)
+        startTimeout()
       })
       image.src = src.value
     }
   },
   { immediate: true }
 )
+
+const isLeft = usePageLeave()
+watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
 
 const bannerImage = ref<HTMLImageElement>()
 const { lengthX } = useSwipe(bannerImage, {
