@@ -3,7 +3,9 @@ import { isClient } from '@vueuse/shared'
 
 const imageIndex = ref(0)
 const { width } = useWindowSize()
-const src = computed(() => `/banner/${imageIndex.value}?w=${width.value}`)
+const src = computed(
+  () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
+)
 
 const isLoaded = ref(false)
 const timeout = ref<NodeJS.Timeout>()
