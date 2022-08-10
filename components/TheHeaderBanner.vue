@@ -83,7 +83,7 @@ const randomTransforms = computedWithControl(imageIndex, () => {
       </button>
     </div>
     <ClientOnly>
-      <Transition name="banner-image" mode="out-in">
+      <Transition appear name="banner-image" mode="out-in">
         <img
           :key="src"
           ref="bannerImage"
