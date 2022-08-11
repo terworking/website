@@ -56,9 +56,12 @@ const mouse = computed(() => {
                 :title="title"
                 :to="url"
                 target="_blank"
-                class="header-menu-item pointer-events-auto inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-black text-white rounded-full hover:scale-90 children:hover:scale-120 shadow-cyan-2 children:hover:text-cyan-2"
+                class="header-menu-item pointer-events-auto inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-body shadow-current rounded-full hover:scale-90 children:hover:scale-120 dark:(text-cyan-2 shadow-cyan-2)"
               >
-                <div :class="icon" class="w-9 h-9 md:(w-12 h-12)"></div>
+                <div
+                  :class="icon"
+                  class="header-menu-item w-9 h-9 md:(w-12 h-12)"
+                ></div>
               </NuxtLink>
             </Transition>
           </li>
@@ -82,7 +85,7 @@ const mouse = computed(() => {
     circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
     transparent 0%,
     rgba(0, 0, 0, 0.8) 50%,
-    rgba(0, 0, 0, 1) 100%
+    rgba(0, 0, 0, 0.96) 100%
   );
 }
 
@@ -115,18 +118,20 @@ const mouse = computed(() => {
   }
 }
 
-.header-menu-item,
-.header-menu-item * {
+.header-menu-item {
   transition: transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
     box-shadow 300ms cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
-.header-menu-item:hover {
-  --box-shadow: 0px 0px 20px 10px var(--un-shadow-color, currentColor);
-  -moz-box-shadow: var(--box-shadow);
-  -webkit-box-shadow: var(--box-shadow);
-  -ms-box-shadow: var(--box-shadow);
-  box-shadow: var(--box-shadow);
+.header-menu-item:hover,
+.dark .header-menu-item {
+  box-shadow: 0 0 var(--header-menu-item-shadow-blur, 20px)
+    var(--header-menu-item-shadow-radius, 10px) var(--un-shadow-color);
+}
+
+.dark .header-menu-item:hover {
+  --header-menu-item-shadow-blur: 80px;
+  --header-menu-item-shadow-radius: 20px;
 }
 
 .header-menu-item-enter-active,
