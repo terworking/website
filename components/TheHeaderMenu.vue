@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 const rosemi = 'ROSEMI.GIF'
 
+defineProps<{ show: boolean }>()
+const showMenuItem = ref(false)
+
 const socials = useSocial()
 const calculateRotation = (n: number) => (360 / socials.length) * (n + 1) + 56
 const menuItemTransforms = computed(() =>
@@ -10,8 +13,10 @@ const menuItemTransforms = computed(() =>
   })
 )
 
-defineProps<{ show: boolean }>()
-const showMenuItem = ref(false)
+const { x: mouseX, y: mouseY } = useMouse({ touch: false })
+const mouse = computed(() => {
+  return { x: `${mouseX.value}px`, y: `${mouseY.value}px` }
+})
 </script>
 
 <template>
@@ -25,7 +30,7 @@ const showMenuItem = ref(false)
       class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
       <Body v-if="show" class="overflow-hidden" />
-      <div class="absolute inset-0 flex items-center justify-center">
+      <div class="absolute inset-0">
         <img
           @click="showMenuItem = !showMenuItem"
           class="absolute absolute-center h-48 w-48 md:(h-64 w-64)"
@@ -33,6 +38,12 @@ const showMenuItem = ref(false)
           alt="ROSEMI"
           loading="lazy"
         />
+        <Transition name="flashlight-mask" :duration="1500">
+          <div
+            v-if="showMenuItem || show"
+            class="hidden lg:block flashlight-mask pointer-events-none"
+          />
+        </Transition>
         <ul>
           <li
             v-for="({ icon, url, title }, index) of socials"
@@ -45,7 +56,7 @@ const showMenuItem = ref(false)
                 :title="title"
                 :to="url"
                 target="_blank"
-                class="header-menu-item pointer-events-auto inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-body rounded-full hover:scale-90 children:hover:scale-120 dark:(shadow-cyan-2 children:hover:text-cyan-2)"
+                class="header-menu-item pointer-events-auto inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-black text-white rounded-full hover:scale-90 children:hover:scale-120 shadow-cyan-2 children:hover:text-cyan-2"
               >
                 <div :class="icon" class="w-9 h-9 md:(w-12 h-12)"></div>
               </NuxtLink>
@@ -61,6 +72,23 @@ const showMenuItem = ref(false)
 .header-menu {
   transition: transform 450ms cubic-bezier(0.08, 0.82, 0.17, 1),
     opacity 500ms var(--header-menu-opacity-fn, cubic-bezier(0.19, 1, 0.22, 1));
+}
+
+.flashlight-mask::before {
+  --at-apply: fixed w-full h-full;
+  content: '';
+  transition: opacity 1500ms cubic-bezier(0.75, 0.5, 0.25, 1);
+  background: radial-gradient(
+    circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+.flashlight-mask-enter-from::before,
+.flashlight-mask-leave-to::before {
+  opacity: 0;
 }
 
 .header-menu-leave-active {
