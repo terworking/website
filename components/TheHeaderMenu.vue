@@ -40,7 +40,7 @@ const mouse = computed(() => {
         />
         <Transition name="flashlight-mask" :duration="1500">
           <div
-            v-if="showMenuItem || show"
+            v-if="$colorMode.value === 'dark' && (showMenuItem || show)"
             class="hidden lg:block flashlight-mask pointer-events-none"
           />
         </Transition>
