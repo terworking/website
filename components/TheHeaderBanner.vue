@@ -81,7 +81,7 @@ const bannerImageTranslateX = computed(() => ({
     <ClientOnly>
       <Transition appear name="banner-image">
         <img
-          :key="src"
+          :key="imageIndex"
           ref="bannerImage"
           class="banner-image absolute w-full h-inherit object-cover filter-brightness-50 dark:filter-brightness-40"
           :class="{ 'animate-pulse': !isLoaded }"
