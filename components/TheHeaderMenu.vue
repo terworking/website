@@ -21,15 +21,18 @@ const showMenuItem = ref(false)
       <div class="absolute inset-0 flex items-center justify-center">
         <img
           @click="showMenuItem = !showMenuItem"
-          class="absolute top-1/2 left-1/2 -m-24 h-48 w-48 md:(-m-32 h-64 w-64)"
+          class="absolute absolute-center h-48 w-48 md:(h-64 w-64)"
           :src="rosemi"
           alt="ROSEMI"
           loading="lazy"
         />
-        <ul class="relative h-screen md:h-[calc(100%-64px)]">
-          <template v-for="({ icon, url, title }, index) of socials">
+        <ul>
+          <li
+            v-for="({ icon, url, title }, index) of socials"
+            class="absolute absolute-center pointer-events-none"
+          >
             <Transition name="header-menu-item">
-              <li
+              <NuxtLink
                 v-if="showMenuItem"
                 :style="{
                   transform: `rotate(${calculateRotation(
@@ -38,19 +41,15 @@ const showMenuItem = ref(false)
                     index
                   )}deg)`,
                 }"
-                class="header-menu-item absolute top-1/2 left-1/2 -m-9 w-18 h-18 md:(-m-12 w-24 h-24)"
+                :title="title"
+                :to="url"
+                target="_blank"
+                class="header-menu-item pointer-events-auto inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-body rounded-full hover:scale-90 children:hover:scale-120 dark:(shadow-cyan-2 children:hover:text-cyan-2)"
               >
-                <NuxtLink
-                  :title="title"
-                  :to="url"
-                  target="_blank"
-                  class="inline-flex items-center justify-center w-18 h-18 md:(w-24 h-24) bg-body rounded-full hover:scale-90 children:hover:scale-120 dark:(shadow-cyan-2 children:hover:text-cyan-2)"
-                >
-                  <div :class="icon" class="w-9 h-9 md:(w-12 h-12)"></div>
-                </NuxtLink>
-              </li>
+                <div :class="icon" class="w-9 h-9 md:(w-12 h-12)"></div>
+              </NuxtLink>
             </Transition>
-          </template>
+          </li>
         </ul>
       </div>
     </div>
@@ -87,12 +86,13 @@ const showMenuItem = ref(false)
   }
 }
 
+.header-menu-item,
 .header-menu-item * {
   transition: transform 200ms cubic-bezier(0.645, 0.045, 0.355, 1),
     box-shadow 300ms cubic-bezier(0.79, 0.14, 0.15, 0.86);
 }
 
-.header-menu-item > *:hover {
+.header-menu-item:hover {
   --box-shadow: 0px 0px 20px 10px var(--un-shadow-color, currentColor);
   -moz-box-shadow: var(--box-shadow);
   -webkit-box-shadow: var(--box-shadow);
