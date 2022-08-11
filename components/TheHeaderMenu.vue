@@ -13,9 +13,12 @@ const menuItemTransforms = computed(() =>
   })
 )
 
-const { x: mouseX, y: mouseY } = useMouse({ touch: false })
+const headerMenu = ref<HTMLDivElement>()
+const { elementX, elementY } = useMouseInElement(headerMenu, {
+  touch: false,
+})
 const mouse = computed(() => {
-  return { x: `${mouseX.value}px`, y: `${mouseY.value}px` }
+  return { x: `${elementX.value}px`, y: `${elementY.value}px` }
 })
 </script>
 
@@ -27,6 +30,7 @@ const mouse = computed(() => {
   >
     <div
       v-show="show"
+      ref="headerMenu"
       class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
       <Body v-if="show" class="overflow-hidden" />
