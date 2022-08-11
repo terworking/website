@@ -7,18 +7,18 @@ const src = computed(
   () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
 )
 
-const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
-  () => (imageIndex.value += 1),
-  6667
-)
-
 const isLoaded = ref(false)
 const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
-watch(
-  imageIndex,
-  (value, oldValue) => {
-    if (isClient) {
+if (isClient) {
+  const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
+    () => (imageIndex.value += 1),
+    6667
+  )
+
+  watch(
+    imageIndex,
+    (value, oldValue) => {
       stopTimeout()
       isLoaded.value = false
       reversed.value = value < (oldValue ?? 0)
@@ -29,13 +29,13 @@ watch(
         startTimeout()
       })
       image.src = src.value
-    }
-  },
-  { immediate: true }
-)
+    },
+    { immediate: true }
+  )
 
-const isLeft = usePageLeave()
-watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
+  const isLeft = usePageLeave()
+  watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
+}
 
 const bannerImage = ref<HTMLImageElement>()
 const { lengthX } = useSwipe(bannerImage, {
@@ -52,13 +52,16 @@ const { lengthX } = useSwipe(bannerImage, {
 })
 
 const bannerImageTranslateX = computed(() => ({
-  enter: reversed.value ? '-100%' : '100%',
-  leave: reversed.value ? '100%' : '-100%',
+  enter: reversed.value ? '-105%' : '105%',
+  leave: reversed.value ? '105%' : '-105%',
 }))
 </script>
 
 <template>
-  <div id="header-banner" class="relative bg-black overflow-hidden">
+  <div
+    id="header-banner"
+    class="relative h-84 md:h-128 bg-black overflow-hidden"
+  >
     <div class="hidden md:block">
       <button
         aria-label="Prev Banner"
@@ -76,11 +79,11 @@ const bannerImageTranslateX = computed(() => ({
       </button>
     </div>
     <ClientOnly>
-      <Transition appear name="banner-image" mode="out-in">
+      <Transition appear name="banner-image">
         <img
           :key="src"
           ref="bannerImage"
-          class="banner-image w-full h-84 md:h-128 object-cover filter-brightness-50 dark:filter-brightness-40"
+          class="banner-image absolute w-full h-inherit object-cover filter-brightness-50 dark:filter-brightness-40"
           :class="{ 'animate-pulse': !isLoaded }"
           :src="isLoaded ? src : placeholder"
           alt="BANNER IMAGE"
