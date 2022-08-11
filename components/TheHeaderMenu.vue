@@ -1,7 +1,14 @@
 <script lang="ts" setup>
 const rosemi = 'ROSEMI.GIF'
+
 const socials = useSocial()
 const calculateRotation = (n: number) => (360 / socials.length) * (n + 1) + 56
+const menuItemTransforms = computed(() =>
+  Array.from({ length: socials.length }, (_, index) => {
+    const rotation = calculateRotation(index)
+    return `rotate(${rotation}deg) translateX(var(--header-menu-item-radius)) rotate(${-rotation}deg)`
+  })
+)
 
 defineProps<{ show: boolean }>()
 const showMenuItem = ref(false)
@@ -34,13 +41,7 @@ const showMenuItem = ref(false)
             <Transition name="header-menu-item">
               <NuxtLink
                 v-if="showMenuItem"
-                :style="{
-                  transform: `rotate(${calculateRotation(
-                    index
-                  )}deg) translateX(var(--header-menu-item-radius)) rotate(${-calculateRotation(
-                    index
-                  )}deg)`,
-                }"
+                :style="{ transform: menuItemTransforms[index] }"
                 :title="title"
                 :to="url"
                 target="_blank"
