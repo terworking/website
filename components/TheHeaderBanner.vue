@@ -13,13 +13,15 @@ const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
 )
 
 const isLoaded = ref(false)
+const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
 watch(
   imageIndex,
-  () => {
+  (value, oldValue) => {
     if (isClient) {
       stopTimeout()
       isLoaded.value = false
+      reversed.value = value < (oldValue ?? 0)
 
       const image = new Image()
       image.addEventListener('load', () => {
@@ -49,19 +51,10 @@ const { lengthX } = useSwipe(bannerImage, {
   },
 })
 
-const randomTransforms = computedWithControl(imageIndex, () => {
-  const r = Math.random
-  const rs = (i: number) => r() * (i * 2) - i
-  const items = [
-    `translate(${rs(100)}%, ${rs(100)}%)`,
-    `skew(${rs(72)}deg, ${rs(72)}deg)`,
-    `scale3d(${rs(3)}, ${rs(3)}, ${rs(3)})`,
-    `rotate3d(${r()}, ${r()}, ${r()}, ${rs(360)}deg)`,
-  ]
-
-  useShuffle(items)
-  return items.join(' ')
-})
+const bannerImageTranslateX = computed(() => ({
+  enter: reversed.value ? '-100%' : '100%',
+  leave: reversed.value ? '100%' : '-100%',
+}))
 </script>
 
 <template>
@@ -107,13 +100,15 @@ const randomTransforms = computedWithControl(imageIndex, () => {
 
 <style scoped>
 .banner-image {
-  transition: opacity 450ms, transform 500ms cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.banner-image-enter-from,
+.banner-image-enter-from {
+  transform: translateX(v-bind('bannerImageTranslateX.enter'));
+}
+
 .banner-image-leave-to {
-  opacity: 0;
-  transform: v-bind('randomTransforms');
+  transform: translateX(v-bind('bannerImageTranslateX.leave'));
 }
 
 .banner-button {
