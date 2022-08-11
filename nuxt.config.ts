@@ -9,6 +9,15 @@ const meta = {
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [
+        // for banner image redirects
+        { rel: 'preconnect', href: 'https://images.weserv.nl' },
+        { rel: 'dns-prefetch', href: 'https://images.weserv.nl' },
+      ],
+    },
+  },
   css: ['~~/assets/main.css'],
   modules: [
     '@vueuse/nuxt',
