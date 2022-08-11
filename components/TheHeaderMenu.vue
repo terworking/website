@@ -87,9 +87,9 @@ const mouse = computed(() => {
   transition: opacity 1500ms cubic-bezier(0.75, 0.5, 0.25, 1);
   background: radial-gradient(
     circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
-    transparent 0%,
-    rgba(0, 0, 0, 0.8) 50%,
-    rgba(0, 0, 0, 0.96) 100%
+    rgba(255, 255, 255, 0.04) 16.6%,
+    rgba(0, 0, 0, 0.76) 33.3%,
+    rgba(0, 0, 0, 0.96) 66.7%
   );
 }
 
