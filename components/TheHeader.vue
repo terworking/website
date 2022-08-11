@@ -1,31 +1,15 @@
 <script lang="ts" setup>
-import { defaultWindow } from '@vueuse/core'
-
 const showHeaderMenu = ref(false)
-
-const headerBanner = ref<HTMLElement>()
-const { height: headerBannerHeight } = useElementSize(headerBanner)
-const { y: scrollY } = useScroll(defaultWindow)
-const headerShadeStyle = computed(() => {
-  const target = headerBannerHeight.value - 64
-  if (scrollY.value > target) {
-    const actualTarget = Math.max(0, headerBannerHeight.value - scrollY.value)
-    return { transform: `translateY(${actualTarget}px)` }
-  } else {
-    return { transform: `translateY(-100%)` }
-  }
-})
 </script>
 
 <template>
-  <header class="relative h-84 md:h-128">
-    <TheHeaderBanner ref="headerBanner" />
+  <header>
+    <TheHeaderBanner />
     <TheHeaderMenu :show="showHeaderMenu" />
+    <div
+      class="fixed -z-1 top-0 h-64px w-full backdrop-brightness-60 dark:backdrop-brightness-80 backdrop-blur-sm"
+    />
     <div class="fixed z-999 top-0 h-64px w-full text-cyan-1 overflow-hidden">
-      <div
-        :style="headerShadeStyle"
-        class="absolute inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
-      />
       <div class="h-full px-6 md:px-8 lg:px-12 flex items-center">
         <NuxtLink title="Homepage" class="flex-1" to="/">
           <Icon class="i-local-terworking" />
