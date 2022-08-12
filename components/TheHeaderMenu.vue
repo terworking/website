@@ -20,6 +20,34 @@ const { elementX, elementY } = useMouseInElement(headerMenu, {
 const mouse = computed(() => {
   return { x: `${elementX.value}px`, y: `${elementY.value}px` }
 })
+
+const duration = ref(500)
+const epilepsyDuration = computed(() => `${duration.value}ms`)
+
+const timeoutInterval = ref(500)
+const { enabled: epilepsy } = useHeaderMenuEpilepsy()
+const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
+  () => (epilepsy.value = false),
+  timeoutInterval,
+  { immediate: false }
+)
+
+const colorMode = useColorMode()
+const counter = refAutoReset(0, timeoutInterval)
+watch(
+  () => colorMode.value,
+  () => {
+    stopTimeout()
+    counter.value += 1
+    if (counter.value >= 10.5) {
+      epilepsy.value = true
+      duration.value = Math.max(5_000 / counter.value, 25)
+      timeoutInterval.value = Math.max(50_000 / counter.value, 500)
+
+      startTimeout()
+    }
+  }
+)
 </script>
 
 <template>
@@ -36,6 +64,7 @@ const mouse = computed(() => {
       <Body v-if="show" class="overflow-hidden" />
       <div
         :class="{
+          epilepsy,
           active: $colorMode.value === 'dark' && (showMenuItem || show),
         }"
         class="flashlight-mask absolute inset-0 pointer-events-none"
@@ -106,6 +135,27 @@ const mouse = computed(() => {
       rgba(0, 0, 0, 0.76) 33.3%,
       rgba(0, 0, 0, 0.96) 66.7%
     );
+  }
+
+  @keyframes epilepsy {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .flashlight-mask.epilepsy::before {
+    background: radial-gradient(
+      circle 50vmax at v-bind('mouse.x') v-bind('mouse.y'),
+      rgba(0, 0, 0, 0.04) 16.6%,
+      rgba(255, 255, 255, 0.76) 33.3%,
+      rgba(255, 255, 255, 0.96) 66.7%
+    );
+    animation: epilepsy v-bind('epilepsyDuration')
+      cubic-bezier(0.75, 0.5, 0.25, 1) infinite;
   }
 
   .flashlight-mask.active::before {
