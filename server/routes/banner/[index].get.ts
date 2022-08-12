@@ -52,7 +52,7 @@ export default defineEventHandler(async ({ event }) => {
   url.searchParams.append('filename', filename)
 
   const maybeWidth = Number.parseInt(query.w!)
-  const width = Math.max(
+  const width = Math.min(
     // defaults to 1440 if the query is invalid
     Number.isNaN(maybeWidth) || maybeWidth <= 0 ? 1440 : maybeWidth,
     // set the max width to the original's width
