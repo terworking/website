@@ -34,24 +34,23 @@ const mouse = computed(() => {
       class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
       <Body v-if="show" class="overflow-hidden" />
-      <div class="absolute inset-0">
+      <div
+        :class="{
+          active: $colorMode.value === 'dark' && (showMenuItem || show),
+        }"
+        class="flashlight-mask absolute inset-0 pointer-events-none"
+      >
         <img
           @click="showMenuItem = !showMenuItem"
-          class="absolute absolute-center h-48 w-48 md:(h-64 w-64)"
+          class="absolute -z-1 absolute-center h-48 w-48 md:(h-64 w-64) pointer-events-auto"
           :src="rosemi"
           alt="ROSEMI"
           loading="lazy"
         />
-        <Transition name="flashlight-mask" :duration="1500">
-          <div
-            v-if="$colorMode.value === 'dark' && (showMenuItem || show)"
-            class="hidden lg:block flashlight-mask pointer-events-none"
-          />
-        </Transition>
         <ul>
           <li
             v-for="({ icon, url, title }, index) of socials"
-            class="absolute absolute-center pointer-events-none"
+            class="absolute absolute-center"
           >
             <Transition name="header-menu-item">
               <NuxtLink
@@ -81,23 +80,6 @@ const mouse = computed(() => {
     opacity 500ms var(--header-menu-opacity-fn, cubic-bezier(0.19, 1, 0.22, 1));
 }
 
-.flashlight-mask::before {
-  --at-apply: fixed w-full h-full;
-  content: '';
-  transition: opacity 1500ms cubic-bezier(0.75, 0.5, 0.25, 1);
-  background: radial-gradient(
-    circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
-    rgba(255, 255, 255, 0.04) 16.6%,
-    rgba(0, 0, 0, 0.76) 33.3%,
-    rgba(0, 0, 0, 0.96) 66.7%
-  );
-}
-
-.flashlight-mask-enter-from::before,
-.flashlight-mask-leave-to::before {
-  opacity: 0;
-}
-
 .header-menu-leave-active {
   --header-menu-opacity-fn: cubic-bezier(0.17, 0.84, 0.44, 1);
 }
@@ -110,6 +92,30 @@ const mouse = computed(() => {
 .header-menu-leave-to {
   opacity: 0;
   transform: scale(1.5);
+}
+
+@media (min-width: 1024px) {
+  .flashlight-mask::before {
+    --at-apply: fixed w-full h-full;
+    content: '';
+    opacity: 0;
+    transition: opacity 1500ms cubic-bezier(0.75, 0.5, 0.25, 1);
+    background: radial-gradient(
+      circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
+      rgba(255, 255, 255, 0.04) 16.6%,
+      rgba(0, 0, 0, 0.76) 33.3%,
+      rgba(0, 0, 0, 0.96) 66.7%
+    );
+  }
+
+  .flashlight-mask.active::before {
+    opacity: 1;
+  }
+
+  .header-menu-enter-from .flashlight-mask::before,
+  .header-menu-leave-to .flashlight-mask::before {
+    opacity: 0;
+  }
 }
 
 .header-menu-item {
@@ -134,8 +140,8 @@ const mouse = computed(() => {
 }
 
 .dark .header-menu-item:hover {
-  --header-menu-item-shadow-blur: 80px;
-  --header-menu-item-shadow-radius: 20px;
+  --header-menu-item-shadow-blur: 160px;
+  --header-menu-item-shadow-radius: 40px;
 }
 
 .header-menu-item-enter-active,
