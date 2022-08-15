@@ -36,15 +36,18 @@ const flashlightSize = computed(() => {
 const duration = ref(500)
 const epilepsyDuration = computed(() => `${duration.value}ms`)
 
+const colorMode = useColorMode()
 const timeoutInterval = ref(500)
 const { enabled: epilepsy } = useHeaderMenuEpilepsy()
 const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
-  () => (epilepsy.value = false),
+  () => {
+    epilepsy.value = false
+    colorMode.preference = 'dark'
+  },
   timeoutInterval,
   { immediate: false }
 )
 
-const colorMode = useColorMode()
 const counter = refAutoReset(0, timeoutInterval)
 watch(
   () => colorMode.value,
@@ -161,7 +164,7 @@ watch(
 
   .flashlight-mask.epilepsy::before {
     background: radial-gradient(
-      circle 50vmax at v-bind('mouse.x') v-bind('mouse.y'),
+      circle v-bind('flashlightSize') at v-bind('mouse.x') v-bind('mouse.y'),
       rgba(0, 0, 0, 0.04) 16.6%,
       rgba(255, 255, 255, 0.76) 33.3%,
       rgba(255, 255, 255, 0.96) 66.7%
