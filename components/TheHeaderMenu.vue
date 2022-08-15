@@ -128,11 +128,7 @@ watch(
   --header-menu-opacity-fn: cubic-bezier(0.17, 0.84, 0.44, 1);
 }
 
-.header-menu-enter-from {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
+.header-menu-enter-from,
 .header-menu-leave-to {
   opacity: 0;
   transform: scale(1.5);
