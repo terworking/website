@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/shared'
 
-const imageIndex = ref(0)
+const imageIndex = useLocalStorage<number>('banner-image-index', 0)
+const nextBanner = () => (imageIndex.value! += 1)
+const prevBanner = () => (imageIndex.value! -= 1)
+
 const { width } = useWindowSize()
 const src = computed(
   () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
@@ -12,7 +15,7 @@ const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
 if (isClient) {
   const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
-    () => (imageIndex.value += 1),
+    nextBanner,
     6667
   )
 
@@ -42,9 +45,9 @@ const { lengthX } = useSwipe(bannerImage, {
     if (bannerImage.value !== undefined) {
       const percentage = lengthX.value / bannerImage.value.clientWidth
       if (percentage <= -0.2) {
-        imageIndex.value -= 1
+        prevBanner()
       } else if (percentage >= 0.2) {
-        imageIndex.value += 1
+        nextBanner()
       }
     }
   },
@@ -65,14 +68,14 @@ const bannerImageTranslateX = computed(() => ({
       <button
         aria-label="Prev Banner"
         class="prev-banner-button banner-button"
-        @click="imageIndex -= 1"
+        @click="prevBanner"
       >
         <div class="i-material-symbols-chevron-left" />
       </button>
       <button
         aria-label="Next Banner"
         class="next-banner-button banner-button"
-        @click="imageIndex += 1"
+        @click="nextBanner"
       >
         <div class="i-material-symbols-chevron-right" />
       </button>
