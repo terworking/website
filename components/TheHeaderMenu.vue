@@ -116,8 +116,9 @@ watch(
 
 <style scoped>
 .header-menu {
+  --header-menu-opacity-fn: cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 450ms cubic-bezier(0.08, 0.82, 0.17, 1),
-    opacity 500ms var(--header-menu-opacity-fn, cubic-bezier(0.19, 1, 0.22, 1));
+    opacity 500ms var(--header-menu-opacity-fn);
 }
 
 .header-menu-leave-active {
@@ -206,8 +207,10 @@ watch(
 
 .header-menu-item:hover,
 .dark .header-menu-item {
-  box-shadow: 0 0 var(--header-menu-item-shadow-blur, 20px)
-    var(--header-menu-item-shadow-radius, 10px) var(--un-shadow-color);
+  --header-menu-item-shadow-blur: 20px;
+  --header-menu-item-shadow-radius: 10px;
+  box-shadow: 0 0 var(--header-menu-item-shadow-blur)
+    var(--header-menu-item-shadow-radius) var(--un-shadow-color);
 }
 
 .dark .header-menu-item:hover {
@@ -217,10 +220,12 @@ watch(
 
 .header-menu-item-enter-active,
 .header-menu-item-leave-active {
+  --header-menu-item-opacity-duration: 750ms;
+  --header-menu-item-transform-duration: 600ms;
   pointer-events: none;
-  transition: opacity var(--header-menu-item-opacity-duration, 750ms)
+  transition: opacity var(--header-menu-item-opacity-duration)
       cubic-bezier(0.79, 0.14, 0.15, 0.86),
-    transform var(--header-menu-item-transform-duration, 600ms)
+    transform var(--header-menu-item-transform-duration)
       cubic-bezier(0.77, 0, 0.18, 1);
 }
 
