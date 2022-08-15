@@ -214,8 +214,8 @@ watch(
 }
 
 .dark .header-menu-item:hover {
-  --header-menu-item-shadow-blur: 160px;
-  --header-menu-item-shadow-radius: 40px;
+  --header-menu-item-shadow-blur: 40px;
+  --header-menu-item-shadow-radius: 20px;
 }
 
 .header-menu-item-enter-active,
