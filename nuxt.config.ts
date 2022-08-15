@@ -9,7 +9,7 @@ const meta = {
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  css: ['~~/assets/main.css'],
+  css: ['~~/assets/main.css', '~~/assets/utils.css'],
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',

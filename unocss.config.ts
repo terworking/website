@@ -28,9 +28,6 @@ export default defineConfig({
   shortcuts: {
     'bg-body': 'bg-white dark:bg-zinc-900',
     'text-body': 'text-black dark:text-white',
-    'absolute-center-x': 'left-1/2 -translate-x-1/2',
-    'absolute-center-y': 'top-1/2 -translate-y-1/2',
-    'absolute-center': 'absolute-center-x absolute-center-y',
   },
   blocklist: ['transform', 'filter', 'backdrop-filter'],
 })
