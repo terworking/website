@@ -14,11 +14,23 @@ const menuItemTransforms = computed(() =>
 )
 
 const headerMenu = ref<HTMLDivElement>()
-const { elementX, elementY } = useMouseInElement(headerMenu, {
+const { elementX: mouseX, elementY: mouseY } = useMouseInElement(headerMenu, {
   touch: false,
 })
 const mouse = computed(() => {
-  return { x: `${elementX.value}px`, y: `${elementY.value}px` }
+  return { x: `${mouseX.value}px`, y: `${mouseY.value}px` }
+})
+const { height: elementHeight, width: elementWidth } = useWindowSize()
+const flashlightSize = computed(() => {
+  const distance = Math.floor(
+    Math.sqrt(
+      Math.pow(mouseX.value - elementWidth.value / 2, 2) +
+        Math.pow(mouseY.value - elementHeight.value / 2, 2)
+    )
+  )
+  const size = Math.max((1000 - distance) / 2 / 100, 1)
+
+  return `${Math.max(Math.round(size * 100), 250)}px`
 })
 
 const duration = ref(500)
@@ -130,7 +142,7 @@ watch(
     opacity: 0;
     transition: opacity 1500ms cubic-bezier(0.75, 0.5, 0.25, 1);
     background: radial-gradient(
-      circle 30vmax at v-bind('mouse.x') v-bind('mouse.y'),
+      circle v-bind('flashlightSize') at v-bind('mouse.x') v-bind('mouse.y'),
       rgba(255, 255, 255, 0.04) 16.6%,
       rgba(0, 0, 0, 0.76) 33.3%,
       rgba(0, 0, 0, 0.96) 66.7%
