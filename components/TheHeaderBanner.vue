@@ -16,6 +16,8 @@ if (isClient) {
     6667
   )
 
+  const isLeft = usePageLeave()
+  watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
   watch(
     imageIndex,
     (value, oldValue) => {
@@ -26,15 +28,12 @@ if (isClient) {
       const image = new Image()
       image.addEventListener('load', () => {
         isLoaded.value = true
-        startTimeout()
+        if (!isLeft.value) startTimeout()
       })
       image.src = src.value
     },
     { immediate: true }
   )
-
-  const isLeft = usePageLeave()
-  watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
 }
 
 const bannerImage = ref<HTMLImageElement>()
