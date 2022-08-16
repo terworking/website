@@ -6,19 +6,20 @@ const nextBanner = () => (imageIndex.value! += 1)
 const prevBanner = () => (imageIndex.value! -= 1)
 
 const { width } = useWindowSize()
-const src = computed(
+const source = computed(
   () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
 )
 
 const isLoaded = ref(false)
 const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
-if (isClient) {
-  const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
-    nextBanner,
-    6667
-  )
 
+const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
+  nextBanner,
+  6667
+)
+
+if (isClient) {
   const isLeft = usePageLeave()
   watch(isLeft, (v) => (v ? stopTimeout() : startTimeout()))
   watch(
@@ -33,7 +34,7 @@ if (isClient) {
         isLoaded.value = true
         if (!isLeft.value) startTimeout()
       })
-      image.src = src.value
+      image.src = source.value
     },
     { immediate: true }
   )
@@ -41,20 +42,30 @@ if (isClient) {
 
 const bannerImage = ref<HTMLImageElement>()
 const { lengthX } = useSwipe(bannerImage, {
+  onSwipe: () => {
+    if (bannerImage.value !== undefined) {
+      bannerImage.value.style.transform = `translateX(${-lengthX.value}px)`
+    }
+  },
+  onSwipeStart: stopTimeout,
   onSwipeEnd: () => {
     if (bannerImage.value !== undefined) {
+      bannerImage.value.style.transform = ''
+
       const percentage = lengthX.value / bannerImage.value.clientWidth
       if (percentage <= -0.2) {
         prevBanner()
       } else if (percentage >= 0.2) {
         nextBanner()
+      } else {
+        startTimeout()
       }
     }
   },
 })
 
 const bannerImageTranslateX = computed(() => ({
-  enter: reversed.value ? '-105%' : '105%',
+  enter: reversed.value ? '-100%' : '105%',
   leave: reversed.value ? '105%' : '-105%',
 }))
 </script>
@@ -87,7 +98,7 @@ const bannerImageTranslateX = computed(() => ({
           ref="bannerImage"
           class="banner-image absolute w-full h-inherit object-cover filter-brightness-50 dark:filter-brightness-40"
           :class="{ 'animate-pulse': !isLoaded }"
-          :src="isLoaded ? src : placeholder"
+          :src="isLoaded ? source : placeholder"
           alt="BANNER IMAGE"
         />
       </Transition>
