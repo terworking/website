@@ -48,6 +48,14 @@ const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
   { immediate: false }
 )
 
+const epilepsyMaskColor = computed(() => {
+  const color = colorMode.value === 'dark' ? 0 : 255
+  return [
+    `rgba(${color}, ${color}, ${color}, 0.76) 33.3%`,
+    `rgba(${color}, ${color}, ${color}, 0.96) 66.7%`,
+  ]
+})
+
 const counter = refAutoReset(0, timeoutInterval)
 watch(
   () => colorMode.value,
@@ -56,8 +64,8 @@ watch(
     counter.value += 1
     if (counter.value >= 10.5) {
       epilepsy.value = true
-      duration.value = Math.max(5_000 / counter.value, 25)
-      timeoutInterval.value = Math.max(50_000 / counter.value, 500)
+      duration.value = Math.max(Math.round(5_000 / counter.value), 25)
+      timeoutInterval.value = Math.max(Math.round(50_000 / counter.value), 1000)
 
       startTimeout()
     }
@@ -162,8 +170,8 @@ watch(
     background: radial-gradient(
       circle v-bind('flashlightSize') at v-bind('mouse.x') v-bind('mouse.y'),
       rgba(0, 0, 0, 0.04) 16.6%,
-      rgba(255, 255, 255, 0.76) 33.3%,
-      rgba(255, 255, 255, 0.96) 66.7%
+      v-bind('epilepsyMaskColor[0]'),
+      v-bind('epilepsyMaskColor[1]')
     );
     animation: epilepsy v-bind('epilepsyDuration')
       cubic-bezier(0.75, 0.5, 0.25, 1) infinite;
