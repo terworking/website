@@ -73,7 +73,7 @@ const bannerImageTranslateX = computed(() => ({
 <template>
   <div
     id="header-banner"
-    class="relative h-3/4 md:h-full bg-black overflow-hidden"
+    class="relative z-1 h-3/4 md:h-full bg-black overflow-hidden"
   >
     <div class="hidden md:block">
       <button
