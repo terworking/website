@@ -1,11 +1,20 @@
 <script lang="ts" setup>
 const showHeaderMenu = ref(false)
+const {
+  public: { headerHeading, headerParagraph },
+} = useRuntimeConfig()
 </script>
 
 <template>
-  <header>
+  <header class="relative h-[calc(100vh-4rem)]">
     <TheHeaderBanner />
     <TheHeaderMenu :show="showHeaderMenu" />
+    <div
+      class="absolute w-full px-1/16 md:px-1/12 top-4/5 text-center md:(text-start text-cyan-2)"
+    >
+      <h1 class="text-3xl md:text-4xl header-text">{{ headerHeading }}</h1>
+      <p class="text-sm md:text-base header-text">{{ headerParagraph }}</p>
+    </div>
     <div
       class="fixed -z-1 top-0 h-64px w-full backdrop-brightness-60 dark:backdrop-brightness-80 backdrop-blur-sm"
     />
@@ -43,6 +52,17 @@ const showHeaderMenu = ref(false)
 </template>
 
 <style scoped>
+.header-text {
+  --at-apply: font-semibold;
+}
+
+@media (min-width: 768px) {
+  .header-text {
+    text-shadow: 1px -1px 10px theme('colors.zinc.900'),
+      -1px 1px 10px theme('colors.zinc.900');
+  }
+}
+
 #header-button > * {
   position: absolute;
   transition: transform 500ms cubic-bezier(0.08, 0.82, 0.17, 1),
