@@ -3,8 +3,14 @@ const rosemi = 'ROSEMI.GIF'
 const socials = useSocial()
 const calculateRotation = (n: number) => (360 / socials.length) * (n + 1) + 56
 
-defineProps<{ show: boolean }>()
 const showMenuItem = ref(false)
+const { showHeaderMenu } = useGlobalState()
+
+useHead({
+  bodyAttrs: {
+    class: computed(() => showHeaderMenu.value && 'overflow-hidden'),
+  },
+})
 </script>
 
 <template>
@@ -14,10 +20,9 @@ const showMenuItem = ref(false)
     name="header-menu"
   >
     <div
-      v-show="show"
+      v-show="showHeaderMenu"
       class="header-menu fixed z-999 inset-0 backdrop-brightness-60 dark:backdrop-brightness-80"
     >
-      <Body v-if="show" class="overflow-hidden" />
       <div class="absolute inset-0 flex items-center justify-center">
         <img
           @click="showMenuItem = !showMenuItem"
