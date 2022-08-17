@@ -40,27 +40,42 @@ if (isClient) {
   )
 }
 
+const swiping = ref(false)
 const bannerImage = ref<HTMLImageElement>()
-const { lengthX } = useSwipe(bannerImage, {
+const { lengthX, lengthY } = useSwipe(bannerImage, {
+  threshold: 0,
   onSwipe: () => {
     if (bannerImage.value !== undefined) {
-      bannerImage.value.style.transform = `translateX(${-lengthX.value}px)`
+      const condition = (swiping.value =
+        Math.abs(lengthX.value) > 50 && Math.abs(lengthY.value) < 100)
+
+      bannerImage.value.style.transform = condition
+        ? `translateX(${-lengthX.value}px)`
+        : ''
     }
   },
   onSwipeStart: stopTimeout,
   onSwipeEnd: () => {
     if (bannerImage.value !== undefined) {
-      bannerImage.value.style.transform = ''
-
-      const percentage = lengthX.value / bannerImage.value.clientWidth
-      if (percentage <= -0.2) {
-        prevBanner()
-      } else if (percentage >= 0.2) {
-        nextBanner()
-      } else {
-        startTimeout()
+      if (bannerImage.value.style.transform !== '') {
+        bannerImage.value.style.transform = ''
+        const percentage = lengthX.value / bannerImage.value.clientWidth
+        if (percentage <= -0.2) {
+          prevBanner()
+        } else if (percentage >= 0.2) {
+          nextBanner()
+        }
       }
+
+      swiping.value = false
+      startTimeout()
     }
+  },
+})
+
+useHead({
+  bodyAttrs: {
+    class: computed(() => swiping.value && 'overflow-hidden'),
   },
 })
 
