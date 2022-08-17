@@ -27,6 +27,12 @@ export default defineNuxtConfig({
       ],
     },
   },
+  runtimeConfig: {
+    public: {
+      headerHeading: 'Website Terworking',
+      headerParagraph: 'Alumni TKJ SMKN 2 Kandangan tahun ajaran 2021/2022',
+    },
+  },
   css: ['~~/assets/main.css'],
   modules: [
     '@vueuse/nuxt',
