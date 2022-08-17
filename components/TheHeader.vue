@@ -1,5 +1,7 @@
 <template>
-  <header class="relative h-[calc(100vh-4rem)] overflow-hidden">
+  <header
+    class="relative h-[calc(100vh-160px)] md:h-[calc(100vh-80px)] overflow-hidden"
+  >
     <TheHeaderBanner />
     <TheHeaderHeading />
     <TheHeaderMenu />

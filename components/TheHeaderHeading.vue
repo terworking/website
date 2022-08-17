@@ -9,10 +9,12 @@ const {
     <Transition appear name="header-heading">
       <div
         id="header-heading"
-        class="absolute md:z-1 w-full px-1/16 md:px-1/12 top-4/5 text-center md:(text-start text-cyan-2) pointer-events-none"
+        class="grid items-center absolute w-full px-1/16 top-3/4 bottom-0 font-semibold text-center md:(z-1 px-1/12 text-start text-cyan-2) pointer-events-none"
       >
-        <h1 class="text-3xl md:text-4xl">{{ headerHeading }}</h1>
-        <p class="text-sm md:text-base">{{ headerParagraph }}</p>
+        <div>
+          <h1 class="text-3xl md:text-4xl">{{ headerHeading }}</h1>
+          <p class="text-sm md:text-base">{{ headerParagraph }}</p>
+        </div>
       </div>
     </Transition>
   </ClientOnly>
@@ -26,10 +28,6 @@ const {
 .header-heading-enter-from {
   opacity: 0.5;
   transform: scale(1.5);
-}
-
-#header-heading > * {
-  --at-apply: font-semibold;
 }
 
 @media (min-width: 768px) {
