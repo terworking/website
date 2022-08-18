@@ -32,9 +32,7 @@ watch(
             <span class="text-xl md:text-2xl font-semibold">Terworking</span>
           </NuxtLink>
           <nav class="hidden lg:block absolute inset-x-0">
-            <ul
-              class="flex justify-center space-x-8 text-white text-lg font-semibold"
-            >
+            <ul class="flex justify-center space-x-8 text-lg font-semibold">
               <li v-for="({ path, title }, index) of navigation">
                 <NuxtLink
                   exact-active-class="active"
@@ -45,8 +43,8 @@ watch(
                       calculateNavigationUnderlinePosition(index),
                     '--underline-position-y': '100%',
                   }"
-                  :class="{ 'in-index': $route.path === '/' }"
-                  class="block navigation-link"
+                  :class="{ 'text-white': $route.path !== '/' }"
+                  class="navigation-link block"
                 >
                   <span class="inline">
                     {{ title }}
@@ -116,8 +114,7 @@ watch(
   background-size: 100% 3px;
 }
 
-.dark .navigation-link.active,
-.navigation-link.in-index {
+.dark .navigation-link.active {
   color: theme('colors.cyan.200');
 }
 
