@@ -3,15 +3,20 @@
     <Transition appear name="navigation-bar">
       <nav
         id="navigation-bar"
-        class="fixed bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+        class="fixed z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
       >
         <ul
           class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 lg:px-1/3 text-center text-sm font-semibold"
         >
           <li v-for="{ path, title, icon } of useNavigation()" class="w-full">
-            <NuxtLink :title="title" :to="path" class="block navigation-link">
-              <div :class="icon" class="mx-auto w-8 h-8" />
-              <span class="block">{{ title }}</span>
+            <NuxtLink
+              exact-active-class="active"
+              :title="title"
+              :to="path"
+              class="block navigation-link"
+            >
+              <div :class="icon" class="navigation-link-icon mx-auto w-8 h-8" />
+              <span class="navigation-link-title block">{{ title }}</span>
             </NuxtLink>
           </li>
         </ul>
@@ -36,19 +41,28 @@
 }
 
 .navigation-link,
-.navigation-link > div {
-  transition: transform 200ms ease-in-out, color 200ms ease-in-out;
+.navigation-link > * {
+  transition: transform 200ms ease-in-out, color 200ms ease-in-out,
+    text-shadow 200ms ease-in-out;
 }
 
-.navigation-link:hover {
+:is(.navigation-link:hover, .navigation-link.active) {
   transform: translateY(10%);
 }
 
-.dark .navigation-link:hover {
+.dark .navigation-link.active {
   color: theme('colors.cyan.200');
 }
 
-.navigation-link:hover > div {
+.navigation-link.active:hover {
+  color: unset;
+}
+
+.dark .navigation-link.active:hover > .navigation-link-title {
+  text-shadow: 0 0 5px theme('colors.cyan.200');
+}
+
+:is(.navigation-link:hover, .navigation-link.active) > .navigation-link-icon {
   transform: scale(1.4) translateY(-5%);
 }
 </style>

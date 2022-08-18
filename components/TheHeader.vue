@@ -1,10 +1,16 @@
 <template>
   <header
-    class="relative h-[calc(100vh-160px)] md:h-[calc(100vh-80px)] overflow-hidden"
+    :class="
+      $route.path === '/'
+        ? 'h-[calc(100vh-160px)] md:h-[calc(100vh-80px)]'
+        : 'h-64px'
+    "
+    class="relative overflow-hidden"
   >
-    <TheHeaderBanner />
-    <TheHeaderHeading />
-    <TheHeaderMenu />
+    <template v-if="$route.path === '/'">
+      <TheHeaderBanner />
+      <TheHeaderHeading />
+    </template>
     <TheHeaderTop />
   </header>
 </template>
