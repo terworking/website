@@ -108,14 +108,15 @@ const bannerImageTranslateX = computed(() => ({
     </div>
     <ClientOnly>
       <Transition appear name="banner-image">
-        <img
-          :key="imageIndex"
-          ref="bannerImage"
-          class="banner-image absolute w-full h-full object-cover"
-          :class="{ 'animate-pulse': !isLoaded }"
-          :src="isLoaded ? source : placeholder"
-          alt="BANNER IMAGE"
-        />
+        <div :key="imageIndex" ref="bannerImage" class="banner-image">
+          <img :src="source" alt="Banner Image" />
+          <img
+            v-if="!isLoaded"
+            class="animate-pulse pointer-events-none"
+            :src="placeholder"
+            alt="Banner Image Placeholder"
+          />
+        </div>
       </Transition>
     </ClientOnly>
   </div>
@@ -127,19 +128,17 @@ const bannerImageTranslateX = computed(() => ({
 }
 
 .banner-button > * {
-  --at-apply: w-12 h-12;
+  height: 3rem;
+  width: 3rem;
 }
 
-.prev-banner-button {
-  transform: scale(0.1);
-}
-
+.prev-banner-button,
 .next-banner-button {
   transform: scale(0.1);
 }
 
 #header-banner:hover .banner-button {
-  --at-apply: opacity-100;
+  opacity: 1;
 }
 
 #header-banner:hover .next-banner-button {
@@ -158,6 +157,14 @@ const bannerImageTranslateX = computed(() => ({
 
 .dark .banner-image {
   filter: brightness(0.4);
+}
+
+.banner-image,
+.banner-image * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .banner-image-enter-from {
