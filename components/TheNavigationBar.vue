@@ -12,8 +12,7 @@ watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
     <Transition appear name="navigation-bar">
       <nav
         v-if="show"
-        id="navigation-bar"
-        class="fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+        class="navigation-bar fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
       >
         <ul
           class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
@@ -36,14 +35,14 @@ watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
 </template>
 
 <style scoped>
-#navigation-bar {
+.navigation-bar {
   --navigation-bar-glow: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 24px 0 var(--navigation-bar-glow);
   transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1),
     opacity 500ms ease-in-out;
 }
 
-.dark #navigation-bar {
+.dark .navigation-bar {
   --navigation-bar-glow: theme('colors.cyan.200');
 }
 

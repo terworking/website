@@ -18,7 +18,7 @@ watch(
 <template>
   <ClientOnly>
     <Transition appear name="header-top" :duration="500">
-      <div v-if="showHeaderTop" id="header-top">
+      <div v-if="showHeaderTop" class="header-top">
         <div class="header-top-mask" />
         <div
           class="z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1 overflow-visible"
@@ -63,7 +63,7 @@ watch(
 </template>
 
 <style scoped>
-#header-top > * {
+.header-top > * {
   --at-apply: fixed top-0 h-64px w-full;
   transition: transform 500ms cubic-bezier(0.08, 0.82, 0.17, 1),
     opacity 500ms cubic-bezier(0.19, 1, 0.22, 1);

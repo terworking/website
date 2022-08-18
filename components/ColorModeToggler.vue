@@ -1,7 +1,6 @@
 <template>
   <button
-    class="hidden lg:block relative w-8 h-8 md:(w-10 h-10)"
-    id="color-mode-toggler"
+    class="color-mode-toggler hidden lg:block relative w-8 h-8 md:(w-10 h-10)"
     aria-label="Toggle Color Mode"
     @click="
       $colorMode.preference = $colorMode.value === 'dark' ? 'light' : 'dark'
@@ -21,7 +20,7 @@
 </template>
 
 <style scoped>
-#color-mode-toggler > * {
+.color-mode-toggler > * {
   position: absolute;
   inset: 0;
   transition: transform 200ms cubic-bezier(0.77, 0, 0.175, 1);
