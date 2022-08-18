@@ -1,23 +1,21 @@
-<script lang="ts" setup>
-const colorMode = useColorMode()
-const toggleColorMode = () => {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-}
-</script>
-
 <template>
   <button
-    class="relative w-8 h-8"
+    class="hidden lg:block relative w-8 h-8 md:(w-10 h-10)"
     id="color-mode-toggler"
     aria-label="Toggle Color Mode"
-    @click="toggleColorMode"
+    @click="
+      $colorMode.preference = $colorMode.value === 'dark' ? 'light' : 'dark'
+    "
   >
     <Transition name="color-mode-toggler">
       <Icon
-        v-if="colorMode.value === 'dark'"
-        class="i-material-symbols-dark-mode-outline"
+        :key="$colorMode.preference"
+        :class="
+          $colorMode.value === 'dark'
+            ? 'i-material-symbols-dark-mode-outline'
+            : 'i-material-symbols-light-mode-outline'
+        "
       />
-      <Icon v-else class="i-material-symbols-light-mode-outline" />
     </Transition>
   </button>
 </template>

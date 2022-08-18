@@ -111,7 +111,7 @@ const bannerImageTranslateX = computed(() => ({
         <img
           :key="imageIndex"
           ref="bannerImage"
-          class="banner-image absolute w-full h-full object-cover filter-brightness-50 dark:filter-brightness-40"
+          class="banner-image absolute w-full h-full object-cover"
           :class="{ 'animate-pulse': !isLoaded }"
           :src="isLoaded ? source : placeholder"
           alt="BANNER IMAGE"
@@ -151,7 +151,13 @@ const bannerImageTranslateX = computed(() => ({
 }
 
 .banner-image {
-  transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1),
+    filter 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  filter: brightness(0.5);
+}
+
+.dark .banner-image {
+  filter: brightness(0.4);
 }
 
 .banner-image-enter-from {
