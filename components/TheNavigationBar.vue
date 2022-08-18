@@ -13,10 +13,10 @@ watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
       <nav
         v-if="show"
         id="navigation-bar"
-        class="fixed z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+        class="fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
       >
         <ul
-          class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 lg:px-1/3 text-center text-sm font-semibold"
+          class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
         >
           <li v-for="{ path, title, icon } of useNavigation()" class="w-full">
             <NuxtLink
