@@ -1,15 +1,24 @@
 <script lang="ts" setup>
+import { defaultWindow } from '@vueuse/core'
+
 const navigation = useNavigation()
 const calculateInitialPosition = (n: number) =>
   (100 / (navigation.length + 1)) * (n + 1)
 
 const { showHeaderMenu } = useGlobalState()
+const { y: scrollY } = useScroll(defaultWindow)
+
+const show = ref(true)
+watch(
+  scrollY,
+  (value, oldValue) => (show.value = value < oldValue || value <= 64)
+)
 </script>
 
 <template>
   <ClientOnly>
-    <Transition appear name="header-top">
-      <div id="header-top">
+    <Transition appear name="header-top" :duration="500">
+      <div v-if="show" id="header-top">
         <div
           class="backdrop-brightness-60 dark:backdrop-brightness-80 backdrop-blur-sm"
         />
@@ -85,6 +94,11 @@ const { showHeaderMenu } = useGlobalState()
 .header-top-button-enter-from {
   opacity: 0;
   transform: translateY(-125%);
+}
+
+.header-top-leave-to > * {
+  opacity: 0;
+  transform: translateY(-65%);
 }
 
 .navigation-link {
