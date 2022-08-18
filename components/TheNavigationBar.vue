@@ -1,7 +1,17 @@
+<script lang="ts" setup>
+import { defaultWindow } from '@vueuse/core'
+
+const { y: scrollY } = useScroll(defaultWindow)
+
+const show = ref(true)
+watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
+</script>
+
 <template>
   <ClientOnly>
     <Transition appear name="navigation-bar">
       <nav
+        v-if="show"
         id="navigation-bar"
         class="fixed z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
       >
@@ -29,14 +39,17 @@
 #navigation-bar {
   --navigation-bar-glow: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 24px 0 var(--navigation-bar-glow);
-  transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 500ms ease-in-out;
 }
 
 .dark #navigation-bar {
   --navigation-bar-glow: theme('colors.cyan.200');
 }
 
-.navigation-bar-enter-from {
+.navigation-bar-enter-from,
+.navigation-bar-leave-to {
+  opacity: 0;
   transform: translateY(100%);
 }
 
