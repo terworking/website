@@ -7,57 +7,57 @@ const calculateNavigationUnderlinePosition = (n: number) => {
   return `${value}%`
 }
 
-const showHeaderTop = ref(true)
+const showHeaderTop = ref(false)
 const { y: scrollY } = useScroll(defaultWindow)
 watch(
   scrollY,
   (value, oldValue) => (showHeaderTop.value = value < oldValue || value <= 64)
 )
+
+onMounted(() => (showHeaderTop.value = true))
 </script>
 
 <template>
-  <ClientOnly>
-    <Transition appear name="header-top" :duration="500">
-      <div v-if="showHeaderTop" class="header-top">
-        <div class="header-top-mask" />
-        <div
-          class="z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1 overflow-visible"
+  <Transition name="header-top" :duration="500">
+    <div v-if="showHeaderTop" class="header-top">
+      <div class="header-top-mask" />
+      <div
+        class="z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1 overflow-visible"
+      >
+        <NuxtLink
+          title="Index Page"
+          to="/"
+          class="index-link inline-flex z-999 h-full items-center space-x-2"
         >
-          <NuxtLink
-            title="Index Page"
-            to="/"
-            class="index-link inline-flex z-999 h-full items-center space-x-2"
-          >
-            <Icon class="i-local-terworking" />
-            <span class="text-xl md:text-2xl font-semibold">Terworking</span>
-          </NuxtLink>
-          <nav class="hidden lg:block absolute inset-x-0">
-            <ul class="flex justify-center space-x-8 text-lg font-semibold">
-              <li v-for="({ path, title }, index) of navigation">
-                <NuxtLink
-                  exact-active-class="active"
-                  :title="title"
-                  :to="path"
-                  :style="{
-                    '--underline-position-x':
-                      calculateNavigationUnderlinePosition(index),
-                    '--underline-position-y': '100%',
-                  }"
-                  :class="{ 'text-white': $route.path !== '/' }"
-                  class="navigation-link block"
-                >
-                  <span class="inline">
-                    {{ title }}
-                  </span>
-                </NuxtLink>
-              </li>
-            </ul>
-          </nav>
-          <ColorModeToggler />
-        </div>
+          <Icon class="i-local-terworking" />
+          <span class="text-xl md:text-2xl font-semibold">Terworking</span>
+        </NuxtLink>
+        <nav class="hidden lg:block absolute inset-x-0">
+          <ul class="flex justify-center space-x-8 text-lg font-semibold">
+            <li v-for="({ path, title }, index) of navigation">
+              <NuxtLink
+                exact-active-class="active"
+                :title="title"
+                :to="path"
+                :style="{
+                  '--underline-position-x':
+                    calculateNavigationUnderlinePosition(index),
+                  '--underline-position-y': '100%',
+                }"
+                :class="{ 'text-white': $route.path !== '/' }"
+                class="navigation-link block"
+              >
+                <span class="inline">
+                  {{ title }}
+                </span>
+              </NuxtLink>
+            </li>
+          </ul>
+        </nav>
+        <ColorModeToggler />
       </div>
-    </Transition>
-  </ClientOnly>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>

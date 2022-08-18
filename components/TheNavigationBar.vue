@@ -3,35 +3,35 @@ import { defaultWindow } from '@vueuse/core'
 
 const { y: scrollY } = useScroll(defaultWindow)
 
-const show = ref(true)
+const show = ref(false)
 watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
+
+onMounted(() => (show.value = true))
 </script>
 
 <template>
-  <ClientOnly>
-    <Transition appear name="navigation-bar">
-      <nav
-        v-if="show"
-        class="navigation-bar fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+  <Transition name="navigation-bar">
+    <nav
+      v-if="show"
+      class="navigation-bar fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+    >
+      <ul
+        class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
       >
-        <ul
-          class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
-        >
-          <li v-for="{ path, title, icon } of useNavigation()" class="w-full">
-            <NuxtLink
-              exact-active-class="active"
-              :title="title"
-              :to="path"
-              class="block navigation-link"
-            >
-              <div :class="icon" class="navigation-link-icon mx-auto w-8 h-8" />
-              <span class="navigation-link-title block">{{ title }}</span>
-            </NuxtLink>
-          </li>
-        </ul>
-      </nav>
-    </Transition>
-  </ClientOnly>
+        <li v-for="{ path, title, icon } of useNavigation()" class="w-full">
+          <NuxtLink
+            exact-active-class="active"
+            :title="title"
+            :to="path"
+            class="block navigation-link"
+          >
+            <div :class="icon" class="navigation-link-icon mx-auto w-8 h-8" />
+            <span class="navigation-link-title block">{{ title }}</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </nav>
+  </Transition>
 </template>
 
 <style scoped>

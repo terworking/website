@@ -2,21 +2,23 @@
 const {
   public: { headerHeading, headerParagraph },
 } = useRuntimeConfig()
+
+const show = ref(false)
+onMounted(() => (show.value = true))
 </script>
 
 <template>
-  <ClientOnly>
-    <Transition appear name="header-heading">
-      <div
-        class="header-heading grid items-center absolute w-full px-1/16 top-3/4 bottom-0 font-semibold text-center md:(z-1 px-1/12 text-start text-cyan-2) pointer-events-none"
-      >
-        <div>
-          <h1 class="text-3xl md:text-4xl">{{ headerHeading }}</h1>
-          <p class="text-sm md:text-base">{{ headerParagraph }}</p>
-        </div>
+  <Transition name="header-heading">
+    <div
+      v-if="show"
+      class="header-heading grid items-center absolute w-full px-1/16 top-3/4 bottom-0 font-semibold text-center md:(z-1 px-1/12 text-start text-cyan-2) pointer-events-none"
+    >
+      <div>
+        <h1 class="text-3xl md:text-4xl">{{ headerHeading }}</h1>
+        <p class="text-sm md:text-base">{{ headerParagraph }}</p>
       </div>
-    </Transition>
-  </ClientOnly>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
