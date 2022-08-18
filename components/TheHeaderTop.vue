@@ -2,7 +2,7 @@
 import { defaultWindow } from '@vueuse/core'
 
 const navigation = useNavigation()
-const calculateNavigationInitialPosition = (n: number) => {
+const calculateNavigationUnderlinePosition = (n: number) => {
   const value = (100 / (navigation.length + 1)) * (n + 1)
   return `${value}%`
 }
@@ -21,12 +21,12 @@ watch(
       <div v-if="showHeaderTop" id="header-top">
         <div class="header-top-mask" />
         <div
-          class="z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1"
+          class="z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1 overflow-visible"
         >
           <NuxtLink
             title="Index Page"
             to="/"
-            class="inline-flex z-999 items-center space-x-2"
+            class="index-link inline-flex z-999 h-full items-center space-x-2"
           >
             <Icon class="i-local-terworking" />
             <span class="text-xl md:text-2xl font-semibold">Terworking</span>
@@ -41,8 +41,9 @@ watch(
                   :title="title"
                   :to="path"
                   :style="{
-                    '--initial-position':
-                      calculateNavigationInitialPosition(index),
+                    '--underline-position-x':
+                      calculateNavigationUnderlinePosition(index),
+                    '--underline-position-y': '100%',
                   }"
                   :class="{ 'in-index': $route.path === '/' }"
                   class="block navigation-link"
@@ -87,19 +88,30 @@ watch(
   --mask-brightness: 0.6;
 }
 
+.index-link {
+  --underline-position-x: 50%;
+  --underline-position-y: 90%;
+}
+
+.index-link,
 .navigation-link {
   transition: transform 200ms ease-in-out, color 200ms ease-in-out,
     text-shadow 200ms ease-in-out,
     background-size 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
-  background-position: var(--initial-position) 100%;
+  background-position: var(--underline-position-x) var(--underline-position-y);
   background-size: 0% 1px;
   background-repeat: no-repeat;
   margin: 5px 0;
 }
 
-:is(.navigation-link:hover, .navigation-link.active) {
+.index-link:hover {
+  background-size: 100% 3px;
+}
+
+.navigation-link:hover,
+.navigation-link.active {
   transform: scale(1.1) translateY(-5%);
   background-size: 100% 3px;
 }
