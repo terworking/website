@@ -29,7 +29,7 @@ onMounted(() => (showHeaderTop.value = true))
           to="/"
           class="index-link inline-flex z-999 h-full items-center space-x-2"
         >
-          <Icon class="i-local-terworking" />
+          <Icon class="i-local-terworking" :darken-on-hover="false" />
           <span class="text-xl md:text-2xl font-semibold">Terworking</span>
         </NuxtLink>
         <nav class="hidden lg:block absolute inset-x-0">
