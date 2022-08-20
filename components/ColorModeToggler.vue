@@ -1,20 +1,33 @@
+<script lang="ts" setup>
+const colorModes = [
+  ['system', 'i-material-symbols-computer-outline-rounded'],
+  ['dark', 'i-material-symbols-dark-mode-outline'],
+  ['light', 'i-material-symbols-light-mode-outline'],
+]
+
+const colorMode = useColorMode()
+const currentColorMode = computed(() => {
+  const index = colorModes.findIndex(
+    ([value]) => colorMode.preference === value
+  )
+
+  return { index, icon: colorModes[index][1] }
+})
+
+const toggleColorMode = () => {
+  colorMode.preference =
+    colorModes[(currentColorMode.value.index + 1) % colorModes.length][0]
+}
+</script>
+
 <template>
   <button
     class="color-mode-toggler hidden lg:block relative w-8 h-8 md:(w-10 h-10)"
     aria-label="Toggle Color Mode"
-    @click="
-      $colorMode.preference = $colorMode.value === 'dark' ? 'light' : 'dark'
-    "
+    @click="toggleColorMode"
   >
     <Transition name="color-mode-toggler">
-      <Icon
-        :key="$colorMode.preference"
-        :class="
-          $colorMode.value === 'dark'
-            ? 'i-material-symbols-dark-mode-outline'
-            : 'i-material-symbols-light-mode-outline'
-        "
-      />
+      <Icon :key="$colorMode.preference" :class="currentColorMode.icon" />
     </Transition>
   </button>
 </template>
