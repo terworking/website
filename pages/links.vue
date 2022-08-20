@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+definePageMeta({
+  title: 'Links',
+})
+</script>
+
 <template>
-  <div class="h-500vh">LINKS</div>
+  <div>LINKS</div>
 </template>

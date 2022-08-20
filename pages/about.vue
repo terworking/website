@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+definePageMeta({
+  title: 'About',
+})
+</script>
+
 <template>
-  <div class="h-500vh">ABOUT</div>
+  <div>ABOUT</div>
 </template>

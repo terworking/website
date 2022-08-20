@@ -32,8 +32,11 @@ useHead({
   <div>
     <TheHeader />
     <TheNavigationBar />
-    <main>
-      <NuxtPage />
-    </main>
+    <div class="min-h-[calc(100vh-64px)]">
+      <NuxtLayout>
+        <template #heading>{{ $route.meta.title ?? 'Terworking' }}</template>
+        <NuxtPage />
+      </NuxtLayout>
+    </div>
   </div>
 </template>

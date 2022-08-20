@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+definePageMeta({
+  title: 'Home',
+})
+</script>
+
 <template>
-  <div class="h-500vh">HOME</div>
+  <div>HOME</div>
 </template>
