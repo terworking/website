@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+useHead({
+  bodyAttrs: {
+    class: 'overflow-hidden',
+  },
+})
+</script>
+
 <template>
-  <div class="h-500vh"></div>
+  <div />
 </template>

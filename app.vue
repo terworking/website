@@ -31,6 +31,7 @@ useHead({
 <template>
   <div>
     <TheHeader />
+    <TheNavigationBar />
     <main>
       <NuxtPage />
     </main>

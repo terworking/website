@@ -29,5 +29,11 @@ export default defineConfig({
     'bg-body': 'bg-white dark:bg-zinc-900',
     'text-body': 'text-black dark:text-white',
   },
-  blocklist: ['transform', 'filter', 'backdrop-filter'],
+  blocklist: [
+    'transform',
+    'filter',
+    'backdrop-filter',
+    'ease-in-out',
+    'text-shadow',
+  ],
 })
