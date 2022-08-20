@@ -9,6 +9,7 @@ const bannerImage = 'https://terworking.netlify.app/banner/0?w=500'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  experimental: { viteNode: true },
   app: {
     head: {
       htmlAttrs: { lang },
