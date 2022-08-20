@@ -73,12 +73,6 @@ const { lengthX, lengthY } = useSwipe(bannerImage, {
   },
 })
 
-useHead({
-  bodyAttrs: {
-    class: computed(() => swiping.value && 'overflow-hidden'),
-  },
-})
-
 const bannerImageTranslateX = computed(() => ({
   enter: reversed.value ? '-105%' : '105%',
   leave: reversed.value ? '105%' : '-105%',

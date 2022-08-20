@@ -13,6 +13,9 @@ const title = computed(() =>
   route.meta.title ? `Terworking - ${route.meta.title}` : 'Terworking'
 )
 useHead({
+  bodyAttrs: {
+    class: 'antialiased text-body bg-body',
+  },
   title,
   link: [{ rel: 'canonical', href: url }],
   meta: [
@@ -33,7 +36,7 @@ useHead({
     <NuxtLoadingIndicator color="#a5f3fc" />
     <TheHeader />
     <TheNavigationBar />
-    <div class="min-h-[calc(100vh-64px)]">
+    <div :class="{ 'min-h-[calc(100vh-64px)]': $route.path !== '/' }">
       <NuxtLayout>
         <template #heading>{{ $route.meta.title ?? 'Terworking' }}</template>
         <NuxtPage />
