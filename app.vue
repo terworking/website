@@ -30,6 +30,7 @@ useHead({
 
 <template>
   <div>
+    <NuxtLoadingIndicator color="#a5f3fc" />
     <TheHeader />
     <TheNavigationBar />
     <div class="min-h-[calc(100vh-64px)]">
