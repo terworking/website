@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
-    '@kevinmarrec/nuxt-pwa',
+    // '@kevinmarrec/nuxt-pwa',
   ],
   colorMode: {
     dataValue: 'theme',
@@ -49,17 +49,17 @@ export default defineNuxtConfig({
   unocss: {
     preflight: true,
   },
-  pwa: {
-    icon: { maskablePadding: 0 },
-    meta: false,
-    manifest: {
-      lang,
-      description,
-      name: siteName,
-      theme_color: themeColor,
-      background_color: backgroundColor,
-    },
-  },
+  // pwa: {
+  //   icon: { maskablePadding: 0 },
+  //   meta: false,
+  //   manifest: {
+  //     lang,
+  //     description,
+  //     name: siteName,
+  //     theme_color: themeColor,
+  //     background_color: backgroundColor,
+  //   },
+  // },
   typescript: {
     shim: false,
     strict: true,
