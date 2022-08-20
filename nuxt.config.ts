@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from 'nuxt'
 
 const lang = 'id'
-const themeColor = '#f59e0b'
+const themeColor = '#a5f3fc'
 const siteName = 'Terworking'
 const backgroundColor = '#242427'
 const description = 'Website Terworking.'
@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       ],
       meta: [
         { property: 'og:type', content: 'website' },
-        { name: 'theme_color', content: themeColor },
+        { name: 'theme-color', content: themeColor },
         { property: 'og:image', content: bannerImage },
         { property: 'og:site_name', content: siteName },
         { name: 'twitter:image', content: bannerImage },
