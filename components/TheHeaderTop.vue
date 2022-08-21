@@ -24,14 +24,17 @@ onMounted(() => (showHeaderTop.value = true))
       <div
         class="header-top fixed top-0 h-64px w-full z-999 px-6 md:px-8 lg:px-12 flex items-center justify-center lg:justify-between text-cyan-1 overflow-visible"
       >
-        <NuxtLink
-          title="Index Page"
-          to="/"
-          class="index-link inline-flex z-999 h-full items-center space-x-2"
-        >
-          <Icon class="i-local-terworking" :darken-on-hover="false" />
-          <span class="text-xl md:text-2xl font-semibold">Terworking</span>
-        </NuxtLink>
+        <div class="flex z-999 h-full items-center">
+          <NuxtLink
+            title="Index Page"
+            to="/"
+            class="index-link inline-flex h-full items-center space-x-1"
+          >
+            <Icon class="i-local-terworking" :darken-on-hover="false" />
+            <span class="text-xl md:text-2xl font-semibold">Terworking</span>
+          </NuxtLink>
+          <ColorModeToggler class="ml-2" />
+        </div>
         <nav class="hidden lg:block absolute inset-x-0">
           <ul class="flex justify-center space-x-8 text-lg font-semibold">
             <li v-for="({ path, title }, index) of navigation">
@@ -54,7 +57,6 @@ onMounted(() => (showHeaderTop.value = true))
             </li>
           </ul>
         </nav>
-        <ColorModeToggler />
       </div>
     </div>
   </Transition>
