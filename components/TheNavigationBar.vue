@@ -13,10 +13,10 @@ onMounted(() => (show.value = true))
   <Transition name="navigation-bar">
     <nav
       v-if="show"
-      class="navigation-bar fixed lg:hidden z-999 bottom-0 h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
+      class="navigation-bar fixed lg:hidden z-999 bottom-0 h-64px sm:h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
     >
       <ul
-        class="flex items-center justify-evenly divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
+        class="flex items-center justify-evenly sm:divide-x divide-current h-full px-1/24 md:px-1/4 text-center text-sm font-semibold"
       >
         <li v-for="{ path, title, icon } of useNavigation()" class="w-full">
           <NuxtLink
@@ -26,7 +26,9 @@ onMounted(() => (show.value = true))
             class="block navigation-link"
           >
             <div :class="icon" class="navigation-link-icon mx-auto w-8 h-8" />
-            <span class="navigation-link-title block">{{ title }}</span>
+            <span class="navigation-link-title hidden sm:block">{{
+              title
+            }}</span>
           </NuxtLink>
         </li>
       </ul>
@@ -58,10 +60,6 @@ onMounted(() => (show.value = true))
     text-shadow 200ms ease-in-out;
 }
 
-:is(.navigation-link:hover, .navigation-link.active) {
-  transform: translateY(10%);
-}
-
 .dark .navigation-link.active {
   color: theme('colors.cyan.200');
 }
@@ -74,7 +72,13 @@ onMounted(() => (show.value = true))
   text-shadow: 0 0 5px theme('colors.cyan.200');
 }
 
-:is(.navigation-link:hover, .navigation-link.active) > .navigation-link-icon {
-  transform: scale(1.4) translateY(-5%);
+@media (min-width: 640px) {
+  :is(.navigation-link:hover, .navigation-link.active) {
+    transform: translateY(10%);
+  }
+
+  :is(.navigation-link:hover, .navigation-link.active) > .navigation-link-icon {
+    transform: scale(1.4) translateY(-5%);
+  }
 }
 </style>
