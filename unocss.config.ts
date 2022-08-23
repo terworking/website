@@ -20,6 +20,7 @@ export default defineConfig({
     }),
   ],
   transformers: [
+    transformerDirectives(),
     transformerVariantGroup({
       separators: [':'],
     }),
