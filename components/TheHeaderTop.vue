@@ -87,38 +87,40 @@ onMounted(() => (showHeaderTop.value = true))
   --mask-brightness: 0.6;
 }
 
-.index-link {
-  --underline-position-x: 50%;
-  --underline-position-y: 90%;
-}
+@media (min-width: 1024px) {
+  .index-link {
+    --underline-position-x: 50%;
+    --underline-position-y: 90%;
+  }
 
-.index-link,
-.navigation-link {
-  transition: transform 200ms ease-in-out, color 200ms ease-in-out,
-    text-shadow 200ms ease-in-out,
-    background-size 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: var(--underline-position-x) var(--underline-position-y);
-  background-size: 0% 1px;
-  background-repeat: no-repeat;
-  margin: 5px 0;
-}
+  .index-link,
+  .navigation-link {
+    transition: transform 200ms ease-in-out, color 200ms ease-in-out,
+      text-shadow 200ms ease-in-out,
+      background-size 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: var(--underline-position-x) var(--underline-position-y);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    margin: 5px 0;
+  }
 
-.index-link:hover {
-  background-size: 100% 3px;
-}
+  .index-link:hover {
+    background-size: 100% 3px;
+  }
 
-.navigation-link:hover,
-.navigation-link.active {
-  color: theme('colors.cyan.200');
-  transform: scale(1.1) translateY(-5%);
-  background-size: 100% 3px;
-}
+  .navigation-link:hover,
+  .navigation-link.active {
+    color: theme('colors.cyan.200');
+    transform: scale(1.1) translateY(-5%);
+    background-size: 100% 3px;
+  }
 
-.navigation-link.active:hover {
-  color: unset;
-  cursor: not-allowed;
-  text-shadow: 0 0 5px theme('colors.cyan.200');
+  .navigation-link.active:hover {
+    color: unset;
+    cursor: not-allowed;
+    text-shadow: 0 0 5px theme('colors.cyan.200');
+  }
 }
 </style>
