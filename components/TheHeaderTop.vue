@@ -111,16 +111,14 @@ onMounted(() => (showHeaderTop.value = true))
 
 .navigation-link:hover,
 .navigation-link.active {
+  color: theme('colors.cyan.200');
   transform: scale(1.1) translateY(-5%);
   background-size: 100% 3px;
 }
 
-.dark .navigation-link.active {
-  color: theme('colors.cyan.200');
-}
-
 .navigation-link.active:hover {
   color: unset;
+  cursor: not-allowed;
   text-shadow: 0 0 5px theme('colors.cyan.200');
 }
 </style>

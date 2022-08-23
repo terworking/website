@@ -60,19 +60,32 @@ onMounted(() => (show.value = true))
     text-shadow 200ms ease-in-out;
 }
 
+.navigation-link.active {
+  color: theme('colors.cyan.500');
+}
+
 .dark .navigation-link.active {
   color: theme('colors.cyan.200');
 }
 
-.navigation-link.active:hover {
-  color: unset;
-}
-
-.dark .navigation-link.active:hover > .navigation-link-title {
-  text-shadow: 0 0 5px theme('colors.cyan.200');
-}
-
 @media (min-width: 640px) {
+  .navigation-link:hover {
+    color: theme('colors.cyan.500');
+  }
+
+  .dark .navigation-link:hover {
+    color: theme('colors.cyan.200');
+  }
+
+  .navigation-link.active:hover {
+    color: unset;
+    cursor: not-allowed;
+  }
+
+  .dark .navigation-link.active:hover > .navigation-link-title {
+    text-shadow: 0 0 5px theme('colors.cyan.200');
+  }
+
   :is(.navigation-link:hover, .navigation-link.active) {
     transform: translateY(10%);
   }
