@@ -37,7 +37,9 @@ useHead({
     <TheHeader />
     <TheNavigationBar />
     <div
-      v-if="$route.meta.layout === 'default'"
+      v-if="
+        $route.meta.layout === 'default' || $route.meta.layout === undefined
+      "
       class="min-h-[calc(100vh-64px)]"
     >
       <NuxtLayout>
