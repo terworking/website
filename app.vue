@@ -33,7 +33,7 @@ useHead({
 
 <template>
   <div>
-    <NuxtLoadingIndicator color="#a5f3fc" />
+    <NuxtLoadingIndicator />
     <TheHeader />
     <TheNavigationBar />
     <NuxtLayout>
