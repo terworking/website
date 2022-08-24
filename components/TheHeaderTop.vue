@@ -47,7 +47,6 @@ onMounted(() => (showHeaderTop.value = true))
                     calculateNavigationUnderlinePosition(index),
                   '--underline-position-y': '100%',
                 }"
-                :class="{ 'text-white': $route.path !== '/' }"
                 class="navigation-link block"
               >
                 <span class="inline">

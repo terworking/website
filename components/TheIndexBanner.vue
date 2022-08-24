@@ -81,7 +81,7 @@ const bannerImageTranslateX = computed(() => ({
 
 <template>
   <div
-    class="header-banner relative z-1 h-3/4 md:h-full bg-black overflow-hidden"
+    class="index-banner relative z-1 h-3/4 md:h-full bg-black overflow-hidden"
   >
     <div class="hidden md:block">
       <button
@@ -130,15 +130,15 @@ const bannerImageTranslateX = computed(() => ({
   transform: scale(0.1);
 }
 
-.header-banner:hover .banner-button {
+.index-banner:hover .banner-button {
   opacity: 1;
 }
 
-.header-banner:hover .next-banner-button {
+.index-banner:hover .next-banner-button {
   transform: translateX(-25%);
 }
 
-.header-banner:hover .prev-banner-button {
+.index-banner:hover .prev-banner-button {
   transform: translateX(25%);
 }
 
