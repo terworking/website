@@ -13,7 +13,7 @@ onMounted(() => (show.value = true))
 <template>
   <Transition name="navigation-bar">
     <nav
-      v-if="show"
+      v-show="show"
       class="navigation-bar fixed lg:hidden z-999 bottom-0 h-64px sm:h-80px dark:border-t-2 dark:border-cyan-2 w-full bg-body"
     >
       <ul
