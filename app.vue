@@ -36,17 +36,8 @@ useHead({
     <NuxtLoadingIndicator color="#a5f3fc" />
     <TheHeader />
     <TheNavigationBar />
-    <div
-      v-if="
-        $route.meta.layout === 'default' || $route.meta.layout === undefined
-      "
-      class="min-h-[calc(100vh-64px)]"
-    >
-      <NuxtLayout>
-        <template #heading>{{ $route.meta.title ?? 'Terworking' }}</template>
-        <NuxtPage />
-      </NuxtLayout>
-    </div>
-    <NuxtPage v-else />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
