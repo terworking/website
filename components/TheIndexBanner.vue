@@ -102,7 +102,11 @@ const bannerImageTranslateX = computed(() => ({
     <ClientOnly>
       <Transition appear name="banner-image">
         <div :key="imageIndex" ref="bannerImage" class="banner-image">
-          <img :src="source" alt="Banner Image" />
+          <img
+            :src="source"
+            :style="{ opacity: isLoaded ? '1' : '0' }"
+            alt="Banner Image"
+          />
           <img
             v-if="!isLoaded"
             class="animate-pulse pointer-events-none"
