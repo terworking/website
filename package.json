@@ -11,8 +11,8 @@
     "@iconify-json/material-symbols": "^1.1.14",
     "@kevinmarrec/nuxt-pwa": "^0.4.2",
     "@nuxtjs/color-mode": "^3.1.4",
-    "@unocss/nuxt": "^0.45.6",
-    "@vueuse/nuxt": "^9.1.0",
+    "@unocss/nuxt": "^0.45.12",
+    "@vueuse/nuxt": "^9.1.1",
     "nuxt": "3.0.0-rc.8"
   }
 }
