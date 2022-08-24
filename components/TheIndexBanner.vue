@@ -7,7 +7,7 @@ const prevBanner = () => (imageIndex.value! -= 1)
 
 const { width } = useWindowSize()
 const source = computed(
-  () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
+  () => `/banner/get/${imageIndex.value}?w=${Math.max(width.value, 512)}`
 )
 
 const isLoaded = ref(false)

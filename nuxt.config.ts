@@ -5,7 +5,7 @@ const themeColor = '#a5f3fc'
 const siteName = 'Terworking'
 const backgroundColor = '#242427'
 const description = 'Website Terworking.'
-const bannerImage = 'https://terworking.netlify.app/banner/0?w=500'
+const bannerImage = 'https://terworking.netlify.app/banner/get/0?w=500'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
