@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="min-h-[calc(100vh-64px)]">
     <ClientOnly>
       <Transition appear name="default-heading" mode="out-in">
         <h1
           :key="$route.path"
           class="default-heading py-6 lg:py-8 text-center font-semibold text-4xl md:text-5xl"
         >
-          <slot name="heading" />
+          {{ $route.meta.title ?? 'Terworking' }}
         </h1>
       </Transition>
     </ClientOnly>
