@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { defaultWindow } from '@vueuse/core'
 
-const { y: scrollY } = useScroll(defaultWindow)
-
 const show = ref(false)
-watch(scrollY, (value, oldValue) => (show.value = value < oldValue))
+
+const { lengthY: swipeLengthY } = useSwipe(defaultWindow)
+watch(swipeLengthY, (v) => (show.value = v <= 0))
+useEventListener('wheel', (e) => (show.value = e.deltaY <= 0))
 
 onMounted(() => (show.value = true))
 </script>
