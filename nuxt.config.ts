@@ -34,7 +34,13 @@ export default defineNuxtConfig({
       indexParagraph: 'Alumni TKJ SMKN 2 Kandangan (2021/2022)',
     },
   },
-  css: ['~~/assets/main.css'],
+  layoutTransition: {
+    name: 'main',
+  },
+  pageTransition: {
+    name: 'main',
+  },
+  css: ['~~/assets/main.css', '~~/assets/transition.css'],
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
