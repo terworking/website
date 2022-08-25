@@ -14,8 +14,10 @@ const sources = computed(() =>
   Array.from({ length: 3 }, (_, i) => {
     const index = imageIndex.value + (i - 1)
 
-    if (index >= 0 && index < count.value)
-      return `/banner/get/${index}?w=${Math.max(width.value, 512)}`
+    const path = `/banner/get/${index}?w=${Math.max(width.value, 512)}`
+    const inView = i === 1
+
+    return index >= 0 && index < count.value ? { path, inView } : { inView }
   })
 )
 
@@ -36,47 +38,45 @@ if (isClient) {
     imageIndex,
     (value, oldValue) => {
       stopTimeout()
-      isLoaded.value = false
 
       if (oldValue !== undefined) {
         reversed.value = value < oldValue
         isWrapAround.value = Math.abs(value - oldValue) !== 1
       }
 
+      let loaded = false
       const image = new Image()
       image.addEventListener('load', () => {
-        isLoaded.value = true
+        isLoaded.value = loaded = true
         if (!isLeft.value) startTimeout()
       })
-      image.src = sources.value[1]!
+      image.src = sources.value[1].path!
+
+      // only set isLoaded to false after 50ms
+      // to avoid almost-instant white blink
+      setTimeout(() => (isLoaded.value = loaded), 50)
     },
     { immediate: true }
   )
 }
 
-// used to make the transition looks perfect
+// used to make the transition looks perfect.
 // its not possible to use distanceX directly
 // because it does not reset after swiping is end
-// which makes non-swipe transition looks weird
+// which makes non-swipe transition kinda sus
 const additionalX = ref(0)
 
 const bannerImage = ref<HTMLImageElement>()
 const limitDistanceX = (n: number) => {
   if (bannerImage.value !== undefined) {
-    const length = bannerImage.value.clientWidth * 0.8
-    const distributeRequired = (condition: boolean, n: number) => {
+    const getTarget = (wrapAroundCondition: boolean, n: number) => {
       const half = n / 2
-      return condition ? [half, half] : [n, half / 2]
+      return wrapAroundCondition ? [half, half] : [n, half / 2]
     }
 
-    const [min, requiredMin] = distributeRequired(
-      imageIndex.value === 0,
-      -length
-    )
-    const [max, requiredMax] = distributeRequired(
-      imageIndex.value === count.value - 1,
-      length
-    )
+    const length = bannerImage.value.clientWidth * 0.8
+    const [min, minTarget] = getTarget(imageIndex.value === 0, -length),
+      [max, maxTarget] = getTarget(imageIndex.value === count.value - 1, length)
 
     const value = Math.max(Math.min(n, max), min)
 
@@ -84,36 +84,37 @@ const limitDistanceX = (n: number) => {
       min,
       max,
       value,
-      requiredMin,
-      requiredMax,
+      minTarget,
+      maxTarget,
     }
   }
 }
 
 const { distanceX } = usePointerSwipe(bannerImage, {
   onSwipe: () => {
-    const distance = limitDistanceX(distanceX.value)
-    if (bannerImage.value !== undefined && distance !== undefined) {
-      const { value, min, max } = distance
+    if (bannerImage.value !== undefined) {
+      const { value, min, max } = limitDistanceX(distanceX.value)!
 
       bannerImage.value.style.transform = `translateX(${-value}px)`
-      bannerImage.value.style.transition = `transform ${
-        value <= min || value >= max ? 300 : 0
-      }ms cubic-bezier(0,1.43,.2,1.62)`
+
+      // set duration to 300 whenever value reaches max or min
+      // to trigger overshoot transition, duration of 0 means
+      // instantaneous transition
+      const transitionDuration = value === min || value === max ? 300 : 0
+      bannerImage.value.style.transition = `transform ${transitionDuration}ms cubic-bezier(0, 1.43, 0.2, 1.62)`
     }
   },
   onSwipeStart: stopTimeout,
-  onSwipeEnd: async () => {
-    const distance = limitDistanceX(distanceX.value)
-    if (bannerImage.value !== undefined && distance !== undefined) {
+  onSwipeEnd: () => {
+    if (bannerImage.value !== undefined) {
       bannerImage.value.style.transform = ''
       bannerImage.value.style.transition = ''
 
-      const { value, requiredMax, requiredMin } = distance
+      const { value, maxTarget, minTarget } = limitDistanceX(distanceX.value)!
 
       additionalX.value = value
-      if (value <= requiredMin) prevBanner()
-      else if (value >= requiredMax) nextBanner()
+      if (value <= minTarget) prevBanner()
+      else if (value >= maxTarget) nextBanner()
 
       // reset the additionalX after 750ms (transition duration)
       setTimeout(() => (additionalX.value = 0), 750)
@@ -123,16 +124,23 @@ const { distanceX } = usePointerSwipe(bannerImage, {
   },
 })
 
-const leaveOpacity = computed(() => (isWrapAround.value ? '1' : 0))
-const bannerImageTranslateX = computed(() => {
-  const calc = (n: number) =>
-    isWrapAround.value
-      ? `calc(${-n}% + ${additionalX.value}px)`
-      : `calc(${n}% - ${additionalX.value}px)`
+const transformLengthBase = computed(() => (reversed.value ? -105 : 105))
 
-  const value = reversed.value ? -105 : 105
-  return { enter: calc(value), leave: `${value}%` }
+const bannerImageEnterFromTransform = computed(() => {
+  const lengthX = isWrapAround.value
+    ? `calc(${-transformLengthBase.value}% + ${additionalX.value}px)`
+    : `calc(${transformLengthBase.value}% - ${additionalX.value}px)`
+
+  return `translateX(${lengthX})`
 })
+
+const bannerImageLeave = (element: HTMLElement) => {
+  if (isWrapAround.value) {
+    element.style.transform = `translateX(${transformLengthBase.value}%)`
+  } else {
+    element.style.display = 'none'
+  }
+}
 </script>
 
 <template>
@@ -145,31 +153,41 @@ const bannerImageTranslateX = computed(() => {
         class="prev-banner-button banner-button absolute left-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
         @click="prevBanner"
       >
-        <div class="i-material-symbols-chevron-left" />
+        <span class="i-material-symbols-chevron-left" />
       </button>
       <button
         aria-label="Next Banner"
         class="next-banner-button banner-button absolute right-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
         @click="nextBanner"
       >
-        <div class="i-material-symbols-chevron-right" />
+        <span class="i-material-symbols-chevron-right" />
       </button>
     </div>
     <ClientOnly>
-      <Transition appear name="banner-image">
-        <div
-          :key="imageIndex"
-          ref="bannerImage"
-          class="banner-image cursor-grab"
-        >
-          <template v-for="(source, index) of sources">
+      <Transition
+        appear
+        name="banner-image"
+        @leave="bannerImageLeave"
+        :duration="750"
+      >
+        <div :key="imageIndex" ref="bannerImage" class="banner-image">
+          <template v-for="({ path, inView }, index) of sources">
             <img
-              v-if="source !== undefined"
-              :src="source"
+              v-if="path !== undefined"
+              :src="path"
               alt="Banner Image"
               draggable="false"
-              :loading="index === 1 ? 'eager' : 'lazy'"
-              :style="{ transform: `translateX(${(index - 1) * 105}%)` }"
+              :loading="inView ? 'eager' : 'lazy'"
+              :style="{
+                left: `${(index - 1) * 105}%`,
+                opacity: inView && !isLoaded ? '0' : '1',
+              }"
+            />
+            <img
+              v-show="inView && !isLoaded"
+              class="animate-pulse pointer-events-none"
+              :src="placeholder"
+              alt="Banner Image Placeholder"
             />
           </template>
         </div>
@@ -209,6 +227,7 @@ const bannerImageTranslateX = computed(() => {
   transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1),
     filter 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
   filter: brightness(0.5);
+  cursor: grab;
 }
 
 .dark .banner-image {
@@ -216,7 +235,7 @@ const bannerImageTranslateX = computed(() => {
 }
 
 .banner-image,
-.banner-image * {
+.banner-image > * {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -224,11 +243,6 @@ const bannerImageTranslateX = computed(() => {
 }
 
 .banner-image-enter-from {
-  transform: translateX(v-bind('bannerImageTranslateX.enter'));
-}
-
-.banner-image-leave-to {
-  transform: translateX(v-bind('bannerImageTranslateX.leave'));
-  opacity: v-bind('leaveOpacity');
+  transform: v-bind('bannerImageEnterFromTransform');
 }
 </style>
