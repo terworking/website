@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/shared'
 
+const { data: count } = await useAsyncData(() => $fetch('/banner/count'))
+
 const imageIndex = useLocalStorage<number>('banner-image-index', 0)
-const nextBanner = () => (imageIndex.value! += 1)
-const prevBanner = () => (imageIndex.value! -= 1)
+const nextBanner = () =>
+  (imageIndex.value! = wrapNumber(imageIndex.value + 1, count.value))
+const prevBanner = () =>
+  (imageIndex.value! = wrapNumber(imageIndex.value - 1, count.value))
 
 const { width } = useWindowSize()
 const source = computed(

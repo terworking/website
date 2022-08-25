@@ -1,25 +1,14 @@
 import { getBanners } from '~~/server/utils/banner'
 
 export default defineEventHandler(async ({ event }) => {
-  const { index: tryIndex } = event.context.params as Record<string, string>
+  const { index: index } = event.context.params as Record<string, string>
   const query = new URLSearchParams(useQuery(event) as Record<string, string>)
 
-  const index = Number.parseInt(tryIndex)
-  if (Number.isNaN(index)) {
-    // fallback to 0 if the index is not a number
-    return sendRedirect(event, `/banner/get/0?${query}`, 301)
-  }
+  const banner = await getBanners().then(
+    (banners) => banners[Number.parseInt(index)]
+  )
 
-  const banners = await getBanners()
-  if (index >= banners.length) {
-    return sendRedirect(
-      event,
-      `/banner/get/${index % banners.length}?${query}`,
-      301
-    )
-  }
-
-  const banner = banners[index]
+  if (banner === undefined) return
 
   const filename = banner.id.replaceAll(/[^A-Za-z0-9]/g, '')
   const width = Math.min(
