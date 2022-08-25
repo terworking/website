@@ -10,8 +10,13 @@ const prevBanner = () =>
   (imageIndex.value! = wrapNumber(imageIndex.value - 1, count.value))
 
 const { width } = useWindowSize()
-const source = computed(
-  () => `/banner/get/${imageIndex.value}?w=${Math.max(width.value, 512)}`
+const sources = computed(() =>
+  Array.from({ length: 3 }, (_, i) => {
+    const index = imageIndex.value + (i - 1)
+
+    if (index >= 0 && index < count.value)
+      return `/banner/get/${index}?w=${Math.max(width.value, 512)}`
+  })
 )
 
 const isLoaded = ref(false)
@@ -38,11 +43,17 @@ if (isClient) {
         isLoaded.value = true
         if (!isLeft.value) startTimeout()
       })
-      image.src = source.value
+      image.src = sources.value[1]!
     },
     { immediate: true }
   )
 }
+
+// used to make the transition looks perfect
+// its not possible to use distanceX directly
+// because it does not reset after swiping is end
+// which makes non-swipe transition looks weird
+const additionalX = ref(0)
 
 const bannerImage = ref<HTMLImageElement>()
 const { distanceX } = usePointerSwipe(bannerImage, {
@@ -53,11 +64,12 @@ const { distanceX } = usePointerSwipe(bannerImage, {
     }
   },
   onSwipeStart: stopTimeout,
-  onSwipeEnd: () => {
+  onSwipeEnd: async () => {
     if (bannerImage.value !== undefined) {
       bannerImage.value.style.transform = ''
       bannerImage.value.style.transition = ''
 
+      additionalX.value = distanceX.value
       const percentage = distanceX.value / bannerImage.value.clientWidth
       if (percentage <= -0.2) {
         prevBanner()
@@ -65,15 +77,20 @@ const { distanceX } = usePointerSwipe(bannerImage, {
         nextBanner()
       }
 
+      // reset the additionalX after 750ms (transition duration)
+      setTimeout(() => (additionalX.value = 0), 750)
+
       startTimeout()
     }
   },
 })
 
-const bannerImageTranslateX = computed(() => ({
-  enter: reversed.value ? '-105%' : '105%',
-  leave: reversed.value ? '105%' : '-105%',
-}))
+const bannerImageTranslateX = computed(() => {
+  const calc = (n: number) => `calc(${n}% + ${-additionalX.value}px)`
+  return {
+    enter: reversed.value ? calc(-105) : calc(105),
+  }
+})
 </script>
 
 <template>
@@ -103,18 +120,15 @@ const bannerImageTranslateX = computed(() => ({
           ref="bannerImage"
           class="banner-image cursor-grab"
         >
-          <img
-            :src="source"
-            :style="{ opacity: isLoaded ? '1' : '0' }"
-            alt="Banner Image"
-            draggable="false"
-          />
-          <img
-            v-if="!isLoaded"
-            class="animate-pulse pointer-events-none"
-            :src="placeholder"
-            alt="Banner Image Placeholder"
-          />
+          <template v-for="(source, index) of sources">
+            <img
+              v-if="source !== undefined"
+              :src="source"
+              alt="Banner Image"
+              draggable="false"
+              :style="{ transform: `translateX(${(index - 1) * 105}%)` }"
+            />
+          </template>
         </div>
       </Transition>
     </ClientOnly>
@@ -171,6 +185,6 @@ const bannerImageTranslateX = computed(() => ({
 }
 
 .banner-image-leave-to {
-  transform: translateX(v-bind('bannerImageTranslateX.leave'));
+  opacity: 0;
 }
 </style>
