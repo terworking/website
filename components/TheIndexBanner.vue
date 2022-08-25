@@ -44,34 +44,27 @@ if (isClient) {
   )
 }
 
-const swiping = ref(false)
 const bannerImage = ref<HTMLImageElement>()
-const { lengthX, lengthY } = useSwipe(bannerImage, {
-  threshold: 0,
+const { distanceX } = usePointerSwipe(bannerImage, {
   onSwipe: () => {
     if (bannerImage.value !== undefined) {
-      const condition = (swiping.value =
-        Math.abs(lengthX.value) > 50 && Math.abs(lengthY.value) < 100)
-
-      bannerImage.value.style.transform = condition
-        ? `translateX(${-lengthX.value}px)`
-        : ''
+      bannerImage.value.style.transform = `translateX(${-distanceX.value}px)`
+      bannerImage.value.style.transition = 'transform 0ms'
     }
   },
   onSwipeStart: stopTimeout,
   onSwipeEnd: () => {
     if (bannerImage.value !== undefined) {
-      if (bannerImage.value.style.transform !== '') {
-        bannerImage.value.style.transform = ''
-        const percentage = lengthX.value / bannerImage.value.clientWidth
-        if (percentage <= -0.2) {
-          prevBanner()
-        } else if (percentage >= 0.2) {
-          nextBanner()
-        }
+      bannerImage.value.style.transform = ''
+      bannerImage.value.style.transition = ''
+
+      const percentage = distanceX.value / bannerImage.value.clientWidth
+      if (percentage <= -0.2) {
+        prevBanner()
+      } else if (percentage >= 0.2) {
+        nextBanner()
       }
 
-      swiping.value = false
       startTimeout()
     }
   },
@@ -105,11 +98,16 @@ const bannerImageTranslateX = computed(() => ({
     </div>
     <ClientOnly>
       <Transition appear name="banner-image">
-        <div :key="imageIndex" ref="bannerImage" class="banner-image">
+        <div
+          :key="imageIndex"
+          ref="bannerImage"
+          class="banner-image cursor-grab"
+        >
           <img
             :src="source"
             :style="{ opacity: isLoaded ? '1' : '0' }"
             alt="Banner Image"
+            draggable="false"
           />
           <img
             v-if="!isLoaded"
