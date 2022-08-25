@@ -22,6 +22,7 @@ const sources = computed(() =>
 const isLoaded = ref(false)
 const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
+const isWrapAround = ref(false)
 
 const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
   nextBanner,
@@ -36,7 +37,11 @@ if (isClient) {
     (value, oldValue) => {
       stopTimeout()
       isLoaded.value = false
-      reversed.value = value < (oldValue ?? 0)
+
+      if (oldValue !== undefined) {
+        reversed.value = value < oldValue
+        isWrapAround.value = Math.abs(value - oldValue) !== 1
+      }
 
       const image = new Image()
       image.addEventListener('load', () => {
@@ -85,11 +90,15 @@ const { distanceX } = usePointerSwipe(bannerImage, {
   },
 })
 
+const leaveOpacity = computed(() => (isWrapAround.value ? '1' : 0))
 const bannerImageTranslateX = computed(() => {
-  const calc = (n: number) => `calc(${n}% + ${-additionalX.value}px)`
-  return {
-    enter: reversed.value ? calc(-105) : calc(105),
-  }
+  const calc = (n: number) =>
+    isWrapAround.value
+      ? `calc(${-n}% + ${additionalX.value}px)`
+      : `calc(${n}% - ${additionalX.value}px)`
+
+  const value = reversed.value ? -105 : 105
+  return { enter: calc(value), leave: `${value}%` }
 })
 </script>
 
@@ -185,6 +194,7 @@ const bannerImageTranslateX = computed(() => {
 }
 
 .banner-image-leave-to {
-  opacity: 0;
+  transform: translateX(v-bind('bannerImageTranslateX.leave'));
+  opacity: v-bind('leaveOpacity');
 }
 </style>
