@@ -63,7 +63,7 @@ const additionalX = ref(0)
 const bannerImage = ref<HTMLImageElement>()
 const limitDistanceX = (n: number) => {
   if (bannerImage.value !== undefined) {
-    const length = (bannerImage.value.clientWidth * 4) / 5
+    const length = bannerImage.value.clientWidth * 0.8
     const distributeRequired = (condition: boolean, n: number) => {
       const half = n / 2
       return condition ? [half, half] : [n, half / 2]
@@ -92,9 +92,9 @@ const limitDistanceX = (n: number) => {
 
 const { distanceX } = usePointerSwipe(bannerImage, {
   onSwipe: () => {
-    const length = limitDistanceX(distanceX.value)
-    if (bannerImage.value !== undefined && length !== undefined) {
-      const { value, min, max } = length
+    const distance = limitDistanceX(distanceX.value)
+    if (bannerImage.value !== undefined && distance !== undefined) {
+      const { value, min, max } = distance
 
       bannerImage.value.style.transform = `translateX(${-value}px)`
       bannerImage.value.style.transition = `transform ${
@@ -104,12 +104,12 @@ const { distanceX } = usePointerSwipe(bannerImage, {
   },
   onSwipeStart: stopTimeout,
   onSwipeEnd: async () => {
-    const length = limitDistanceX(distanceX.value)
-    if (bannerImage.value !== undefined && length !== undefined) {
+    const distance = limitDistanceX(distanceX.value)
+    if (bannerImage.value !== undefined && distance !== undefined) {
       bannerImage.value.style.transform = ''
       bannerImage.value.style.transition = ''
 
-      const { value, requiredMax, requiredMin } = length
+      const { value, requiredMax, requiredMin } = distance
 
       additionalX.value = value
       if (value <= requiredMin) prevBanner()
