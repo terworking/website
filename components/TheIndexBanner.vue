@@ -61,26 +61,59 @@ if (isClient) {
 const additionalX = ref(0)
 
 const bannerImage = ref<HTMLImageElement>()
+const limitDistanceX = (n: number) => {
+  if (bannerImage.value !== undefined) {
+    const length = (bannerImage.value.clientWidth * 4) / 5
+    const distributeRequired = (condition: boolean, n: number) => {
+      const half = n / 2
+      return condition ? [half, half] : [n, half / 2]
+    }
+
+    const [min, requiredMin] = distributeRequired(
+      imageIndex.value === 0,
+      -length
+    )
+    const [max, requiredMax] = distributeRequired(
+      imageIndex.value === count.value - 1,
+      length
+    )
+
+    const value = Math.max(Math.min(n, max), min)
+
+    return {
+      min,
+      max,
+      value,
+      requiredMin,
+      requiredMax,
+    }
+  }
+}
+
 const { distanceX } = usePointerSwipe(bannerImage, {
   onSwipe: () => {
-    if (bannerImage.value !== undefined) {
-      bannerImage.value.style.transform = `translateX(${-distanceX.value}px)`
-      bannerImage.value.style.transition = 'transform 0ms'
+    const length = limitDistanceX(distanceX.value)
+    if (bannerImage.value !== undefined && length !== undefined) {
+      const { value, min, max } = length
+
+      bannerImage.value.style.transform = `translateX(${-value}px)`
+      bannerImage.value.style.transition = `transform ${
+        value <= min || value >= max ? 300 : 0
+      }ms cubic-bezier(0,1.43,.2,1.62)`
     }
   },
   onSwipeStart: stopTimeout,
   onSwipeEnd: async () => {
-    if (bannerImage.value !== undefined) {
+    const length = limitDistanceX(distanceX.value)
+    if (bannerImage.value !== undefined && length !== undefined) {
       bannerImage.value.style.transform = ''
       bannerImage.value.style.transition = ''
 
-      additionalX.value = distanceX.value
-      const percentage = distanceX.value / bannerImage.value.clientWidth
-      if (percentage <= -0.2) {
-        prevBanner()
-      } else if (percentage >= 0.2) {
-        nextBanner()
-      }
+      const { value, requiredMax, requiredMin } = length
+
+      additionalX.value = value
+      if (value <= requiredMin) prevBanner()
+      else if (value >= requiredMax) nextBanner()
 
       // reset the additionalX after 750ms (transition duration)
       setTimeout(() => (additionalX.value = 0), 750)
