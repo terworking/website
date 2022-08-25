@@ -168,6 +168,7 @@ const bannerImageTranslateX = computed(() => {
               :src="source"
               alt="Banner Image"
               draggable="false"
+              :loading="index === 1 ? 'eager' : 'lazy'"
               :style="{ transform: `translateX(${(index - 1) * 105}%)` }"
             />
           </template>
