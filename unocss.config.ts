@@ -1,6 +1,7 @@
 import {
   defineConfig,
   presetIcons,
+  presetWebFonts,
   presetWind,
   transformerDirectives,
   transformerVariantGroup,
@@ -10,6 +11,12 @@ export default defineConfig({
   exclude: ['./node_modules/**/*'],
   presets: [
     presetWind(),
+    presetWebFonts({
+      provider: 'bunny',
+      fonts: {
+        sans: 'NunitoSans',
+      },
+    }),
     presetIcons({
       collections: {
         local: {
