@@ -1,18 +1,30 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/shared'
 
+const { data: count } = await useAsyncData(() => $fetch('/banner/count'))
+
 const imageIndex = useLocalStorage<number>('banner-image-index', 0)
-const nextBanner = () => (imageIndex.value! += 1)
-const prevBanner = () => (imageIndex.value! -= 1)
+const nextBanner = () =>
+  (imageIndex.value! = wrapNumber(imageIndex.value + 1, count.value))
+const prevBanner = () =>
+  (imageIndex.value! = wrapNumber(imageIndex.value - 1, count.value))
 
 const { width } = useWindowSize()
-const source = computed(
-  () => `/banner/${imageIndex.value}?w=${Math.max(width.value, 512)}`
+const sources = computed(() =>
+  Array.from({ length: 3 }, (_, i) => {
+    const index = imageIndex.value + (i - 1)
+
+    const path = `/banner/get/${index}?w=${Math.max(width.value, 512)}`
+    const inView = i === 1
+
+    return index >= 0 && index < count.value ? { path, inView } : { inView }
+  })
 )
 
 const isLoaded = ref(false)
 const reversed = ref(false)
 const placeholder = '/banner-placeholder.png'
+const isWrapAround = ref(false)
 
 const { start: startTimeout, stop: stopTimeout } = useTimeoutFn(
   nextBanner,
@@ -26,57 +38,109 @@ if (isClient) {
     imageIndex,
     (value, oldValue) => {
       stopTimeout()
-      isLoaded.value = false
-      reversed.value = value < (oldValue ?? 0)
 
+      if (oldValue !== undefined) {
+        reversed.value = value < oldValue
+        isWrapAround.value = Math.abs(value - oldValue) !== 1
+      }
+
+      let loaded = false
       const image = new Image()
       image.addEventListener('load', () => {
-        isLoaded.value = true
+        isLoaded.value = loaded = true
         if (!isLeft.value) startTimeout()
       })
-      image.src = source.value
+      image.src = sources.value[1].path!
+
+      // only set isLoaded to false after 50ms
+      // to avoid almost-instant white blink
+      setTimeout(() => (isLoaded.value = loaded), 50)
     },
     { immediate: true }
   )
 }
 
-const swiping = ref(false)
+// used to make the transition looks perfect.
+// its not possible to use distanceX directly
+// because it does not reset after swiping is end
+// which makes non-swipe transition kinda sus
+const additionalX = ref(0)
+
 const bannerImage = ref<HTMLImageElement>()
-const { lengthX, lengthY } = useSwipe(bannerImage, {
-  threshold: 0,
+const limitDistanceX = (n: number) => {
+  if (bannerImage.value !== undefined) {
+    const getTarget = (wrapAroundCondition: boolean, n: number) => {
+      const half = n / 2
+      return wrapAroundCondition ? [half, half] : [n, half / 2]
+    }
+
+    const length = bannerImage.value.clientWidth * 0.8
+    const [min, minTarget] = getTarget(imageIndex.value === 0, -length),
+      [max, maxTarget] = getTarget(imageIndex.value === count.value - 1, length)
+
+    const value = Math.max(Math.min(n, max), min)
+
+    return {
+      min,
+      max,
+      value,
+      minTarget,
+      maxTarget,
+    }
+  }
+}
+
+const { distanceX } = usePointerSwipe(bannerImage, {
   onSwipe: () => {
     if (bannerImage.value !== undefined) {
-      const condition = (swiping.value =
-        Math.abs(lengthX.value) > 50 && Math.abs(lengthY.value) < 100)
+      const { value, min, max } = limitDistanceX(distanceX.value)!
 
-      bannerImage.value.style.transform = condition
-        ? `translateX(${-lengthX.value}px)`
-        : ''
+      bannerImage.value.style.transform = `translateX(${-value}px)`
+
+      // set duration to 360 whenever value reaches max or min
+      // to trigger overshoot transition, duration of 0 means
+      // instantaneous transition
+      const transitionDuration = value === min || value === max ? 360 : 0
+      bannerImage.value.style.transition = `transform ${transitionDuration}ms cubic-bezier(0, 0, 0.26, 5.4)`
     }
   },
   onSwipeStart: stopTimeout,
   onSwipeEnd: () => {
     if (bannerImage.value !== undefined) {
-      if (bannerImage.value.style.transform !== '') {
-        bannerImage.value.style.transform = ''
-        const percentage = lengthX.value / bannerImage.value.clientWidth
-        if (percentage <= -0.2) {
-          prevBanner()
-        } else if (percentage >= 0.2) {
-          nextBanner()
-        }
-      }
+      bannerImage.value.style.transform = ''
+      bannerImage.value.style.transition = ''
 
-      swiping.value = false
+      const { value, maxTarget, minTarget } = limitDistanceX(distanceX.value)!
+
+      additionalX.value = value
+      if (value <= minTarget) prevBanner()
+      else if (value >= maxTarget) nextBanner()
+
+      // reset the additionalX after 750ms (transition duration)
+      setTimeout(() => (additionalX.value = 0), 750)
+
       startTimeout()
     }
   },
 })
 
-const bannerImageTranslateX = computed(() => ({
-  enter: reversed.value ? '-105%' : '105%',
-  leave: reversed.value ? '105%' : '-105%',
-}))
+const transformLengthBase = computed(() => (reversed.value ? -105 : 105))
+
+const bannerImageEnterFromTransform = computed(() => {
+  const lengthX = isWrapAround.value
+    ? `calc(${-transformLengthBase.value}% + ${additionalX.value}px)`
+    : `calc(${transformLengthBase.value}% - ${additionalX.value}px)`
+
+  return `translateX(${lengthX})`
+})
+
+const bannerImageLeave = (element: HTMLElement) => {
+  if (isWrapAround.value) {
+    element.style.transform = `translateX(${transformLengthBase.value}%)`
+  } else {
+    element.style.display = 'none'
+  }
+}
 </script>
 
 <template>
@@ -86,29 +150,46 @@ const bannerImageTranslateX = computed(() => ({
     <div class="hidden md:block">
       <button
         aria-label="Prev Banner"
-        class="prev-banner-button banner-button absolute left-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
+        class="prev-banner-button banner-button left-0"
         @click="prevBanner"
       >
-        <div class="i-material-symbols-chevron-left" />
+        <span class="i-material-symbols-chevron-left" />
       </button>
       <button
         aria-label="Next Banner"
-        class="next-banner-button banner-button absolute right-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
+        class="next-banner-button banner-button right-0"
         @click="nextBanner"
       >
-        <div class="i-material-symbols-chevron-right" />
+        <span class="i-material-symbols-chevron-right" />
       </button>
     </div>
     <ClientOnly>
-      <Transition appear name="banner-image">
+      <Transition
+        appear
+        name="banner-image"
+        @leave="bannerImageLeave"
+        :duration="750"
+      >
         <div :key="imageIndex" ref="bannerImage" class="banner-image">
-          <img :src="source" alt="Banner Image" />
-          <img
-            v-if="!isLoaded"
-            class="animate-pulse pointer-events-none"
-            :src="placeholder"
-            alt="Banner Image Placeholder"
-          />
+          <template v-for="({ path, inView }, index) of sources">
+            <img
+              v-if="path !== undefined"
+              :src="path"
+              alt="Banner Image"
+              draggable="false"
+              :loading="inView ? 'eager' : 'lazy'"
+              :style="{
+                left: `${(index - 1) * 105}%`,
+                opacity: inView && !isLoaded ? '0' : '1',
+              }"
+            />
+            <img
+              v-show="inView && !isLoaded"
+              class="animate-pulse pointer-events-none"
+              :src="placeholder"
+              alt="Banner Image Placeholder"
+            />
+          </template>
         </div>
       </Transition>
     </ClientOnly>
@@ -117,10 +198,23 @@ const bannerImageTranslateX = computed(() => ({
 
 <style scoped>
 .banner-button {
-  transition: opacity 250ms linear, transform 300ms cubic-bezier(1, 0, 0, 1);
+  z-index: 999;
+  color: theme('colors.cyan.200');
+  border: 3px solid currentColor;
+  border-radius: 100%;
+  position: absolute;
+  opacity: 0;
+  top: 50%;
+  transition: opacity 250ms, color 250ms,
+    transform 300ms cubic-bezier(1, 0, 0, 1);
+}
+
+.banner-button:hover {
+  color: unset;
 }
 
 .banner-button > * {
+  display: block;
   height: 3rem;
   width: 3rem;
 }
@@ -146,6 +240,7 @@ const bannerImageTranslateX = computed(() => ({
   transition: transform 750ms cubic-bezier(0.19, 1, 0.22, 1),
     filter 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
   filter: brightness(0.5);
+  cursor: grab;
 }
 
 .dark .banner-image {
@@ -153,7 +248,7 @@ const bannerImageTranslateX = computed(() => ({
 }
 
 .banner-image,
-.banner-image * {
+.banner-image > * {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -161,10 +256,6 @@ const bannerImageTranslateX = computed(() => ({
 }
 
 .banner-image-enter-from {
-  transform: translateX(v-bind('bannerImageTranslateX.enter'));
-}
-
-.banner-image-leave-to {
-  transform: translateX(v-bind('bannerImageTranslateX.leave'));
+  transform: v-bind('bannerImageEnterFromTransform');
 }
 </style>

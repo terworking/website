@@ -31,6 +31,7 @@ export default defineConfig({
   },
   blocklist: [
     'transform',
+    'transition',
     'filter',
     'backdrop-filter',
     'ease-in-out',
