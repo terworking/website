@@ -97,11 +97,11 @@ const { distanceX } = usePointerSwipe(bannerImage, {
 
       bannerImage.value.style.transform = `translateX(${-value}px)`
 
-      // set duration to 300 whenever value reaches max or min
+      // set duration to 360 whenever value reaches max or min
       // to trigger overshoot transition, duration of 0 means
       // instantaneous transition
-      const transitionDuration = value === min || value === max ? 300 : 0
-      bannerImage.value.style.transition = `transform ${transitionDuration}ms cubic-bezier(0, 1.43, 0.2, 1.62)`
+      const transitionDuration = value === min || value === max ? 360 : 0
+      bannerImage.value.style.transition = `transform ${transitionDuration}ms cubic-bezier(0, 0, 0.26, 5.4)`
     }
   },
   onSwipeStart: stopTimeout,
