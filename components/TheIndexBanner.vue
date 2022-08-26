@@ -150,14 +150,14 @@ const bannerImageLeave = (element: HTMLElement) => {
     <div class="hidden md:block">
       <button
         aria-label="Prev Banner"
-        class="prev-banner-button banner-button absolute left-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
+        class="prev-banner-button banner-button left-0"
         @click="prevBanner"
       >
         <span class="i-material-symbols-chevron-left" />
       </button>
       <button
         aria-label="Next Banner"
-        class="next-banner-button banner-button absolute right-0 z-999 top-1/2 text-cyan-2 hover:text-cyan-1 border-3 border-current rounded-full opacity-0"
+        class="next-banner-button banner-button right-0"
         @click="nextBanner"
       >
         <span class="i-material-symbols-chevron-right" />
@@ -198,10 +198,23 @@ const bannerImageLeave = (element: HTMLElement) => {
 
 <style scoped>
 .banner-button {
-  transition: opacity 250ms linear, transform 300ms cubic-bezier(1, 0, 0, 1);
+  z-index: 999;
+  color: theme('colors.cyan.200');
+  border: 3px solid currentColor;
+  border-radius: 100%;
+  position: absolute;
+  opacity: 0;
+  top: 50%;
+  transition: opacity 250ms, color 250ms,
+    transform 300ms cubic-bezier(1, 0, 0, 1);
+}
+
+.banner-button:hover {
+  color: unset;
 }
 
 .banner-button > * {
+  display: block;
   height: 3rem;
   width: 3rem;
 }
