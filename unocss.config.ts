@@ -14,7 +14,7 @@ export default defineConfig({
     presetWebFonts({
       provider: 'bunny',
       fonts: {
-        sans: 'NunitoSans',
+        sans: 'Nunito Sans',
       },
     }),
     presetIcons({
