@@ -3,19 +3,25 @@ import { defaultWindow } from '@vueuse/core'
 
 const show = ref(false)
 
+const navigationBar = ref<HTMLElement>()
 const navigationBarTranslateY = ref(0)
 const { lengthY: swipeLengthY } = useSwipe(defaultWindow)
 watch(swipeLengthY, (value, oldValue) => {
-  const max = 36
+  if (navigationBar.value !== undefined) {
+    const max = navigationBar.value.clientHeight
 
-  const difference = -value + oldValue
-  navigationBarTranslateY.value = Math.min(
-    Math.max(navigationBarTranslateY.value + difference, 0),
-    max
-  )
+    const difference = Math.max(Math.min(oldValue - value, 5), -5)
+    navigationBarTranslateY.value = Math.min(
+      Math.max(navigationBarTranslateY.value - difference, 0),
+      max !== 0 ? max : navigationBarTranslateY.value
+    )
 
-  show.value =
-    navigationBarTranslateY.value < max || navigationBarTranslateY.value === 0
+    show.value =
+      max !== 0
+        ? navigationBarTranslateY.value < max ||
+          navigationBarTranslateY.value === 0
+        : value < oldValue
+  }
 })
 
 useEventListener('wheel', (e) => {
@@ -33,6 +39,7 @@ onMounted(() => (show.value = true))
   <Transition name="navigation-bar">
     <nav
       v-show="show"
+      ref="navigationBar"
       :style="{
         transform:
           navigationBarTranslateY !== 0
