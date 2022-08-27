@@ -9,7 +9,6 @@ watch(swipeLengthY, (value, oldValue) => {
   const max = 36
 
   const difference = -value + oldValue
-  console.log(difference, value, oldValue, navigationBarTranslateY.value)
   navigationBarTranslateY.value = Math.min(
     Math.max(navigationBarTranslateY.value + difference, 0),
     max
