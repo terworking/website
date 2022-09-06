@@ -4,7 +4,7 @@ const lang = 'id'
 const themeColor = '#a5f3fc'
 const siteName = 'Terworking'
 const backgroundColor = '#242427'
-const description = 'Website Terworking.'
+const description = 'Alumni TKJ SMKN 2 Kandangan (2021/2022)'
 const bannerImage = 'https://terworking.netlify.app/banner/get/0?w=500'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       indexHeading: 'Website Terworking',
-      indexParagraph: 'Alumni TKJ SMKN 2 Kandangan (2021/2022)',
+      indexParagraph: description,
     },
   },
   css: ['~~/assets/main.css', '~~/assets/transition.css'],
