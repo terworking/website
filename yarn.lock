@@ -311,7 +311,7 @@
   dependencies:
     "@iconify/types" "*"
 
-"@iconify-json/material-symbols@^1.1.14":
+"@iconify-json/material-symbols@^1.1.15":
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/@iconify-json/material-symbols/-/material-symbols-1.1.15.tgz#15bcbc1b99cfcde149ca105547a5ce5b7c6682d0"
   integrity sha512-4gjfhDK3C10CDbChjVnbtl4MDc3wDlAmo2vG7qbvKvJV9pI+C12t6GK+EYm93kQYVtOVJeq4loVxK10gbhab8A==
@@ -725,7 +725,7 @@
     gzip-size "^6.0.0"
     sirv "^2.0.2"
 
-"@unocss/nuxt@^0.45.12":
+"@unocss/nuxt@^0.45.15":
   version "0.45.15"
   resolved "https://registry.yarnpkg.com/@unocss/nuxt/-/nuxt-0.45.15.tgz#074f8a40861e986f784c49e83421cb5f537551aa"
   integrity sha512-6+YMfeLRWekEJAJ6vGwUBDcyuZroBd8N0+hifA29vayMqNIt7PjDdVLVbi0ZYK59mE9vfOevC22ZfY5UvW7YBw==
@@ -1039,7 +1039,7 @@
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-9.2.0.tgz#6bf7c9c44b9f5ece405837226a0e04a997994458"
   integrity sha512-exN4KE6iquxDCdt72BgEhb3tlOpECtD61AUdXnUqBTIUCl70x1Ar/QXo3bYcvxmdMS2/peQyfeTzBjRTpvL5xw==
 
-"@vueuse/nuxt@^9.1.1":
+"@vueuse/nuxt@^9.2.0":
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/@vueuse/nuxt/-/nuxt-9.2.0.tgz#3c1f1c1d3b534541cd8585769de06b8aa13b8a59"
   integrity sha512-SztYIO0R4paBsuR4N1q+XHiqj0J2Go0dvQ7sHX8IPXbSjwORPOmK6Oo7i4SEWrWwz3Q+B1mrnlP19lR00K9Sqw==
