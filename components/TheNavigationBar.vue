@@ -10,7 +10,7 @@ watch(swipeLengthY, (value, oldValue) => {
   if (navigationBar.value !== undefined) {
     const max = navigationBar.value.clientHeight
 
-    const difference = Math.max(Math.min(oldValue - value, 5), -5)
+    const difference = oldValue - value
     navigationBarTranslateY.value = Math.min(
       Math.max(navigationBarTranslateY.value - difference, 0),
       max !== 0 ? max : navigationBarTranslateY.value
