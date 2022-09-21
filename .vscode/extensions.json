@@ -1,3 +1,8 @@
 {
-  "recommendations": ["antfu.unocss", "vue.volar", "esbenp.prettier-vscode"]
+  "recommendations": [
+    "antfu.unocss",
+    "vue.volar",
+    "robbowen.synthwave-vscode",
+    "esbenp.prettier-vscode"
+  ]
 }
