@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { isClient } from '@vueuse/shared'
 
-const { data: count } = await useAsyncData(() => $fetch('/banner/count'))
+const { data: count } = await useFetch('/banner/count')
 
 const imageIndex = useLocalStorage<number>('banner-image-index', 0)
 const nextBanner = () =>
-  (imageIndex.value! = wrapNumber(imageIndex.value + 1, count.value))
+  (imageIndex.value! = wrapNumber(imageIndex.value + 1, count.value!))
 const prevBanner = () =>
-  (imageIndex.value! = wrapNumber(imageIndex.value - 1, count.value))
+  (imageIndex.value! = wrapNumber(imageIndex.value - 1, count.value!))
 
 const { width } = useWindowSize()
 const sources = computed(() =>
@@ -17,7 +17,7 @@ const sources = computed(() =>
     const path = `/banner/get/${index}?w=${Math.max(width.value, 512)}`
     const inView = i === 1
 
-    return index >= 0 && index < count.value ? { path, inView } : { inView }
+    return index >= 0 && index < count.value! ? { path, inView } : { inView }
   })
 )
 
@@ -76,7 +76,10 @@ const limitDistanceX = (n: number) => {
 
     const length = bannerImage.value.clientWidth * 0.8
     const [min, minTarget] = getTarget(imageIndex.value === 0, -length),
-      [max, maxTarget] = getTarget(imageIndex.value === count.value - 1, length)
+      [max, maxTarget] = getTarget(
+        imageIndex.value === count.value! - 1,
+        length
+      )
 
     const value = Math.max(Math.min(n, max), min)
 
@@ -177,7 +180,6 @@ const bannerImageLeave = (element: HTMLElement) => {
               :src="path"
               alt="Banner Image"
               draggable="false"
-              :loading="inView ? 'eager' : 'lazy'"
               :style="{
                 left: `${(index - 1) * 105}%`,
                 opacity: inView && !isLoaded ? '0' : '1',
