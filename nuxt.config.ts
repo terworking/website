@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     public: {
       indexHeading: 'Website Terworking',
       indexParagraph: description,
+      notFoundHeading: '404 NOT FOUND',
     },
   },
   css: ['~~/assets/main.css', '~~/assets/transition.css'],
