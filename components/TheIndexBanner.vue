@@ -11,13 +11,11 @@ const prevBanner = () =>
 
 const { width } = useWindowSize()
 const sources = computed(() =>
-  Array.from({ length: 3 }, (_, i) => {
-    const index = imageIndex.value + (i - 1)
+  Array.from({ length: 3 }, (_, index) => {
+    const actualIndex = imageIndex.value + (index - 1)
 
-    const path = `/banner/get/${index}?w=${Math.max(width.value, 512)}`
-    const inView = i === 1
-
-    return index >= 0 && index < count.value! ? { path, inView } : { inView }
+    if (actualIndex >= 0 && actualIndex < count.value!)
+      return `/banner/get/${actualIndex}?w=${Math.max(width.value, 512)}`
   })
 )
 
@@ -50,9 +48,9 @@ if (isClient) {
         isLoaded.value = loaded = true
         if (!isLeft.value) startTimeout()
       })
-      image.src = sources.value[1].path!
+      image.src = sources.value[1]!
 
-      // only set isLoaded to false after 50ms
+      // only set isLoaded to loaded after 50ms
       // to avoid almost-instant white blink
       setTimeout(() => (isLoaded.value = loaded), 50)
     },
@@ -174,7 +172,7 @@ const bannerImageLeave = (element: HTMLElement) => {
         :duration="750"
       >
         <div :key="imageIndex" ref="bannerImage" class="banner-image">
-          <template v-for="({ path, inView }, index) of sources">
+          <template v-for="(path, index) of sources">
             <img
               v-if="path !== undefined"
               :src="path"
@@ -182,11 +180,11 @@ const bannerImageLeave = (element: HTMLElement) => {
               draggable="false"
               :style="{
                 left: `${(index - 1) * 105}%`,
-                opacity: inView && !isLoaded ? '0' : '1',
+                opacity: index === 1 && !isLoaded ? '0' : '1',
               }"
             />
             <img
-              v-show="inView && !isLoaded"
+              v-show="index === 1 && !isLoaded"
               class="animate-pulse pointer-events-none"
               :src="placeholder"
               alt="Banner Image Placeholder"
