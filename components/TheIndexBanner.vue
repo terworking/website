@@ -210,7 +210,7 @@ const bannerImageLeave = (element: HTMLElement) => {
 }
 
 .banner-button:hover {
-  color: unset;
+  color: #fff;
 }
 
 .banner-button > * {
