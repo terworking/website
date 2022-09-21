@@ -1,17 +1,18 @@
 import { defineNuxtConfig } from 'nuxt'
 
-const lang = 'id'
-const themeColor = '#a5f3fc'
-const siteName = 'Terworking'
-const backgroundColor = '#242427'
-const description = 'Alumni TKJ SMKN 2 Kandangan (2021/2022)'
-const bannerImage = 'https://terworking.netlify.app/banner/get/0?w=500'
+const language = 'id'
+const accentColor = '#a5f3fc'
+
+const websiteTitle = 'Terworking'
+const websiteHeading = 'Website Terworking'
+const websiteDescription = 'Alumni TKJ SMKN 2 Kandangan (2021/2022)'
+const websiteHostFallback = 'terworking.pages.dev'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   app: {
     head: {
-      htmlAttrs: { lang },
+      htmlAttrs: { lang: language },
       link: [
         // for banner image redirects
         { rel: 'preconnect', href: 'https://images.weserv.nl' },
@@ -19,19 +20,18 @@ export default defineNuxtConfig({
       ],
       meta: [
         { property: 'og:type', content: 'website' },
-        { name: 'theme-color', content: themeColor },
-        { property: 'og:image', content: bannerImage },
-        { property: 'og:site_name', content: siteName },
-        { name: 'twitter:image', content: bannerImage },
-        { name: 'twitter:card', value: 'summary_large_image' },
+        { name: 'theme-color', content: accentColor },
+        { property: 'og:site_name', content: websiteTitle },
       ],
     },
   },
   runtimeConfig: {
     public: {
-      indexHeading: 'Website Terworking',
-      indexParagraph: description,
-      notFoundHeading: '404 NOT FOUND',
+      websiteDescription,
+      websiteHeading,
+      websiteTitle,
+      websiteHostFallback,
+      notFoundTitle: '404 NOT FOUND',
     },
   },
   css: ['~~/assets/main.css', '~~/assets/transition.css'],
@@ -53,11 +53,11 @@ export default defineNuxtConfig({
     icon: { maskablePadding: 0 },
     meta: false,
     manifest: {
-      lang,
-      description,
-      name: siteName,
-      theme_color: themeColor,
-      background_color: backgroundColor,
+      lang: language,
+      description: websiteDescription,
+      name: websiteTitle,
+      theme_color: accentColor,
+      background_color: '#242427',
     },
   },
   typescript: {

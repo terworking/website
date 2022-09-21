@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const {
-  public: { indexHeading, indexParagraph },
+  public: { websiteHeading, websiteDescription },
 } = useRuntimeConfig()
 
 const show = ref(false)
@@ -14,8 +14,8 @@ onMounted(() => (show.value = true))
       class="banner-heading grid items-center absolute w-full px-1/16 top-3/4 bottom-0 font-semibold text-center md:(z-1 px-1/12 text-start text-cyan-2) pointer-events-none"
     >
       <div>
-        <h1 class="text-3xl md:text-4xl">{{ indexHeading }}</h1>
-        <p class="text-sm md:text-base">{{ indexParagraph }}</p>
+        <h1 class="text-3xl md:text-4xl">{{ websiteHeading }}</h1>
+        <p class="text-sm md:text-base">{{ websiteDescription }}</p>
       </div>
     </div>
   </Transition>

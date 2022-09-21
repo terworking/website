@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 const {
-  public: { notFoundHeading },
+  public: { notFoundTitle: notFoundHeading },
 } = useRuntimeConfig()
 
 const heading = ref<HTMLHeadingElement>()

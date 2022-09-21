@@ -1,17 +1,21 @@
 <script lang="ts" setup>
 const route = useRoute()
-const { data: host } = await useAsyncData(
-  async () => useRequestHeaders().host ?? 'terworking.netlify.app'
-)
+const { data: host } = await useAsyncData(async () => useRequestHeaders().host)
 
-const baseURL = computed(() => `https://${host.value}`)
+const config = useRuntimeConfig().public
+
+const baseURL = computed(() => `//${host.value ?? config.websiteHostFallback}`)
+const image = computed(() => `${baseURL.value}/banner/get/0?w=500`)
 const url = computed(() => `${baseURL.value}${route.path}`)
 const description = computed(
-  () => route.meta.description ?? 'Website Terworking.'
+  () => route.meta.description ?? config.websiteDescription
 )
 const title = computed(() =>
-  route.meta.title ? `Terworking - ${route.meta.title}` : 'Terworking'
+  route.meta.title
+    ? `${config.websiteTitle} - ${route.meta.title}`
+    : config.websiteHeading
 )
+
 useHead({
   bodyAttrs: {
     class: 'antialiased text-body bg-body',
@@ -27,6 +31,9 @@ useHead({
     { name: 'description', content: description },
     { property: 'og:description', content: description },
     { name: 'twitter:description', content: description },
+    { property: 'og:image', content: image },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:card', value: 'summary_large_image' },
   ],
 })
 </script>
