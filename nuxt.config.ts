@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: language },
       link: [
+        { rel: 'manifest', href: '/manifest.json' },
         // for banner image redirects
         { rel: 'preconnect', href: 'https://images.weserv.nl' },
         { rel: 'dns-prefetch', href: 'https://images.weserv.nl' },
