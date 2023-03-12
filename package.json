@@ -7,12 +7,12 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@iconify-json/iconoir": "1.1.12",
-    "@iconify-json/material-symbols": "1.1.20",
-    "@kevinmarrec/nuxt-pwa": "0.8.0",
-    "@nuxtjs/color-mode": "3.1.8",
-    "@unocss/nuxt": "0.45.30",
-    "@vueuse/nuxt": "9.3.1",
-    "nuxt": "3.0.0-rc.12"
+    "@iconify-json/iconoir": "^1.1.12",
+    "@iconify-json/material-symbols": "^1.1.20",
+    "@kevinmarrec/nuxt-pwa": "^0.17.0",
+    "@nuxtjs/color-mode": "^3.1.8",
+    "@unocss/nuxt": "^0.45.30",
+    "@vueuse/nuxt": "^9.3.1",
+    "nuxt": "^3.0.0-rc.12"
   }
 }
